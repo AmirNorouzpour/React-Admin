@@ -1,13 +1,13 @@
 import React from "react";
 import "./sys-menu.css";
-import { QrcodeOutlined, DownOutlined } from "@ant-design/icons";
+import { AppstoreOutlined , DownOutlined } from "@ant-design/icons";
 
 const SystemMenu: React.FC = () => {
   const systems = [
-    { id: 1, name: "System 1", icon: <QrcodeOutlined /> },
-    { id: 2, name: "System 2", icon: <QrcodeOutlined /> },
-    { id: 3, name: "System 3", icon: <QrcodeOutlined /> },
-    { id: 4, name: "System 4", icon: <QrcodeOutlined /> },
+    { id: 1, name: "System 1", icon: <AppstoreOutlined /> },
+    { id: 2, name: "System 2", icon: <AppstoreOutlined /> },
+    { id: 3, name: "System 3", icon: <AppstoreOutlined /> },
+    { id: 4, name: "System 4", icon: <AppstoreOutlined /> },
   ];
   return (
     <div className="system-grid">

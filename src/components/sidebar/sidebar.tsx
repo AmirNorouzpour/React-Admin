@@ -3,6 +3,7 @@ import { Layout } from "antd";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import "./sidebar.css";
 import SideMenu from "../side-menu/side-menu.tsx";
+import OrgChart from "../org-chart/org-chart.tsx";
 
 const { Sider, Content } = Layout;
 
@@ -36,6 +37,8 @@ const App: React.FC = () => {
       case "2":
         return <h1>User Managment</h1>;
       case "3":
+        return <OrgChart />;
+      case "4":
         return <h1>Settings Content</h1>;
       default:
         return <h1>Welcome to the Dashboard</h1>;

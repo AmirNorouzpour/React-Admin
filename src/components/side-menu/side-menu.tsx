@@ -1,6 +1,11 @@
 import React from "react";
 import "./side-menu.css";
-import { SettingOutlined, UserOutlined, HomeOutlined } from "@ant-design/icons";
+import {
+  SettingOutlined,
+  UserOutlined,
+  HomeOutlined,
+  ApartmentOutlined,
+} from "@ant-design/icons";
 import { Menu } from "antd";
 
 interface SideMenuProps {
@@ -28,7 +33,10 @@ const SideMenu: React.FC<SideMenuProps> = ({
       <Menu.Item key="2" icon={<UserOutlined />}>
         User Managment
       </Menu.Item>
-      <Menu.Item key="3" icon={<SettingOutlined />}>
+      <Menu.Item key="3" icon={<ApartmentOutlined />}>
+        Org Chart
+      </Menu.Item>
+      <Menu.Item key="4" icon={<SettingOutlined />}>
         Settings
       </Menu.Item>
     </Menu>

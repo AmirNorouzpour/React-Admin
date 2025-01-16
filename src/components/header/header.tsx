@@ -4,10 +4,10 @@ import "./header.css";
 import {
   UserOutlined,
   NotificationOutlined,
-  TaobaoCircleOutlined,
+  GlobalOutlined,
   MessageOutlined,
   HomeOutlined,
-  QrcodeOutlined,
+  AppstoreOutlined,
   DownOutlined,
 } from "@ant-design/icons";
 import { Popover } from "antd";
@@ -46,7 +46,7 @@ const Header: React.FC = () => {
           >
             <div className="sys-menu">
               <div style={{ fontSize: "16px" }}>
-                <QrcodeOutlined />
+                <AppstoreOutlined />
               </div>
               <div className="sys-title">
                 Systems{" "}
@@ -103,7 +103,7 @@ const Header: React.FC = () => {
           <Avatar
             className="user-profile header-btn"
             size={28}
-            icon={<TaobaoCircleOutlined />}
+            icon={<GlobalOutlined />}
           />
         </Popover>
       </Col>
