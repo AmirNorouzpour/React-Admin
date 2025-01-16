@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout, Menu } from "antd";
 import {
   MenuUnfoldOutlined,
@@ -7,18 +7,33 @@ import {
   UserOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
+import "./sidebar.css";
 
 const { Sider, Content } = Layout;
 
 const App: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [activeMenu, setActiveMenu] = useState("1"); // مدیریت محتوای فعال
+  const [activeMenu, setActiveMenu] = useState("1");
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setCollapsed(true);
+      } else {
+        setCollapsed(false);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
 
-  // محتوای مرتبط با هر آیتم منو
   const renderContent = () => {
     switch (activeMenu) {
       case "1":
@@ -33,62 +48,31 @@ const App: React.FC = () => {
   };
 
   return (
-    <Layout style={{ minHeight: "90vh" }}>
+    <Layout className="layout">
       <Sider
+        className="sider"
         collapsible
         collapsed={collapsed}
-        collapsedWidth={80}
+        collapsedWidth={50}
         theme="light"
         trigger={null}
-        style={{ position: "relative" }}
       >
-        {/* لوگو و دکمه باز/بسته */}
-        <div
-          style={{
-            position: "relative",
-            height: "64px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: collapsed ? "center" : "flex-start",
-            backgroundColor: "#ffffff",
-            borderBottom: "1px solid #d9d9d9",
-            padding: "0 16px",
-          }}
-        >
-          {!collapsed && (
-            <div
-              style={{
-                fontSize: "18px",
-                fontWeight: "bold",
-                color: "#000",
-                flex: 1,
-              }}
-            >
-              Full Logo
-            </div>
-          )}
+        <div className={`sider-header ${collapsed ? "collapsed" : ""}`}>
+          {!collapsed && <div className="logo">Full Logo</div>}
           <div
-            style={{
-              cursor: "pointer",
-              fontSize: "18px",
-              position: collapsed ? "absolute" : "relative",
-              top: collapsed ? "50%" : "auto",
-              left: collapsed ? "50%" : "auto",
-              transform: collapsed ? "translate(-50%, -50%)" : "none",
-            }}
+            className={`collapse-button ${collapsed ? "collapsed" : ""}`}
             onClick={toggleCollapsed}
           >
             {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
           </div>
         </div>
 
-        {/* منو */}
         <Menu
           theme="light"
           mode="inline"
           defaultSelectedKeys={["1"]}
           inlineCollapsed={collapsed}
-          onClick={(e) => setActiveMenu(e.key)} // تغییر محتوای فعال بر اساس کلید
+          onClick={(e) => setActiveMenu(e.key)}
         >
           <Menu.Item key="1" icon={<HomeOutlined />}>
             Home
@@ -102,7 +86,7 @@ const App: React.FC = () => {
         </Menu>
       </Sider>
       <Layout>
-        <Content style={{ padding: "20px" }}>{renderContent()}</Content>
+        <Content className="content">{renderContent()}</Content>
       </Layout>
     </Layout>
   );
