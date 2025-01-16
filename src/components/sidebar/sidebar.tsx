@@ -58,7 +58,7 @@ const App: React.FC = () => {
         trigger={null}
       >
         <div className={`sider-header ${collapsed ? "collapsed" : ""}`}>
-          {!collapsed && <div className="logo">Full Logo</div>}
+          {!collapsed && <div className="logo">Basic Informations</div>}
           <div
             className={`collapse-button ${collapsed ? "collapsed" : ""}`}
             onClick={toggleCollapsed}
