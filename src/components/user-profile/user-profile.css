@@ -1,0 +1,28 @@
+.item-dropdown {
+  width: 200px;
+  background: #fff;
+  font-family: Arial, sans-serif;
+}
+
+.item-dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item-dropdown li {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: bac kground 0.3s ease;
+  border-bottom: 1px solid #e7e5e5;
+}
+
+.item-dropdown li:hover {
+  background: #f5f5f5;
+}
+
+.item-dropdown li:last-child {
+  border-bottom: none;
+}

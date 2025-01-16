@@ -1,13 +1,13 @@
 import React from "react";
-import "./content.css";
+import "./body.css";
 import Sidebar from "../sidebar/sidebar.tsx";
 
-const Content: React.FC = () => {
+const Body: React.FC = () => {
   return (
-    <div className="content">
+    <div className="body">
       <Sidebar />
     </div>
   );
 };
 
-export default Content;
+export default Body;

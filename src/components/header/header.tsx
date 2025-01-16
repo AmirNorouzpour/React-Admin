@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Row } from "antd";
+import { Avatar, Badge, Col, Row } from "antd";
 import "./header.css";
 import {
   UserOutlined,
@@ -10,8 +10,10 @@ import {
   QrcodeOutlined,
   DownOutlined,
 } from "@ant-design/icons";
-import { Button, Popover } from "antd";
+import { Popover } from "antd";
 import SystemMenu from "./../sys-menu/sys-menu.tsx";
+import Langs from "../langs/langs.tsx";
+import UserProfile from "../user-profile/user-profile.tsx";
 
 const Header: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -37,7 +39,7 @@ const Header: React.FC = () => {
               </div>
             }
             title="Systems"
-            trigger="hover"
+            trigger="click"
             placement="bottomLeft"
             open={open}
             onOpenChange={handleOpenChange}
@@ -57,34 +59,53 @@ const Header: React.FC = () => {
         </div>
       </Col>
       <Col className="header-box right-content" span={12}>
-        <Button
-          className="header-btn"
-          type="default"
-          shape="circle"
-          size="small"
-          icon={<UserOutlined />}
-        />
-        <Button
-          className="header-btn"
-          type="default"
-          shape="circle"
-          size="small"
+        <Popover
+          content={
+            <div>
+              <UserProfile />
+            </div>
+          }
+          title="Profile"
+          trigger="click"
+          placement="bottomLeft"
+        >
+          <Badge dot>
+            <Avatar
+              className="user-profile"
+              size={28}
+              icon={<UserOutlined />}
+            />
+          </Badge>
+        </Popover>
+
+        <Avatar
+          className="user-profile header-btn"
+          size={28}
           icon={<NotificationOutlined />}
         />
-        <Button
-          className="header-btn"
-          type="default"
-          shape="circle"
-          size="small"
+
+        <Avatar
+          className="user-profile header-btn"
+          size={28}
           icon={<MessageOutlined />}
         />
-        <Button
-          className="header-btn"
-          type="default"
-          shape="circle"
-          size="small"
-          icon={<TaobaoCircleOutlined />}
-        />
+
+        <Popover
+          content={
+            <div>
+              <Langs />
+            </div>
+          }
+          title="Languages"
+          trigger="click"
+          placement="bottomLeft"
+        >
+          <Avatar
+            className="user-profile header-btn"
+            size={28}
+            icon={<TaobaoCircleOutlined />}
+          />
+        </Popover>
       </Col>
     </Row>
   );

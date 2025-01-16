@@ -1,0 +1,36 @@
+.language-dropdown {
+  width: 200px;
+  background: #fff;
+  font-family: Arial, sans-serif;
+}
+
+.language-dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.language-dropdown li {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: bac kground 0.3s ease;
+  border-bottom: 1px solid #e7e5e5;
+}
+
+.language-dropdown li:hover {
+  background: #f5f5f5;
+}
+
+.language-dropdown .flag {
+  width: 20px;
+  height: 15px;
+  margin-right: 10px;
+  border-radius: 3px;
+  object-fit: cover;
+}
+
+.language-dropdown li:last-child {
+  border-bottom: none;
+}

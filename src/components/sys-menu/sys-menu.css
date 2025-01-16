@@ -1,9 +1,9 @@
 .system-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* سه ستون */
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   padding: 10px;
-  max-width: 300px; /* تنظیم عرض منو */
+  max-width: 300px;
 }
 
 .system-item {

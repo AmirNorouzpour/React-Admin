@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Menu } from "antd";
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  HomeOutlined,
-  UserOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import { Layout } from "antd";
+import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import "./sidebar.css";
+import SideMenu from "../side-menu/side-menu.tsx";
 
 const { Sider, Content } = Layout;
 
@@ -37,9 +32,9 @@ const App: React.FC = () => {
   const renderContent = () => {
     switch (activeMenu) {
       case "1":
-        return <h1>Home Content</h1>;
+        return <h1>Dashboard</h1>;
       case "2":
-        return <h1>Profile Content</h1>;
+        return <h1>User Managment</h1>;
       case "3":
         return <h1>Settings Content</h1>;
       default:
@@ -67,23 +62,11 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <Menu
-          theme="light"
-          mode="inline"
-          defaultSelectedKeys={["1"]}
-          inlineCollapsed={collapsed}
-          onClick={(e) => setActiveMenu(e.key)}
-        >
-          <Menu.Item key="1" icon={<HomeOutlined />}>
-            Home
-          </Menu.Item>
-          <Menu.Item key="2" icon={<UserOutlined />}>
-            Profile
-          </Menu.Item>
-          <Menu.Item key="3" icon={<SettingOutlined />}>
-            Settings
-          </Menu.Item>
-        </Menu>
+        <SideMenu
+          collapsed={collapsed}
+          activeMenu={activeMenu}
+          onMenuChange={setActiveMenu}
+        />
       </Sider>
       <Layout>
         <Content className="content">{renderContent()}</Content>
