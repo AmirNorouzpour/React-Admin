@@ -20,11 +20,22 @@ const treeData: TreeDataNode[] = [
   },
 ];
 
+const buttonData = [
+  { id: 1, label: "New", type: "primary" },
+  { id: 2, label: "Save", type: "default" },
+  { id: 3, label: "Delete", type: "danger" },
+];
 const OrgChart: React.FC = () => {
+  const handleButtonClick = (label: string, id: number) => {
+    console.log(`Button Clicked: ${label}, ID: ${id}`);
+    if (id === 1) {
+      alert("new");
+    }
+  };
+
   return (
     <div>
-      <Toolbar />
-
+      <Toolbar buttonData={buttonData} onButtonClick={handleButtonClick} />
       <Tree
         className="tree"
         showIcon
