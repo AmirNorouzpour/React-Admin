@@ -23,7 +23,7 @@ const treeData: TreeDataNode[] = [
 
 const buttonData = [
   { id: 1, label: "New", type: "primary" },
-  { id: 2, label: "Save", type: "default" },
+  { id: 2, label: "Save", type: "primary" },
   { id: 3, label: "Delete", type: "danger" },
 ];
 const OrgChart: React.FC = () => {

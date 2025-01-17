@@ -39,7 +39,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ buttonData, onButtonClick }) => {
             style={{ fontSize: "11px" }}
             key={button.id}
             variant="filled"
-            color={button.type === "primary" ? button.type : "default"}
+            color={button.type === "primary" ? button.type : button.type}
             onClick={() => onButtonClickInner(button.label, button.id)}
             disabled={disabled}
           >
