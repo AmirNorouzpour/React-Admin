@@ -4,6 +4,7 @@ import type { TreeDataNode } from "antd";
 import React from "react";
 import Toolbar from "../toolbar/toolbar.tsx";
 import "./org-chart.css";
+import { useNavigate } from "react-router-dom";
 
 const treeData: TreeDataNode[] = [
   {
@@ -26,10 +27,11 @@ const buttonData = [
   { id: 3, label: "Delete", type: "danger" },
 ];
 const OrgChart: React.FC = () => {
+  const navigate = useNavigate();
   const handleButtonClick = (label: string, id: number) => {
     console.log(`Button Clicked: ${label}, ID: ${id}`);
     if (id === 1) {
-      alert("new");
+      navigate("/org/new");
     }
   };
 

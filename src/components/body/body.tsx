@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Layout } from "antd";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import "./body.css";
 import SideMenu from "../side-menu/side-menu.tsx";
 import OrgChart from "../org-chart/org-chart.tsx";
+import OrgForm from "../org-form/org-form.tsx";
 
 const { Sider, Content } = Layout;
 
 const Body: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [activeMenu, setActiveMenu] = useState("1");
+  const navigate = useNavigate();
 
+  // Handle screen resizing for sidebar collapse
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setCollapsed(true);
-      } else {
-        setCollapsed(false);
-      }
+      setCollapsed(window.innerWidth < 768);
     };
 
     handleResize();
@@ -30,33 +29,22 @@ const Body: React.FC = () => {
     setCollapsed(!collapsed);
   };
 
-  const renderContent = () => {
-    switch (activeMenu) {
-      case "1":
-        return <h1>Dashboard</h1>;
-      case "2":
-        return <h1>User Managment</h1>;
-      case "3":
-        return <OrgChart />;
-      case "4":
-        return <h1>Settings Content</h1>;
-      default:
-        return <h1>Welcome to the Dashboard</h1>;
-    }
+  const handleMenuChange = (key: string) => {
+    navigate(key); // Navigate to the path corresponding to the menu key
   };
 
   return (
     <Layout className="layout">
       <Sider
-        className="sider"
         collapsible
         collapsed={collapsed}
         collapsedWidth={50}
         theme="light"
         trigger={null}
+        className="sider"
       >
         <div className={`sider-header ${collapsed ? "collapsed" : ""}`}>
-          {!collapsed && <div className="logo">Basic Informations</div>}
+          {!collapsed && <div className="logo">Basic Information</div>}
           <div
             className={`collapse-button ${collapsed ? "collapsed" : ""}`}
             onClick={toggleCollapsed}
@@ -64,15 +52,20 @@ const Body: React.FC = () => {
             {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
           </div>
         </div>
-
         <SideMenu
+          activeMenu={null} // We handle this in react-router now
+          onMenuChange={handleMenuChange}
           collapsed={collapsed}
-          activeMenu={activeMenu}
-          onMenuChange={setActiveMenu}
         />
       </Sider>
       <Layout>
-        <Content className="content">{renderContent()}</Content>
+        <Content className="content">
+          <Routes>
+            <Route path="/" element={<h1>Welcome to the Dashboard</h1>} />
+            <Route path="/org-chart" element={<OrgChart />} />
+            <Route path="/org/new" element={<OrgForm />} />
+          </Routes>
+        </Content>
       </Layout>
     </Layout>
   );

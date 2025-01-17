@@ -1,43 +1,48 @@
 import React from "react";
-import "./side-menu.css";
-import {
-  SettingOutlined,
-  UserOutlined,
-  HomeOutlined,
-  ApartmentOutlined,
-} from "@ant-design/icons";
 import { Menu } from "antd";
+import { useNavigate } from "react-router-dom";
+import {
+  BarChartOutlined,
+  InfoCircleOutlined,
+  ApartmentOutlined,
+  UserOutlined,
+  TeamOutlined,
+} from "@ant-design/icons";
 
 interface SideMenuProps {
+  activeMenu?: string;
+  onMenuChange?: (key: string) => void;
   collapsed: boolean;
-  activeMenu: string;
-  onMenuChange: (key: string) => void;
 }
 
-const SideMenu: React.FC<SideMenuProps> = ({
-  collapsed,
-  activeMenu,
-  onMenuChange,
-}) => {
+const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
+  const navigate = useNavigate();
+
+  const handleMenuClick = (e: any) => {
+    navigate(e.key);
+  };
+
   return (
     <Menu
-      theme="light"
       mode="inline"
-      selectedKeys={[activeMenu]}
-      inlineCollapsed={collapsed}
-      onClick={(e) => onMenuChange(e.key)}
+      defaultSelectedKeys={["/"]}
+      onClick={handleMenuClick}
+      style={{ fontSize: "11px" }}
     >
-      <Menu.Item key="1" icon={<HomeOutlined />}>
+      <Menu.Item key="/" icon={<BarChartOutlined />}>
         Dashboard
       </Menu.Item>
-      <Menu.Item key="2" icon={<UserOutlined />}>
-        User Managment
+      <Menu.Item key="/org-info" icon={<InfoCircleOutlined />}>
+        Organization Information
       </Menu.Item>
-      <Menu.Item key="3" icon={<ApartmentOutlined />}>
-        Org Chart
+      <Menu.Item key="/org-chart" icon={<ApartmentOutlined />}>
+        Organization Chart
       </Menu.Item>
-      <Menu.Item key="4" icon={<SettingOutlined />}>
-        Settings
+      <Menu.Item icon={<UserOutlined />} key="/user">
+        User Managemnet
+      </Menu.Item>
+      <Menu.Item key="/user-groups" icon={<TeamOutlined />}>
+        User Groups
       </Menu.Item>
     </Menu>
   );

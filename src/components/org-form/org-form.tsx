@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Button, Form, Input, Radio } from "antd";
 
 const buttonData = [{ id: 1, label: "Save", type: "default" }];
-const OrgChart: React.FC = () => {
+const OrgForm: React.FC = () => {
   const [form] = Form.useForm();
   return (
     <div>
@@ -25,4 +25,4 @@ const OrgChart: React.FC = () => {
   );
 };
 
-export default OrgChart;
+export default OrgForm;
