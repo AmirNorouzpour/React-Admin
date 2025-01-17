@@ -1,39 +1,69 @@
 import { UserOutlined, ApartmentOutlined } from "@ant-design/icons";
-import { Card, Tree } from "antd";
+import { Card, Tree, Spin } from "antd";
 import type { TreeDataNode } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Toolbar from "../toolbar/toolbar.tsx";
 import "./org-chart.css";
 import { useNavigate } from "react-router-dom";
-
-const treeData: TreeDataNode[] = [
-  {
-    title: "Org",
-    key: "0",
-    icon: <ApartmentOutlined />,
-    children: [
-      {
-        title: "CEO",
-        key: "0-0",
-        icon: <UserOutlined />,
-      },
-    ],
-  },
-];
+import { getRequest } from "../../services/apiService.ts";
 
 const buttonData = [
   { id: 1, label: "New", type: "primary" },
-  { id: 2, label: "Save", type: "primary" },
   { id: 3, label: "Delete", type: "danger" },
 ];
+
 const OrgChart: React.FC = () => {
   const navigate = useNavigate();
+  const [treeData, setTreeData] = useState<TreeDataNode[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
+
   const handleButtonClick = (label: string, id: number) => {
     console.log(`Button Clicked: ${label}, ID: ${id}`);
     if (id === 1) {
-      navigate("/org-chart/new");
+      navigate("/org-chart/new", { state: { selectedKey } });
     }
   };
+
+  const buildTreeRecursive = (
+    data: any[],
+    parent: string | null
+  ): TreeDataNode[] => {
+    return data
+      .filter((item) => item.parent === parent)
+      .map((item) => ({
+        title: item.name,
+        key: item.key,
+        icon:
+          item.type === "department" ? <ApartmentOutlined /> : <UserOutlined />,
+        children: buildTreeRecursive(data, item.key),
+      }));
+  };
+
+  const fetchTreeData = async () => {
+    try {
+      setLoading(true);
+
+      const data = await getRequest<any[]>("/org/gettree");
+
+      const transformedData = buildTreeRecursive(data, null);
+
+      setTreeData(transformedData);
+    } catch (error) {
+      console.error("Error fetching tree data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onSelect = (selectedKeys: React.Key[], info: any) => {
+    console.log("Selected:", selectedKeys, info);
+    setSelectedKey(selectedKeys.length > 0 ? String(selectedKeys[0]) : null); // ذخیره کلید انتخاب شده
+  };
+
+  useEffect(() => {
+    fetchTreeData();
+  }, []);
 
   return (
     <Card
@@ -43,14 +73,19 @@ const OrgChart: React.FC = () => {
         <Toolbar buttonData={buttonData} onButtonClick={handleButtonClick} />
       }
     >
-      <Tree
-        className="tree"
-        showIcon
-        showLine
-        defaultExpandAll
-        defaultSelectedKeys={["0"]}
-        treeData={treeData}
-      />
+      {loading ? (
+        <Spin tip="Loading..." />
+      ) : (
+        <Tree
+          className="tree"
+          showIcon
+          showLine
+          defaultExpandAll
+          defaultSelectedKeys={["0"]}
+          treeData={treeData}
+          onSelect={onSelect} // مدیریت انتخاب گره
+        />
+      )}
     </Card>
   );
 };

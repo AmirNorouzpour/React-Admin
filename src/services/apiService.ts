@@ -7,6 +7,7 @@ export const apiRequest = async <T>(
   headers: Record<string, string> = {}
 ): Promise<T> => {
   try {
+    debugger;
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       method,
       headers: {

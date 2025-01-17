@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Form, message, Input, Radio } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; // اضافه کردن useLocation
 import Toolbar from "../toolbar/toolbar.tsx";
 import { postRequest } from "../../services/apiService.ts";
 import "./org-form.css";
@@ -13,16 +13,21 @@ const buttonData = [
 interface OrgFormData {
   type: string;
   name: string;
+  parentKey?: string; // اضافه کردن parentKey
 }
 
 const OrgForm: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
+  const location = useLocation(); // استفاده از useLocation برای گرفتن state
+  const { selectedKey } = location.state || {}; // گرفتن selectedKey از state
 
   const onFinish = async (values: OrgFormData) => {
     try {
-      const response = await postRequest<OrgFormData>("/org", values);
+      const dataToSend = { ...values, parent: selectedKey };
+      debugger;
+      const response = await postRequest<OrgFormData>("/org", dataToSend);
       messageApi.success("Data saved successfully!");
       navigate("/org-chart");
     } catch (error: any) {
