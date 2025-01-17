@@ -1,5 +1,5 @@
 import { UserOutlined, ApartmentOutlined } from "@ant-design/icons";
-import { Tree } from "antd";
+import { Card, Tree } from "antd";
 import type { TreeDataNode } from "antd";
 import React from "react";
 import Toolbar from "../toolbar/toolbar.tsx";
@@ -31,13 +31,18 @@ const OrgChart: React.FC = () => {
   const handleButtonClick = (label: string, id: number) => {
     console.log(`Button Clicked: ${label}, ID: ${id}`);
     if (id === 1) {
-      navigate("/org/new");
+      navigate("/org-chart/new");
     }
   };
 
   return (
-    <div>
-      <Toolbar buttonData={buttonData} onButtonClick={handleButtonClick} />
+    <Card
+      title="Organization Chart"
+      type="inner"
+      extra={
+        <Toolbar buttonData={buttonData} onButtonClick={handleButtonClick} />
+      }
+    >
       <Tree
         className="tree"
         showIcon
@@ -46,7 +51,7 @@ const OrgChart: React.FC = () => {
         defaultSelectedKeys={["0"]}
         treeData={treeData}
       />
-    </div>
+    </Card>
   );
 };
 

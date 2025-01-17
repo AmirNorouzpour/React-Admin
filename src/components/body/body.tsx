@@ -63,7 +63,7 @@ const Body: React.FC = () => {
           <Routes>
             <Route path="/" element={<h1>Welcome to the Dashboard</h1>} />
             <Route path="/org-chart" element={<OrgChart />} />
-            <Route path="/org/new" element={<OrgForm />} />
+            <Route path="/org-chart/new" element={<OrgForm />} />
           </Routes>
         </Content>
       </Layout>

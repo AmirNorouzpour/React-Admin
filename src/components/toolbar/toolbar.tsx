@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Space, Dropdown, Menu } from "antd";
 import "./toolbar.css";
 import { DownOutlined, UserOutlined, SettingOutlined } from "@ant-design/icons";
@@ -14,20 +14,34 @@ interface ToolbarProps {
   onButtonClick: (label: string, id: number) => void;
 }
 const Toolbar: React.FC<ToolbarProps> = ({ buttonData, onButtonClick }) => {
+  const [disabled, setDisabled] = useState(false);
+
+  const onButtonClickInner = (label: string, id: number) => {
+    setDisabled(true);
+    onButtonClick(label, id);
+
+    setTimeout(() => {
+      setDisabled(false);
+    }, 300);
+  };
+
   return (
     <div
       style={{
-        padding: "10px",
-        borderBottom: "1px solid #ddd",
+        padding: "5px",
+        backgroundColor: "#f9fafb",
+        borderRadius: "5px",
       }}
     >
       <Space>
         {buttonData.map((button) => (
           <Button
+            style={{ fontSize: "11px" }}
             key={button.id}
-            type={button.type === "danger" ? "default" : button.type}
-            danger={button.type === "danger"}
-            onClick={() => onButtonClick(button.label, button.id)}
+            variant="filled"
+            color={button.type === "primary" ? button.type : "default"}
+            onClick={() => onButtonClickInner(button.label, button.id)}
+            disabled={disabled}
           >
             {button.label}
           </Button>
