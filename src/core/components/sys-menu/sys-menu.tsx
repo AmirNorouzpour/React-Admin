@@ -1,6 +1,6 @@
 import React from "react";
 import "./sys-menu.css";
-import { AppstoreOutlined , DownOutlined } from "@ant-design/icons";
+import { AppstoreOutlined } from "@ant-design/icons";
 
 const SystemMenu: React.FC = () => {
   const systems = [

@@ -1,13 +1,8 @@
 import React, { useState } from "react";
-import { Button, Space, Dropdown, Menu } from "antd";
-import "./toolbar.css";
-import { DownOutlined, UserOutlined, SettingOutlined } from "@ant-design/icons";
+import { Button, Space } from "antd";
+import { ButtonData } from "../../models/ButtonData.ts";
 
-interface ButtonData {
-  id: number;
-  label: string;
-  type: "primary" | "default" | "dashed" | "text" | "link" | "danger";
-}
+import "./toolbar.css";
 
 interface ToolbarProps {
   buttonData: ButtonData[];

@@ -63,7 +63,7 @@ const OrgChart: React.FC = () => {
 
   useEffect(() => {
     fetchTreeData();
-  }, []);
+  });
 
   return (
     <Card

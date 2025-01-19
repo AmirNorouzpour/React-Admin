@@ -26,8 +26,7 @@ const OrgForm: React.FC = () => {
   const onFinish = async (values: OrgFormData) => {
     try {
       const dataToSend = { ...values, parent: selectedKey };
-      debugger;
-      const response = await postRequest<OrgFormData>("/org", dataToSend);
+      await postRequest<OrgFormData>("/org", dataToSend);
       messageApi.success("Data saved successfully!");
       navigate("/org-chart");
     } catch (error: any) {
