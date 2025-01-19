@@ -77,6 +77,7 @@ export class ColumnFactory {
           title,
           dataIndex,
           key,
+          type,
           sorter,
           filterDropdown: (props: any) => (
             <EnumFilter
