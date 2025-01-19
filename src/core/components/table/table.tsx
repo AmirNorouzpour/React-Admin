@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Spin } from "antd";
 import type { TableProps } from "antd/es/table";
 import { TableColumnType } from "../../models/column-types.ts";
@@ -30,14 +30,65 @@ const CustomTable: React.FC<CustomTableProps> = ({
     total: 0,
   });
 
-  const handleTableChange: TableProps<any>["onChange"] = async (
-    pagination,
-    filters,
-    sorter
+  const [filters, setFilters] = useState<any>({});
+  const [sorter, setSorter] = useState<any>({});
+
+  const buildFilterTree = (filters: any) => {
+    const filterTree: any = {
+      condition: "and",
+      rules: [],
+    };
+
+    columns?.forEach((col: any) => {
+      const filterValues = filters[col.dataIndex];
+      if (filterValues) {
+        if (col.type === TableColumnType.DateTime) {
+          const [startDate, endDate] = filterValues[0].split(",");
+          filterTree.rules.push({
+            condition: "and",
+            rules: [
+              { field: col.dataIndex, operator: ">", value: startDate },
+              { field: col.dataIndex, operator: "<", value: endDate },
+            ],
+          });
+        } else if (col.type === TableColumnType.Enum) {
+          filterTree.rules.push({
+            condition: "or",
+            rules: filterValues.map((value: string) => ({
+              field: col.dataIndex,
+              operator: "=",
+              value: value,
+            })),
+          });
+        } else if (col.type === TableColumnType.Text) {
+          filterTree.rules.push({
+            field: col.dataIndex,
+            operator: "like",
+            value: filterValues[0],
+          });
+        } else if (col.type === TableColumnType.Integer) {
+          filterTree.rules.push({
+            field: col.dataIndex,
+            operator: "=",
+            value: filterValues[0],
+          });
+        }
+      }
+    });
+
+    return JSON.stringify(filterTree);
+  };
+
+  const fetchData = async (
+    page = 1,
+    pageSize = 10,
+    filters: any = {},
+    sorter: any = {}
   ) => {
     const params: any = {
-      page: pagination.current || 1,
-      pageSize: pagination.pageSize || 10,
+      page,
+      pageSize,
+      filters: buildFilterTree(filters),
     };
 
     if (sorter.order) {
@@ -45,60 +96,29 @@ const CustomTable: React.FC<CustomTableProps> = ({
       params.sortOrder = sorter.order === "ascend" ? "ASC" : "DESC";
     }
 
-    if (filters) {
-      const filterTree: any = {
-        condition: "and",
-        rules: [],
-      };
-
-      columns?.forEach((col: any) => {
-        const filterValues = filters[col.dataIndex];
-        if (filterValues) {
-          if (col.type === TableColumnType.DateTime) {
-            const [startDate, endDate] = filterValues[0].split(",");
-            filterTree.rules.push({
-              condition: "and",
-              rules: [
-                { field: col.dataIndex, operator: ">", value: startDate },
-                { field: col.dataIndex, operator: "<", value: endDate },
-              ],
-            });
-          } else if (col.type === TableColumnType.Enum) {
-            filterTree.rules.push({
-              condition: "or",
-              rules: filterValues.map((value: string) => ({
-                field: col.dataIndex,
-                operator: "=",
-                value: value,
-              })),
-            });
-          } else if (col.type === TableColumnType.Text) {
-            filterTree.rules.push({
-              field: col.dataIndex,
-              operator: "like",
-              value: filterValues[0],
-            });
-          } else if (col.type === TableColumnType.Integer) {
-            filterTree.rules.push({
-              field: col.dataIndex,
-              operator: "=",
-              value: filterValues[0],
-            });
-          }
-        }
-      });
-
-      params.filters = JSON.stringify(filterTree); // ارسال فیلترها به‌صورت JSON
-    }
-
     const response = await onFetchData(params);
-    setPagination({
-      ...pagination,
-      current: params.page,
-      pageSize: params.pageSize,
+
+    setPagination((prev) => ({
+      ...prev,
+      current: page,
+      pageSize,
       total: response.total,
-    });
+    }));
   };
+
+  const handleTableChange: TableProps<any>["onChange"] = async (
+    pagination,
+    filters,
+    sorter
+  ) => {
+    setFilters(filters);
+    setSorter(sorter);
+    await fetchData(pagination.current, pagination.pageSize, filters, sorter);
+  };
+
+  useEffect(() => {
+    fetchData(pagination.current, pagination.pageSize, filters, sorter);
+  }, []);
 
   return (
     <Spin spinning={loading}>

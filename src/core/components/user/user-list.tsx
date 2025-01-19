@@ -38,13 +38,6 @@ const UserList: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData({
-      page: 1,
-      pageSize: 10,
-    });
-  }, []);
-
   const handleToolbarClick = (label: string, id: number) => {
     if (id === 1) {
       navigate("/user/form");

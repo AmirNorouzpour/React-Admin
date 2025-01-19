@@ -73,6 +73,18 @@ export class ColumnFactory {
             date ? format(new Date(date), "yyyy/MM/dd") : "N/A",
         };
       case TableColumnType.Enum:
+        const colors = [
+          "indigo",
+          "blue",
+          "green",
+          "red",
+          "orange",
+          "yellow",
+          "violet",
+          "cyan",
+          "magenta",
+          "brown",
+        ];
         return {
           title,
           dataIndex,
@@ -94,11 +106,9 @@ export class ColumnFactory {
             />
           ),
           render: (value: number) => {
+            let color = colors[value % 10];
             const option = options.find((opt) => opt.value === String(value));
-            if (option?.label === "Male") return <Tag color="blue">Male</Tag>;
-            if (option?.label === "Female")
-              return <Tag color="pink">Female</Tag>;
-            return <Tag color="default">Unknown</Tag>;
+            return <Tag color={color}>{option?.label}</Tag>;
           },
         };
     }
