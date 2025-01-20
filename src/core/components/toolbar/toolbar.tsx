@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Space } from "antd";
+import { Button, Space, Popconfirm } from "antd";
 import { ButtonData } from "../../models/ButtonData.ts";
 
 import "./toolbar.css";
@@ -8,6 +8,7 @@ interface ToolbarProps {
   buttonData: ButtonData[];
   onButtonClick: (label: string, id: number) => void;
 }
+
 const Toolbar: React.FC<ToolbarProps> = ({ buttonData, onButtonClick }) => {
   const [disabled, setDisabled] = useState(false);
 
@@ -29,18 +30,37 @@ const Toolbar: React.FC<ToolbarProps> = ({ buttonData, onButtonClick }) => {
       }}
     >
       <Space>
-        {buttonData.map((button) => (
-          <Button
-            style={{ fontSize: "11px" }}
-            key={button.id}
-            variant="filled"
-            color={button.type === "primary" ? button.type : button.type}
-            onClick={() => onButtonClickInner(button.label, button.id)}
-            disabled={disabled}
-          >
-            {button.label}
-          </Button>
-        ))}
+        {buttonData.map((button) =>
+          button.hasConfirm ? (
+            <Popconfirm
+              key={button.id}
+              title="Are you sure?"
+              onConfirm={() => onButtonClickInner(button.label, button.id)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button
+                style={{ fontSize: "11px" }}
+                variant="filled"
+                color={button.type === "primary" ? button.type : button.type}
+                disabled={disabled}
+              >
+                {button.label}
+              </Button>
+            </Popconfirm>
+          ) : (
+            <Button
+              style={{ fontSize: "11px" }}
+              key={button.id}
+              variant="filled"
+              color={button.type === "primary" ? button.type : button.type}
+              onClick={() => onButtonClickInner(button.label, button.id)}
+              disabled={disabled}
+            >
+              {button.label}
+            </Button>
+          )
+        )}
       </Space>
     </div>
   );

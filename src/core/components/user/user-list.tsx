@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Card } from "antd";
+import { Card, message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { getRequest } from "../../services/apiService.ts";
+import { deleteRequest, getRequest } from "../../services/apiService.ts";
 import Toolbar from "../toolbar/toolbar.tsx";
 import CustomTable from "../table/table.tsx";
 import { ColumnFactory } from "../column/column-factory.tsx";
@@ -12,14 +12,15 @@ import { TableColumnType } from "../../models/column-types.ts";
 const buttonData: ButtonData[] = [
   { id: 1, label: "New", type: "primary" },
   { id: 2, label: "Edit", type: "primary" },
-  { id: 3, label: "Delete", type: "danger" },
+  { id: 3, label: "Delete", type: "danger", hasConfirm: true },
 ];
 
 const UserList: React.FC = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<{}>([]);
+  const [data, setData] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [messageApi, contextHolder] = message.useMessage();
 
   const fetchData = async (params: any = {}) => {
     setLoading(true);
@@ -44,25 +45,46 @@ const UserList: React.FC = () => {
     }
     if (id === 2) {
       if (selectedRowKeys.length === 0) {
-        alert("Please select a user to edit.");
+        messageApi.warning("Please select a user to edit.");
         return;
       }
-      navigate("/user/form", { state: { selectedRowKeys } });
+      const selectedKey = selectedRowKeys[0];
+      navigate("/user/form", { state: { selectedKey } });
     }
     if (id === 3) {
       if (selectedRowKeys.length === 0) {
-        alert("Please select users to delete.");
+        messageApi.warning("Please select users to delete.");
         return;
       }
-      console.log("Deleting users with IDs: ", selectedRowKeys);
+      deleteUsers(selectedRowKeys);
+    }
+  };
+
+  const deleteUsers = async (ids: React.Key[]) => {
+    try {
+      debugger;
+      await deleteRequest(`/api/users`, ids); // ارسال شناسه‌ها به سرور
+      messageApi.success("Users deleted successfully!");
+      fetchData(); // به‌روزرسانی لیست پس از حذف
+      setSelectedRowKeys([]); // پاک کردن انتخاب‌ها
+    } catch (error) {
+      console.error("Error deleting users:", error);
+      messageApi.error("Failed to delete users. Please try again.");
     }
   };
 
   const columns = [
     ColumnFactory.createColumn({
+      title: "Full Name",
+      dataIndex: "FullName",
+      key: "FullName",
+      type: TableColumnType.Text,
+      sorter: true,
+    }),
+    ColumnFactory.createColumn({
       title: "User Name",
-      dataIndex: "UserName",
-      key: "UserName",
+      dataIndex: "Username",
+      key: "Username",
       type: TableColumnType.Text,
       sorter: true,
     }),
@@ -74,14 +96,14 @@ const UserList: React.FC = () => {
       sorter: true,
     }),
     ColumnFactory.createColumn({
-      title: "Gender",
-      dataIndex: "GenderType",
-      key: "GenderType",
-      type: TableColumnType.Enum,
+      title: "Can Login",
+      dataIndex: "CanLogin",
+      key: "CanLogin",
+      type: TableColumnType.Boolean,
       sorter: true,
       options: [
-        { label: "Male", value: "1" },
-        { label: "Female", value: "2" },
+        { label: "Yes", value: "true" },
+        { label: "No", value: "false" },
       ],
     }),
   ];
@@ -94,6 +116,7 @@ const UserList: React.FC = () => {
         <Toolbar buttonData={buttonData} onButtonClick={handleToolbarClick} />
       }
     >
+      {contextHolder}
       <CustomTable
         columns={columns}
         dataSource={data}
@@ -103,6 +126,11 @@ const UserList: React.FC = () => {
           selectedRowKeys,
           onChange: (keys: React.Key[]) => setSelectedRowKeys(keys),
         }}
+        onRow={(record) => ({
+          onDoubleClick: () => {
+            navigate("/user/form", { state: { selectedKey: record.Id } });
+          },
+        })}
       />
     </Card>
   );

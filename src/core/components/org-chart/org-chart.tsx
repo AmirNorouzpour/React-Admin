@@ -9,7 +9,7 @@ import { getRequest } from "../../services/apiService.ts";
 
 const buttonData = [
   { id: 1, label: "New", type: "primary" },
-  { id: 3, label: "Delete", type: "danger" },
+  { id: 3, label: "Delete", type: "danger", hasConfirm: true },
 ];
 
 const OrgChart: React.FC = () => {
@@ -58,12 +58,12 @@ const OrgChart: React.FC = () => {
 
   const onSelect = (selectedKeys: React.Key[], info: any) => {
     console.log("Selected:", selectedKeys, info);
-    setSelectedKey(selectedKeys.length > 0 ? String(selectedKeys[0]) : null); // ذخیره کلید انتخاب شده
+    setSelectedKey(selectedKeys.length > 0 ? String(selectedKeys[0]) : null);
   };
 
   useEffect(() => {
     fetchTreeData();
-  }, []); // اضافه کردن آرایه وابستگی خالی
+  }, []);
 
   return (
     <Card
@@ -83,7 +83,7 @@ const OrgChart: React.FC = () => {
           defaultExpandAll
           defaultSelectedKeys={["0"]}
           treeData={treeData}
-          onSelect={onSelect} // مدیریت انتخاب گره
+          onSelect={onSelect}
         />
       )}
     </Card>

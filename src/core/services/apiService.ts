@@ -46,5 +46,6 @@ export const putRequest = <T>(
 
 export const deleteRequest = <T>(
   endpoint: string,
+  body: any,
   headers?: Record<string, string>
-) => apiRequest<T>(endpoint, "DELETE", undefined, headers);
+) => apiRequest<T>(endpoint, "DELETE", body, headers);

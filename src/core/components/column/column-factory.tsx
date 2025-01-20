@@ -3,6 +3,8 @@ import { SearchOutlined } from "@ant-design/icons";
 import TextFilter from "../custom-filter/text-fileld.tsx";
 import DateRangeFilter from "../custom-filter/date-range-field.tsx";
 import EnumFilter from "../custom-filter/enum-field.tsx";
+import NumericFilter from "../custom-filter/numeric-field.tsx";
+import BooleanFilter from "../custom-filter/boolean-field.tsx"; // Boolean filter component
 import { format } from "date-fns";
 import React from "react";
 import { TableColumnType } from "../../models/column-types.ts";
@@ -31,6 +33,7 @@ export class ColumnFactory {
           key,
           type,
           sorter,
+          showSorterTooltip: false,
           filterDropdown: (props: any) => (
             <TextFilter
               value={props.selectedKeys[0] || ""}
@@ -52,6 +55,7 @@ export class ColumnFactory {
           key,
           type,
           sorter,
+          showSorterTooltip: false,
           filterDropdown: (props: any) => (
             <DateRangeFilter
               value={
@@ -91,6 +95,7 @@ export class ColumnFactory {
           key,
           type,
           sorter,
+          showSorterTooltip: false,
           filterDropdown: (props: any) => (
             <EnumFilter
               options={options}
@@ -111,6 +116,64 @@ export class ColumnFactory {
             return <Tag color={color}>{option?.label}</Tag>;
           },
         };
+      case TableColumnType.Integer:
+        return {
+          title,
+          dataIndex,
+          key,
+          type,
+          sorter,
+          showSorterTooltip: false,
+          filterDropdown: (props: any) => (
+            <NumericFilter
+              value={props.selectedKeys[0] ? props.selectedKeys[0] : null}
+              onChange={(value) => {
+                props.setSelectedKeys(value ? value : []);
+              }}
+              onConfirm={props.confirm}
+              onReset={props.clearFilters}
+            />
+          ),
+          filterIcon: (filtered: boolean) => (
+            <SearchOutlined
+              style={{ color: filtered ? "#1890ff" : undefined }}
+            />
+          ),
+          render: (value: number) =>
+            value !== undefined ? value.toLocaleString() : "N/A",
+        };
+      case TableColumnType.Boolean:
+        return {
+          title,
+          dataIndex,
+          key,
+          type,
+          sorter,
+          showSorterTooltip: false,
+          filterDropdown: (props: any) => (
+            <BooleanFilter
+              value="true"
+              options={[
+                { label: "Yes", value: "true" },
+                { label: "No", value: "false" },
+              ]}
+              onChange={(value) => props.setSelectedKeys([value])}
+              onConfirm={props.confirm}
+              onReset={props.clearFilters}
+            />
+          ),
+          filterIcon: (filtered: boolean) => (
+            <SearchOutlined
+              style={{ color: filtered ? "#1890ff" : undefined }}
+            />
+          ),
+          render: (value: boolean) => {
+            const option = options.find((opt) => opt.value === String(value));
+            return <Tag color={value ? "blue" : "red"}>{option?.label}</Tag>;
+          },
+        };
+      default:
+        return {};
     }
   }
 }

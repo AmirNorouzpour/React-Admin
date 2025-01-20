@@ -15,6 +15,7 @@ interface CustomTableProps {
     filters?: string;
   }) => Promise<{ data: any[]; total: number }>;
   rowSelection?: TableProps<any>["rowSelection"];
+  onRow?: TableProps<any>["onRow"]; // Add onRow prop
 }
 
 const CustomTable: React.FC<CustomTableProps> = ({
@@ -23,6 +24,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
   loading,
   onFetchData,
   rowSelection,
+  onRow, // Accept onRow as a prop
 }) => {
   const [pagination, setPagination] = useState({
     current: 1,
@@ -43,14 +45,28 @@ const CustomTable: React.FC<CustomTableProps> = ({
       const filterValues = filters[col.dataIndex];
       if (filterValues) {
         if (col.type === TableColumnType.DateTime) {
-          const [startDate, endDate] = filterValues[0].split(",");
-          filterTree.rules.push({
-            condition: "and",
-            rules: [
-              { field: col.dataIndex, operator: ">", value: startDate },
-              { field: col.dataIndex, operator: "<", value: endDate },
-            ],
-          });
+          const [startDate, endDate] = filterValues[0]?.split(",") || [];
+          const rules = [];
+          if (startDate) {
+            rules.push({
+              field: col.dataIndex,
+              operator: ">=",
+              value: startDate,
+            });
+          }
+          if (endDate) {
+            rules.push({
+              field: col.dataIndex,
+              operator: "<=",
+              value: endDate,
+            });
+          }
+          if (rules.length > 0) {
+            filterTree.rules.push({
+              condition: "and",
+              rules,
+            });
+          }
         } else if (col.type === TableColumnType.Enum) {
           filterTree.rules.push({
             condition: "or",
@@ -67,11 +83,37 @@ const CustomTable: React.FC<CustomTableProps> = ({
             value: filterValues[0],
           });
         } else if (col.type === TableColumnType.Integer) {
-          filterTree.rules.push({
-            field: col.dataIndex,
-            operator: "=",
-            value: filterValues[0],
-          });
+          const [minValue, maxValue] = filterValues || [];
+          const rules = [];
+          if (minValue) {
+            rules.push({
+              field: col.dataIndex,
+              operator: ">=",
+              value: minValue,
+            });
+          }
+          if (maxValue) {
+            rules.push({
+              field: col.dataIndex,
+              operator: "<=",
+              value: maxValue,
+            });
+          }
+          if (rules.length > 0) {
+            filterTree.rules.push({
+              condition: "and",
+              rules,
+            });
+          }
+        } else if (col.type === TableColumnType.Boolean) {
+          const value = filterValues[0];
+          if (value) {
+            filterTree.rules.push({
+              field: col.dataIndex,
+              operator: "=",
+              value: value === "true",
+            });
+          }
         }
       }
     });
@@ -102,7 +144,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
       ...prev,
       current: page,
       pageSize,
-      total: response.total,
+      total: response?.total,
     }));
   };
 
@@ -111,9 +153,18 @@ const CustomTable: React.FC<CustomTableProps> = ({
     filters,
     sorter
   ) => {
-    setFilters(filters);
+    const clearedFilters = Object.fromEntries(
+      Object.entries(filters).filter(([_, value]) => value?.length > 0)
+    );
+
+    setFilters(clearedFilters);
     setSorter(sorter);
-    await fetchData(pagination.current, pagination.pageSize, filters, sorter);
+    await fetchData(
+      pagination.current,
+      pagination.pageSize,
+      clearedFilters,
+      sorter
+    );
   };
 
   useEffect(() => {
@@ -140,6 +191,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
         }}
         onChange={handleTableChange}
         rowKey="Id"
+        onRow={onRow} // Pass the onRow prop to Ant Design's Table
       />
     </Spin>
   );

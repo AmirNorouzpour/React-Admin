@@ -7,6 +7,7 @@ import SideMenu from "../side-menu/side-menu.tsx";
 import OrgChart from "../org-chart/org-chart.tsx";
 import OrgForm from "../org-form/org-form.tsx";
 import UserList from "../user/user-list.tsx";
+import UserForm from "../user/user-form.tsx";
 
 const { Sider, Content } = Layout;
 
@@ -66,6 +67,7 @@ const Body: React.FC = () => {
             <Route path="/org-chart" element={<OrgChart />} />
             <Route path="/org-chart/new" element={<OrgForm />} />
             <Route path="/user" element={<UserList />} />
+            <Route path="/user/form" element={<UserForm />} />
           </Routes>
         </Content>
       </Layout>
