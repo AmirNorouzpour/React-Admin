@@ -21,8 +21,14 @@ const OrgChart: React.FC = () => {
   const handleButtonClick = (label: string, id: number) => {
     console.log(`Button Clicked: ${label}, ID: ${id}`);
     if (id === 1) {
-      navigate("/org-chart/new", { state: { selectedKey } });
+      navigate("/org-chart/form", { state: { selectedKey } });
     }
+  };
+
+  const handleDoubleClick = (node: TreeDataNode) => {
+    const { key, parent } = node;
+    debugger;
+    navigate("/org-chart/form", { state: { key, parent } });
   };
 
   const buildTreeRecursive = (
@@ -33,21 +39,18 @@ const OrgChart: React.FC = () => {
       .filter((item) => item.parent === parent)
       .map((item) => ({
         title: item.name,
-        key: item.key,
-        icon:
-          item.type === "department" ? <ApartmentOutlined /> : <UserOutlined />,
-        children: buildTreeRecursive(data, item.key),
+        key: item.id,
+        parent: item.parent,
+        icon: item.type === 1 ? <ApartmentOutlined /> : <UserOutlined />,
+        children: buildTreeRecursive(data, item.id),
       }));
   };
 
   const fetchTreeData = async () => {
     try {
       setLoading(true);
-
       const data = await getRequest<any[]>("/org/gettree");
-
       const transformedData = buildTreeRecursive(data, null);
-
       setTreeData(transformedData);
     } catch (error) {
       console.error("Error fetching tree data:", error);
@@ -78,12 +81,18 @@ const OrgChart: React.FC = () => {
       ) : (
         <Tree
           className="tree"
-          showIcon
           showLine
           defaultExpandAll
-          defaultSelectedKeys={["0"]}
           treeData={treeData}
           onSelect={onSelect}
+          titleRender={(node) => (
+            <div
+              onDoubleClick={() => handleDoubleClick(node)}
+              style={{ cursor: "pointer" }}
+            >
+              {node.icon} {node.title}
+            </div>
+          )}
         />
       )}
     </Card>

@@ -11,6 +11,7 @@ const buttonData = [
 ];
 
 interface OrgFormData {
+  key: string;
   type: string;
   name: string;
   parentKey?: string; // اضافه کردن parentKey
@@ -20,21 +21,25 @@ const OrgForm: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
-  const location = useLocation(); // استفاده از useLocation برای گرفتن state
-  const { selectedKey } = location.state || {}; // گرفتن selectedKey از state
+  const location = useLocation();
+  const { key, parent } = location.state || {};
 
   const onFinish = async (values: OrgFormData) => {
     try {
-      const dataToSend = { ...values, parent: selectedKey };
+      const dataToSend = { ...values, parent: parent };
+      debugger;
       await postRequest<OrgFormData>("/org", dataToSend);
       messageApi.success("Data saved successfully!");
       navigate("/org-chart");
     } catch (error: any) {
+      debugger;
       messageApi.error(error.message || "An error occurred");
     }
   };
 
   const handleButtonClick = (label: string, id: number) => {
+    debugger;
+    var a = key;
     if (id === 2) {
       navigate("/org-chart");
     } else {
@@ -62,14 +67,14 @@ const OrgForm: React.FC = () => {
           <Form.Item
             label="Type"
             name="type"
-            initialValue="department"
+            initialValue={1}
             rules={[{ required: true, message: "Please select a type" }]}
           >
             <Radio.Group size="small">
-              <Radio.Button style={{ fontSize: "12px" }} value="department">
+              <Radio.Button style={{ fontSize: "12px" }} value={1}>
                 Department
               </Radio.Button>
-              <Radio.Button style={{ fontSize: "12px" }} value="position">
+              <Radio.Button style={{ fontSize: "12px" }} value={2}>
                 Position
               </Radio.Button>
             </Radio.Group>
