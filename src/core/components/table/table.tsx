@@ -42,21 +42,22 @@ const CustomTable: React.FC<CustomTableProps> = ({
     };
 
     columns?.forEach((col: any) => {
-      const filterValues = filters[col.dataIndex];
+      debugger;
+      const filterValues = filters[col.key];
       if (filterValues) {
         if (col.type === TableColumnType.DateTime) {
           const [startDate, endDate] = filterValues[0]?.split(",") || [];
           const rules = [];
           if (startDate) {
             rules.push({
-              field: col.dataIndex,
+              field: col.key,
               operator: ">=",
               value: startDate,
             });
           }
           if (endDate) {
             rules.push({
-              field: col.dataIndex,
+              field: col.key,
               operator: "<=",
               value: endDate,
             });
@@ -71,14 +72,14 @@ const CustomTable: React.FC<CustomTableProps> = ({
           filterTree.rules.push({
             condition: "or",
             rules: filterValues.map((value: string) => ({
-              field: col.dataIndex,
+              field: col.key,
               operator: "=",
               value: value,
             })),
           });
         } else if (col.type === TableColumnType.Text) {
           filterTree.rules.push({
-            field: col.dataIndex,
+            field: col.key,
             operator: "like",
             value: filterValues[0],
           });
@@ -87,14 +88,14 @@ const CustomTable: React.FC<CustomTableProps> = ({
           const rules = [];
           if (minValue) {
             rules.push({
-              field: col.dataIndex,
+              field: col.key,
               operator: ">=",
               value: minValue,
             });
           }
           if (maxValue) {
             rules.push({
-              field: col.dataIndex,
+              field: col.key,
               operator: "<=",
               value: maxValue,
             });
@@ -109,7 +110,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
           const value = filterValues[0];
           if (value) {
             filterTree.rules.push({
-              field: col.dataIndex,
+              field: col.key,
               operator: "=",
               value: value === "true",
             });

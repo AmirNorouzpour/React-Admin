@@ -25,6 +25,7 @@ const UserList: React.FC = () => {
   const fetchData = async (params: any = {}) => {
     setLoading(true);
     try {
+      params.typedef = "Users";
       const queryString = new URLSearchParams(params).toString();
       const response = await getRequest<{
         data: User[];
@@ -62,7 +63,6 @@ const UserList: React.FC = () => {
 
   const deleteUsers = async (ids: React.Key[]) => {
     try {
-      debugger;
       await deleteRequest(`/api/users`, ids); // ارسال شناسه‌ها به سرور
       messageApi.success("Users deleted successfully!");
       fetchData(); // به‌روزرسانی لیست پس از حذف

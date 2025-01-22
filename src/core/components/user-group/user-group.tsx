@@ -14,7 +14,7 @@ const buttonData: ButtonData[] = [
   { id: 3, label: "Delete", type: "danger", hasConfirm: true },
 ];
 
-const SystemList: React.FC = () => {
+const UserGroupList: React.FC = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<System[]>([]);
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,7 @@ const SystemList: React.FC = () => {
     setLoading(true);
     try {
       debugger;
-      params.typedef = "Systems";
+      params.typedef = "Groups";
       const queryString = new URLSearchParams(params).toString();
       const response = await getRequest<{
         data: System[];
@@ -42,7 +42,7 @@ const SystemList: React.FC = () => {
 
   const handleToolbarClick = (label: string, id: number) => {
     if (id === 1) {
-      navigate("/system/form");
+      navigate("/user-group/form");
     }
     if (id === 2) {
       if (selectedRowKeys.length === 0) {
@@ -50,7 +50,7 @@ const SystemList: React.FC = () => {
         return;
       }
       const selectedKey = selectedRowKeys[0];
-      navigate("/system/form", { state: { selectedKey } });
+      navigate("/user-group/form", { state: { selectedKey } });
     }
     if (id === 3) {
       if (selectedRowKeys.length === 0) {
@@ -66,13 +66,6 @@ const SystemList: React.FC = () => {
       title: "Name",
       dataIndex: "Name",
       key: "name",
-      type: TableColumnType.Text,
-      sorter: true,
-    }),
-    ColumnFactory.createColumn({
-      title: "Icon",
-      dataIndex: "Icon",
-      key: "icon",
       type: TableColumnType.Text,
       sorter: true,
     }),
@@ -98,7 +91,7 @@ const SystemList: React.FC = () => {
 
   return (
     <Card
-      title="Systems List"
+      title="User Groups List"
       type="inner"
       extra={
         <Toolbar buttonData={buttonData} onButtonClick={handleToolbarClick} />
@@ -116,7 +109,7 @@ const SystemList: React.FC = () => {
         }}
         onRow={(record) => ({
           onDoubleClick: () => {
-            navigate("/system/form", { state: { selectedKey: record.Id } });
+            navigate("/user-group/form", { state: { selectedKey: record.Id } });
           },
         })}
       />
@@ -124,4 +117,4 @@ const SystemList: React.FC = () => {
   );
 };
 
-export default SystemList;
+export default UserGroupList;

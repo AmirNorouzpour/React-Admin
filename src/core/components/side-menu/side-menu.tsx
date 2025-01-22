@@ -52,7 +52,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
       label: "Systems",
     },
     {
-      key: "/user-groups",
+      key: "/user-group",
       icon: <TeamOutlined />,
       label: "User Groups",
     },
