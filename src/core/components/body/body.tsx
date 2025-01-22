@@ -8,6 +8,7 @@ import OrgChart from "../org-chart/org-chart.tsx";
 import OrgForm from "../org-form/org-form.tsx";
 import UserList from "../user/user-list.tsx";
 import UserForm from "../user/user-form.tsx";
+import SystemList from "../system/system-list.tsx";
 
 const { Sider, Content } = Layout;
 
@@ -32,7 +33,7 @@ const Body: React.FC = () => {
   };
 
   const handleMenuChange = (key: string) => {
-    navigate(key); // Navigate to the path corresponding to the menu key
+    navigate(key);
   };
 
   return (
@@ -55,7 +56,7 @@ const Body: React.FC = () => {
           </div>
         </div>
         <SideMenu
-          activeMenu={null} // We handle this in react-router now
+          activeMenu={null}
           onMenuChange={handleMenuChange}
           collapsed={collapsed}
         />
@@ -68,6 +69,7 @@ const Body: React.FC = () => {
             <Route path="/org-chart/form" element={<OrgForm />} />
             <Route path="/user" element={<UserList />} />
             <Route path="/user/form" element={<UserForm />} />
+            <Route path="/system" element={<SystemList />} />
           </Routes>
         </Content>
       </Layout>

@@ -3,12 +3,6 @@ import "./sys-menu.css";
 import { AppstoreOutlined } from "@ant-design/icons";
 import { getRequest } from "../../services/apiService.ts";
 
-interface System {
-  key: string;
-  name: string;
-  icon: string;
-}
-
 const SystemMenu: React.FC = () => {
   const [systems, setSystems] = useState<System[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

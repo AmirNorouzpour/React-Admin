@@ -7,6 +7,7 @@ import {
   ApartmentOutlined,
   UserOutlined,
   TeamOutlined,
+  AppstoreOutlined,
 } from "@ant-design/icons";
 
 interface SideMenuProps {
@@ -44,6 +45,11 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
       key: "/user",
       icon: <UserOutlined />,
       label: "User Management",
+    },
+    {
+      key: "/system",
+      icon: <AppstoreOutlined />,
+      label: "Systems",
     },
     {
       key: "/user-groups",
