@@ -75,7 +75,6 @@ const UserForm: React.FC = () => {
   const onFinish = async (values: UserFormData) => {
     try {
       if (selectedKey) {
-        debugger;
         var data = { id: selectedKey, ...values, systems: targetKeys };
         await postRequest(`/api/users`, data);
         messageApi.success("User updated successfully!");

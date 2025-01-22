@@ -1,5 +1,4 @@
 import React from "react";
-import { Menu } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   BarChartOutlined,
@@ -8,7 +7,9 @@ import {
   UserOutlined,
   TeamOutlined,
   AppstoreOutlined,
+  DatabaseOutlined,
 } from "@ant-design/icons";
+import { Menu } from "antd";
 
 interface SideMenuProps {
   activeMenu?: string;
@@ -28,33 +29,38 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
   const menuItems = [
     {
       key: "/",
-      icon: <BarChartOutlined />,
+      icon: <BarChartOutlined style={{ color: "#6c6c6c" }} />,
       label: "Dashboard",
     },
     {
       key: "/org-info",
-      icon: <InfoCircleOutlined />,
+      icon: <InfoCircleOutlined style={{ color: "#6c6c6c" }} />,
       label: "Organization Information",
     },
     {
       key: "/org-chart",
-      icon: <ApartmentOutlined />,
+      icon: <ApartmentOutlined style={{ color: "#6c6c6c" }} />,
       label: "Organization Chart",
     },
     {
       key: "/user",
-      icon: <UserOutlined />,
+      icon: <UserOutlined style={{ color: "#6c6c6c" }} />,
       label: "User Management",
     },
     {
+      key: "/user-group",
+      icon: <TeamOutlined style={{ color: "#6c6c6c" }} />,
+      label: "User Groups",
+    },
+    {
       key: "/system",
-      icon: <AppstoreOutlined />,
+      icon: <AppstoreOutlined style={{ color: "#6c6c6c" }} />,
       label: "Systems",
     },
     {
-      key: "/user-group",
-      icon: <TeamOutlined />,
-      label: "User Groups",
+      key: "/entities",
+      icon: <DatabaseOutlined style={{ color: "#6c6c6c" }} />,
+      label: "Entities",
     },
   ];
 

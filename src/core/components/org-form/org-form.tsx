@@ -27,18 +27,15 @@ const OrgForm: React.FC = () => {
   const onFinish = async (values: OrgFormData) => {
     try {
       const dataToSend = { ...values, parent: parent };
-      debugger;
       await postRequest<OrgFormData>("/org", dataToSend);
       messageApi.success("Data saved successfully!");
       navigate("/org-chart");
     } catch (error: any) {
-      debugger;
       messageApi.error(error.message || "An error occurred");
     }
   };
 
   const handleButtonClick = (label: string, id: number) => {
-    debugger;
     var a = key;
     if (id === 2) {
       navigate("/org-chart");

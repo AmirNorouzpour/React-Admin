@@ -27,7 +27,6 @@ const OrgChart: React.FC = () => {
 
   const handleDoubleClick = (node: TreeDataNode) => {
     const { key, parent } = node;
-    debugger;
     navigate("/org-chart/form", { state: { key, parent } });
   };
 

@@ -42,7 +42,6 @@ const CustomTable: React.FC<CustomTableProps> = ({
     };
 
     columns?.forEach((col: any) => {
-      debugger;
       const filterValues = filters[col.key];
       if (filterValues) {
         if (col.type === TableColumnType.DateTime) {

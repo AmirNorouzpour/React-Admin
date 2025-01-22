@@ -24,7 +24,6 @@ const UserGroupList: React.FC = () => {
   const fetchData = async (params: any = {}) => {
     setLoading(true);
     try {
-      debugger;
       params.typedef = "Groups";
       const queryString = new URLSearchParams(params).toString();
       const response = await getRequest<{
