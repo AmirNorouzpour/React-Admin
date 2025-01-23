@@ -14,9 +14,9 @@ const buttonData: ButtonData[] = [
   { id: 3, label: "Delete", type: "danger", hasConfirm: true },
 ];
 
-const UserGroupList: React.FC = () => {
+const TyepDefList: React.FC = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<System[]>([]);
+  const [data, setData] = useState<[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [messageApi, contextHolder] = message.useMessage();
@@ -24,7 +24,7 @@ const UserGroupList: React.FC = () => {
   const fetchData = async (params: any = {}) => {
     setLoading(true);
     try {
-      params.reportId = "42165a76-3869-44f5-9922-85742807b2a5";
+      params.reportId = "5bfd40b1-63fe-46a4-ab58-104a1cf9680a";
       const queryString = new URLSearchParams(params).toString();
       const response = await getRequest<{
         data: [];
@@ -41,7 +41,7 @@ const UserGroupList: React.FC = () => {
 
   const handleToolbarClick = (label: string, id: number) => {
     if (id === 1) {
-      navigate("/user-group/form");
+      navigate("/typedef/form");
     }
     if (id === 2) {
       if (selectedRowKeys.length === 0) {
@@ -49,7 +49,7 @@ const UserGroupList: React.FC = () => {
         return;
       }
       const selectedKey = selectedRowKeys[0];
-      navigate("/user-group/form", { state: { selectedKey } });
+      navigate("/typedef/form", { state: { selectedKey } });
     }
     if (id === 3) {
       if (selectedRowKeys.length === 0) {
@@ -67,8 +67,8 @@ const UserGroupList: React.FC = () => {
       key: "id",
       type: TableColumnType.Text,
       sorter: true,
+      entity: "Typedefs",
       hidden: true,
-      entity: "Groups",
     }),
     ColumnFactory.createColumn({
       title: "Name",
@@ -76,7 +76,24 @@ const UserGroupList: React.FC = () => {
       key: "name",
       type: TableColumnType.Text,
       sorter: true,
-      entity: "Groups",
+      entity: "Typedefs",
+    }),
+    ColumnFactory.createColumn({
+      title: "System Name",
+      dataIndex: "SystemName",
+      key: "systemName",
+      filterKeyName:"Name",
+      type: TableColumnType.Text,
+      sorter: true,
+      entity: "Systems",
+    }),
+    ColumnFactory.createColumn({
+      title: "Table Name",
+      dataIndex: "TableName",
+      key: "tableName",
+      type: TableColumnType.Text,
+      sorter: true,
+      entity: "Typedefs",
     }),
     ColumnFactory.createColumn({
       title: "Insert Date",
@@ -84,25 +101,13 @@ const UserGroupList: React.FC = () => {
       key: "insertDateTime",
       type: TableColumnType.DateTime,
       sorter: true,
-      entity: "Groups",
-    }),
-    ColumnFactory.createColumn({
-      title: "Is Active",
-      dataIndex: "IsActive",
-      key: "isActive",
-      type: TableColumnType.Boolean,
-      sorter: true,
-      entity: "Groups",
-      options: [
-        { label: "Yes", value: "true" },
-        { label: "No", value: "false" },
-      ],
+      entity: "Typedefs",
     }),
   ];
 
   return (
     <Card
-      title="User Groups List"
+      title="TypeDefs List"
       type="inner"
       extra={
         <Toolbar buttonData={buttonData} onButtonClick={handleToolbarClick} />
@@ -120,7 +125,7 @@ const UserGroupList: React.FC = () => {
         }}
         onRow={(record) => ({
           onDoubleClick: () => {
-            navigate("/user-group/form", { state: { selectedKey: record.Id } });
+            navigate("/typedef/form", { state: { selectedKey: record.Id } });
           },
         })}
       />
@@ -128,4 +133,4 @@ const UserGroupList: React.FC = () => {
   );
 };
 
-export default UserGroupList;
+export default TyepDefList;

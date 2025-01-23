@@ -16,7 +16,7 @@ const buttonData: ButtonData[] = [
 
 const ReportsList: React.FC = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<System[]>([]);
+  const [data, setData] = useState<[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [messageApi, contextHolder] = message.useMessage();
@@ -24,12 +24,12 @@ const ReportsList: React.FC = () => {
   const fetchData = async (params: any = {}) => {
     setLoading(true);
     try {
-      params.typedef = "Groups";
+      params.reportId = "1e45d3d0-1639-4140-8e53-3d6fe6855b24";
       const queryString = new URLSearchParams(params).toString();
       const response = await getRequest<{
-        data: System[];
+        data: [];
         total: number;
-      }>(`/api/users?${queryString}`);
+      }>(`/api/generic?${queryString}`);
       setData(response.data);
       return response;
     } catch (error) {
@@ -41,7 +41,7 @@ const ReportsList: React.FC = () => {
 
   const handleToolbarClick = (label: string, id: number) => {
     if (id === 1) {
-      navigate("/user-group/form");
+      navigate("/reprot/form");
     }
     if (id === 2) {
       if (selectedRowKeys.length === 0) {
@@ -49,7 +49,7 @@ const ReportsList: React.FC = () => {
         return;
       }
       const selectedKey = selectedRowKeys[0];
-      navigate("/user-group/form", { state: { selectedKey } });
+      navigate("/reprot/form", { state: { selectedKey } });
     }
     if (id === 3) {
       if (selectedRowKeys.length === 0) {
@@ -62,11 +62,53 @@ const ReportsList: React.FC = () => {
 
   const columns = [
     ColumnFactory.createColumn({
+      title: "Id",
+      dataIndex: "Id",
+      key: "id",
+      type: TableColumnType.Text,
+      sorter: true,
+      entity: "Reports",
+      hidden: true,
+    }),
+    ColumnFactory.createColumn({
       title: "Name",
       dataIndex: "Name",
       key: "name",
       type: TableColumnType.Text,
       sorter: true,
+      entity: "Reports",
+    }),
+    ColumnFactory.createColumn({
+      title: "Typedef Name",
+      dataIndex: "TypedefName",
+      key: "typedefName",
+      filterKeyName: "Name",
+      type: TableColumnType.Text,
+      sorter: true,
+      entity: "Typedefs",
+    }),
+    ColumnFactory.createColumn({
+      title: "Type",
+      dataIndex: "Type",
+      key: "type",
+      type: TableColumnType.Enum,
+      sorter: true,
+      entity: "Reports",
+      options: [
+        { label: "List", value: "1" },
+        { label: "Tree", value: "2" },
+        { label: "Printable", value: "3" },
+        { label: "Ghraph", value: "4" },
+        { label: "Dashborad", value: "5" },
+      ],
+    }),
+    ColumnFactory.createColumn({
+      title: "Icon",
+      dataIndex: "Icon",
+      key: "icon",
+      type: TableColumnType.Text,
+      sorter: true,
+      entity: "Reports",
     }),
     ColumnFactory.createColumn({
       title: "Insert Date",
@@ -74,23 +116,13 @@ const ReportsList: React.FC = () => {
       key: "insertDateTime",
       type: TableColumnType.DateTime,
       sorter: true,
-    }),
-    ColumnFactory.createColumn({
-      title: "Is Active",
-      dataIndex: "IsActive",
-      key: "isActive",
-      type: TableColumnType.Boolean,
-      sorter: true,
-      options: [
-        { label: "Yes", value: "true" },
-        { label: "No", value: "false" },
-      ],
+      entity: "Reports",
     }),
   ];
 
   return (
     <Card
-      title="User Groups List"
+      title="Reports List"
       type="inner"
       extra={
         <Toolbar buttonData={buttonData} onButtonClick={handleToolbarClick} />
@@ -108,7 +140,7 @@ const ReportsList: React.FC = () => {
         }}
         onRow={(record) => ({
           onDoubleClick: () => {
-            navigate("/user-group/form", { state: { selectedKey: record.Id } });
+            navigate("/reprot/form", { state: { selectedKey: record.Id } });
           },
         })}
       />

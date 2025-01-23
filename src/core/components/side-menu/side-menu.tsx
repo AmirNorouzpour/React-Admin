@@ -59,9 +59,9 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
       label: "Systems",
     },
     {
-      key: "/entities",
+      key: "/typedef",
       icon: <DatabaseOutlined style={{ color: "#6c6c6c" }} />,
-      label: "Entities",
+      label: "Typedefs",
     },
     {
       key: "/report",

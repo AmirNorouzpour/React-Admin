@@ -42,6 +42,9 @@ const CustomTable: React.FC<CustomTableProps> = ({
     };
 
     columns?.forEach((col: any) => {
+      debugger;
+      let key = col.key;
+      if (col.filterKeyName) key = col.filterKeyName;
       const filterValues = filters[col.key];
       if (filterValues) {
         debugger;
@@ -50,7 +53,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
           const rules = [];
           if (startDate) {
             rules.push({
-              field: col.key,
+              field: key,
               operator: ">=",
               value: startDate,
               entity: col.entity,
@@ -58,7 +61,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
           }
           if (endDate) {
             rules.push({
-              field: col.key,
+              field: key,
               operator: "<=",
               value: endDate,
               entity: col.entity,
@@ -74,7 +77,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
           filterTree.rules.push({
             condition: "or",
             rules: filterValues.map((value: string) => ({
-              field: col.key,
+              field: key,
               operator: "=",
               value: value,
               entity: col.entity,
@@ -82,7 +85,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
           });
         } else if (col.type === TableColumnType.Text) {
           filterTree.rules.push({
-            field: col.key,
+            field: key,
             operator: "like",
             value: filterValues[0],
             entity: col.entity,
@@ -92,7 +95,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
           const rules = [];
           if (minValue) {
             rules.push({
-              field: col.key,
+              field: key,
               operator: ">=",
               value: minValue,
               entity: col.entity,
@@ -100,7 +103,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
           }
           if (maxValue) {
             rules.push({
-              field: col.key,
+              field: key,
               operator: "<=",
               value: maxValue,
               entity: col.entity,
@@ -116,7 +119,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
           const value = filterValues[0];
           if (value) {
             filterTree.rules.push({
-              field: col.key,
+              field: key,
               operator: "=",
               value: value === "true",
               entity: col.entity,

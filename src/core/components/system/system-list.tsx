@@ -24,12 +24,12 @@ const SystemList: React.FC = () => {
   const fetchData = async (params: any = {}) => {
     setLoading(true);
     try {
-      params.typedef = "Systems";
+      params.reportId = "0a031c92-a079-4964-954b-deefe3ba04a2";
       const queryString = new URLSearchParams(params).toString();
       const response = await getRequest<{
         data: System[];
         total: number;
-      }>(`/api/users?${queryString}`);
+      }>(`/api/generic?${queryString}`);
       setData(response.data);
       return response;
     } catch (error) {
@@ -62,11 +62,21 @@ const SystemList: React.FC = () => {
 
   const columns = [
     ColumnFactory.createColumn({
+      title: "Id",
+      dataIndex: "Id",
+      key: "id",
+      type: TableColumnType.Text,
+      sorter: true,
+      entity: "Systems",
+      hidden: true,
+    }),
+    ColumnFactory.createColumn({
       title: "Name",
       dataIndex: "Name",
       key: "name",
       type: TableColumnType.Text,
       sorter: true,
+      entity: "Systems",
     }),
     ColumnFactory.createColumn({
       title: "Icon",
@@ -74,6 +84,7 @@ const SystemList: React.FC = () => {
       key: "icon",
       type: TableColumnType.Text,
       sorter: true,
+      entity: "Systems",
     }),
     ColumnFactory.createColumn({
       title: "Insert Date",
@@ -81,11 +92,13 @@ const SystemList: React.FC = () => {
       key: "insertDateTime",
       type: TableColumnType.DateTime,
       sorter: true,
+      entity: "Systems",
     }),
     ColumnFactory.createColumn({
       title: "Is Active",
       dataIndex: "IsActive",
       key: "isActive",
+      entity: "Systems",
       type: TableColumnType.Boolean,
       sorter: true,
       options: [

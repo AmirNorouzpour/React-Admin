@@ -16,6 +16,8 @@ export class ColumnFactory {
     key,
     type,
     entity,
+    hidden,
+    filterKeyName,
     sorter = false,
     options = [],
   }: {
@@ -25,6 +27,8 @@ export class ColumnFactory {
     type: TableColumnType;
     entity: string;
     sorter?: boolean;
+    hidden?: boolean;
+    filterKeyName?: string;
     options?: Array<{ label: string; value: string }>;
   }) {
     switch (type) {
@@ -36,6 +40,8 @@ export class ColumnFactory {
           entity,
           type,
           sorter,
+          filterKeyName,
+          hidden,
           showSorterTooltip: false,
           filterDropdown: (props: any) => (
             <TextFilter
@@ -57,7 +63,9 @@ export class ColumnFactory {
           dataIndex,
           key,
           entity,
+          filterKeyName,
           type,
+          hidden,
           sorter,
           showSorterTooltip: false,
           filterDropdown: (props: any) => (
@@ -98,7 +106,9 @@ export class ColumnFactory {
           dataIndex,
           key,
           entity,
+          filterKeyName,
           type,
+          hidden,
           sorter,
           showSorterTooltip: false,
           filterDropdown: (props: any) => (
@@ -127,7 +137,9 @@ export class ColumnFactory {
           dataIndex,
           key,
           entity,
+          filterKeyName,
           type,
+          hidden,
           sorter,
           showSorterTooltip: false,
           filterDropdown: (props: any) => (
@@ -154,7 +166,9 @@ export class ColumnFactory {
           dataIndex,
           key,
           entity,
+          filterKeyName,
           type,
+          hidden,
           sorter,
           showSorterTooltip: false,
           filterDropdown: (props: any) => (

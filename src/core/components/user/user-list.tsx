@@ -25,12 +25,12 @@ const UserList: React.FC = () => {
   const fetchData = async (params: any = {}) => {
     setLoading(true);
     try {
-      params.typedef = "Users";
+      params.reportId = "d9ffdbc3-0253-4c0c-a35a-1892889aba16";
       const queryString = new URLSearchParams(params).toString();
       const response = await getRequest<{
         data: User[];
         total: number;
-      }>(`/api/users?${queryString}`);
+      }>(`/api/generic?${queryString}`);
       setData(response.data);
       return response;
     } catch (error) {
@@ -75,11 +75,21 @@ const UserList: React.FC = () => {
 
   const columns = [
     ColumnFactory.createColumn({
+      title: "Id",
+      dataIndex: "Id",
+      key: "id",
+      type: TableColumnType.Text,
+      sorter: true,
+      entity: "Users",
+      hidden: true,
+    }),
+    ColumnFactory.createColumn({
       title: "Full Name",
       dataIndex: "FullName",
       key: "FullName",
       type: TableColumnType.Text,
       sorter: true,
+      entity: "Users",
     }),
     ColumnFactory.createColumn({
       title: "User Name",
@@ -87,6 +97,7 @@ const UserList: React.FC = () => {
       key: "Username",
       type: TableColumnType.Text,
       sorter: true,
+      entity: "Users",
     }),
     ColumnFactory.createColumn({
       title: "Insert Date",
@@ -94,6 +105,7 @@ const UserList: React.FC = () => {
       key: "InsertDateTime",
       type: TableColumnType.DateTime,
       sorter: true,
+      entity: "Users",
     }),
     ColumnFactory.createColumn({
       title: "Can Login",
@@ -101,6 +113,7 @@ const UserList: React.FC = () => {
       key: "CanLogin",
       type: TableColumnType.Boolean,
       sorter: true,
+      entity: "Users",
       options: [
         { label: "Yes", value: "true" },
         { label: "No", value: "false" },

@@ -10,6 +10,8 @@ import UserList from "../user/user-list.tsx";
 import UserForm from "../user/user-form.tsx";
 import SystemList from "../system/system-list.tsx";
 import UserGroupList from "../user-group/user-group.tsx";
+import TyepDefList from "../typedef/typedef-list.tsx";
+import ReportsList from "../report/report-list.tsx";
 
 const { Sider, Content } = Layout;
 
@@ -72,7 +74,8 @@ const Body: React.FC = () => {
             <Route path="/user/form" element={<UserForm />} />
             <Route path="/system" element={<SystemList />} />
             <Route path="/user-group" element={<UserGroupList />} />
-            <Route path="/report" element={<UserGroupList />} />
+            <Route path="/report" element={<ReportsList />} />
+            <Route path="/typedef" element={<TyepDefList />} />
           </Routes>
         </Content>
       </Layout>
