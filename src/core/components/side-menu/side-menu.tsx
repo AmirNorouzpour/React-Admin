@@ -8,6 +8,7 @@ import {
   TeamOutlined,
   AppstoreOutlined,
   DatabaseOutlined,
+  FileDoneOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 
@@ -61,6 +62,11 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
       key: "/entities",
       icon: <DatabaseOutlined style={{ color: "#6c6c6c" }} />,
       label: "Entities",
+    },
+    {
+      key: "/report",
+      icon: <FileDoneOutlined style={{ color: "#6c6c6c" }} />,
+      label: "Reports",
     },
   ];
 

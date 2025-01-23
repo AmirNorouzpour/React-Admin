@@ -15,6 +15,7 @@ export class ColumnFactory {
     dataIndex,
     key,
     type,
+    entity,
     sorter = false,
     options = [],
   }: {
@@ -22,6 +23,7 @@ export class ColumnFactory {
     dataIndex: string;
     key: string;
     type: TableColumnType;
+    entity: string;
     sorter?: boolean;
     options?: Array<{ label: string; value: string }>;
   }) {
@@ -31,6 +33,7 @@ export class ColumnFactory {
           title,
           dataIndex,
           key,
+          entity,
           type,
           sorter,
           showSorterTooltip: false,
@@ -53,6 +56,7 @@ export class ColumnFactory {
           title,
           dataIndex,
           key,
+          entity,
           type,
           sorter,
           showSorterTooltip: false,
@@ -93,6 +97,7 @@ export class ColumnFactory {
           title,
           dataIndex,
           key,
+          entity,
           type,
           sorter,
           showSorterTooltip: false,
@@ -121,6 +126,7 @@ export class ColumnFactory {
           title,
           dataIndex,
           key,
+          entity,
           type,
           sorter,
           showSorterTooltip: false,
@@ -147,6 +153,7 @@ export class ColumnFactory {
           title,
           dataIndex,
           key,
+          entity,
           type,
           sorter,
           showSorterTooltip: false,

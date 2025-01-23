@@ -26,8 +26,8 @@ const OrgChart: React.FC = () => {
   };
 
   const handleDoubleClick = (node: TreeDataNode) => {
-    const { key, parent } = node;
-    navigate("/org-chart/form", { state: { key, parent } });
+    const { key, parent, type, title } = node;
+    navigate("/org-chart/form", { state: { key, parent, type, title } });
   };
 
   const buildTreeRecursive = (
@@ -40,6 +40,7 @@ const OrgChart: React.FC = () => {
         title: item.name,
         key: item.id,
         parent: item.parent,
+        type: item.type,
         icon: item.type === 1 ? <ApartmentOutlined /> : <UserOutlined />,
         children: buildTreeRecursive(data, item.id),
       }));

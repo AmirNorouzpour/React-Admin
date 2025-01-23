@@ -44,6 +44,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
     columns?.forEach((col: any) => {
       const filterValues = filters[col.key];
       if (filterValues) {
+        debugger;
         if (col.type === TableColumnType.DateTime) {
           const [startDate, endDate] = filterValues[0]?.split(",") || [];
           const rules = [];
@@ -52,6 +53,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
               field: col.key,
               operator: ">=",
               value: startDate,
+              entity: col.entity,
             });
           }
           if (endDate) {
@@ -59,6 +61,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
               field: col.key,
               operator: "<=",
               value: endDate,
+              entity: col.entity,
             });
           }
           if (rules.length > 0) {
@@ -74,6 +77,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
               field: col.key,
               operator: "=",
               value: value,
+              entity: col.entity,
             })),
           });
         } else if (col.type === TableColumnType.Text) {
@@ -81,6 +85,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
             field: col.key,
             operator: "like",
             value: filterValues[0],
+            entity: col.entity,
           });
         } else if (col.type === TableColumnType.Integer) {
           const [minValue, maxValue] = filterValues || [];
@@ -90,6 +95,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
               field: col.key,
               operator: ">=",
               value: minValue,
+              entity: col.entity,
             });
           }
           if (maxValue) {
@@ -97,6 +103,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
               field: col.key,
               operator: "<=",
               value: maxValue,
+              entity: col.entity,
             });
           }
           if (rules.length > 0) {
@@ -112,6 +119,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
               field: col.key,
               operator: "=",
               value: value === "true",
+              entity: col.entity,
             });
           }
         }

@@ -72,6 +72,7 @@ const Body: React.FC = () => {
             <Route path="/user/form" element={<UserForm />} />
             <Route path="/system" element={<SystemList />} />
             <Route path="/user-group" element={<UserGroupList />} />
+            <Route path="/report" element={<UserGroupList />} />
           </Routes>
         </Content>
       </Layout>

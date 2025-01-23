@@ -187,31 +187,32 @@ const UserForm: React.FC = () => {
               </Form.Item>
             </Col>
           </Row>
-          {selectedKey != null && (
-            <Row gutter={16}>
-              <Col xs={24} md={24}>
-                <Card title={"User Systems"} type="inner">
-                  <Transfer
-                    titles={["Can", "Have"]}
-                    dataSource={systems}
-                    showSearch
-                    // filterOption={filterOption}
-                    targetKeys={targetKeys}
-                    onChange={handleChange}
-                    // onSearch={handleSearch}
-                    render={(item) => item.name}
-                    style={{ width: "100%" }}
-                    listStyle={{
-                      width: "48%",
-                      minWidth: "100px",
-                    }}
-                  />
-                </Card>
-              </Col>
-            </Row>
-          )}
         </Form>
       </Card>
+
+      {selectedKey != null && (
+        <Card title={"User Systems"} type="inner" style={{ marginTop: "20px" }}>
+          <Row gutter={16}>
+            <Col xs={24} md={24}>
+              <Transfer
+                titles={["Can", "Have"]}
+                dataSource={systems}
+                showSearch
+                // filterOption={filterOption}
+                targetKeys={targetKeys}
+                onChange={handleChange}
+                // onSearch={handleSearch}
+                render={(item) => item.name}
+                style={{ width: "100%" }}
+                listStyle={{
+                  width: "48%",
+                  minWidth: "100px",
+                }}
+              />
+            </Col>
+          </Row>
+        </Card>
+      )}
     </div>
   );
 };
