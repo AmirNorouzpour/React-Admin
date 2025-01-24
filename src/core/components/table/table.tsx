@@ -188,9 +188,8 @@ const CustomTable: React.FC<CustomTableProps> = ({
         size="small"
         columns={columns}
         dataSource={dataSource}
-        scroll={{ y: 80 * 5 }}
+        scroll={{ y: 400 }}
         bordered
-        className="table-scroll"
         rowSelection={rowSelection}
         pagination={{
           current: pagination.current,

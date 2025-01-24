@@ -1,21 +1,17 @@
-.table-scroll {
-  max-height: 400px; /* ارتفاع دلخواه */
-  overflow-y: auto;
-  scrollbar-width: thin; /* برای مرورگرهای مدرن */
-  scrollbar-color: #d4d4d4 #f0f0f0; /* رنگ اسکرول */
+/* سفارشی‌سازی اسکرول‌بار */
+::-webkit-scrollbar {
+  width: 10px !important; /* عرض اسکرول‌بار */
 }
 
-/* برای مرورگرهای Webkit */
-.table-scroll::-webkit-scrollbar {
-  width: 6px; /* عرض اسکرول */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* رنگ پس‌زمینه */
 }
 
-.table-scroll::-webkit-scrollbar-track {
-  background: #f0f0f0; /* رنگ پس‌زمینه */
+::-webkit-scrollbar-thumb {
+  background: #888; /* رنگ دستگیره اسکرول */
+  border-radius: 5px; /* گوشه‌های گرد */
 }
 
-.table-scroll::-webkit-scrollbar-thumb {
-  background-color: #d4d4d4; /* رنگ دستگیره اسکرول */
-  border-radius: 10px; /* گرد کردن گوشه‌ها */
-  border: 2px solid #f0f0f0; /* حاشیه دور اسکرول */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* رنگ دستگیره هنگام هاور */
 }

@@ -18,6 +18,7 @@ export class ColumnFactory {
     entity,
     hidden,
     filterKeyName,
+    responsive = [],
     sorter = false,
     options = [],
   }: {
