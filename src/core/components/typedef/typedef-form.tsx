@@ -14,6 +14,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Toolbar from "../toolbar/toolbar.tsx";
 import { postRequest, getRequest } from "../../services/apiService.ts";
 import TypedefFields from "./typedef-fields.tsx";
+import TypedefActions from "./typedef-actions.tsx";
+import TypedefSettings from "./typedef-settings.tsx";
 
 const buttonData = [
   { id: 1, label: "Save", type: "primary" },
@@ -124,12 +126,12 @@ const TypedefForm: React.FC = () => {
     {
       key: "2",
       label: "Actions",
-      children: "Content of Tab Pane 2",
+      children: <TypedefActions />,
     },
     {
       key: "3",
       label: "Settings",
-      children: "Content of Tab Pane 3",
+      children: <TypedefSettings />,
     },
     {
       key: "4",
@@ -138,7 +140,7 @@ const TypedefForm: React.FC = () => {
     },
     {
       key: "5",
-      label: "Authoritarian",
+      label: "Authorization",
       children: "Content of Tab Pane 5",
     },
   ];

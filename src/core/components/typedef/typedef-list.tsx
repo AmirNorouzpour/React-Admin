@@ -82,10 +82,11 @@ const TyepDefList: React.FC = () => {
       title: "System Name",
       dataIndex: "SystemName",
       key: "systemName",
-      filterKeyName:"Name",
+      filterKeyName: "Name",
       type: TableColumnType.Text,
       sorter: true,
       entity: "Systems",
+      responsive: ["md"],
     }),
     ColumnFactory.createColumn({
       title: "Table Name",
@@ -102,6 +103,7 @@ const TyepDefList: React.FC = () => {
       type: TableColumnType.DateTime,
       sorter: true,
       entity: "Typedefs",
+      responsive: ["md"],
     }),
   ];
 

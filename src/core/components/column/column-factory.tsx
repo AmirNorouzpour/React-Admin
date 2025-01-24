@@ -18,8 +18,9 @@ export class ColumnFactory {
     entity,
     hidden,
     filterKeyName,
-    responsive = [],
+    responsive,
     sorter = false,
+    width,
     options = [],
   }: {
     title: string;
@@ -29,6 +30,8 @@ export class ColumnFactory {
     entity: string;
     sorter?: boolean;
     hidden?: boolean;
+    responsive?: [];
+    width?: number;
     filterKeyName?: string;
     options?: Array<{ label: string; value: string }>;
   }) {
@@ -42,6 +45,8 @@ export class ColumnFactory {
           type,
           sorter,
           filterKeyName,
+          responsive,
+          width,
           hidden,
           showSorterTooltip: false,
           filterDropdown: (props: any) => (
@@ -68,6 +73,8 @@ export class ColumnFactory {
           type,
           hidden,
           sorter,
+          width,
+          responsive,
           showSorterTooltip: false,
           filterDropdown: (props: any) => (
             <DateRangeFilter
@@ -107,9 +114,11 @@ export class ColumnFactory {
           dataIndex,
           key,
           entity,
+          responsive,
           filterKeyName,
           type,
           hidden,
+          width,
           sorter,
           showSorterTooltip: false,
           filterDropdown: (props: any) => (
@@ -139,6 +148,8 @@ export class ColumnFactory {
           key,
           entity,
           filterKeyName,
+          responsive,
+          width,
           type,
           hidden,
           sorter,
@@ -168,7 +179,9 @@ export class ColumnFactory {
           key,
           entity,
           filterKeyName,
+          responsive,
           type,
+          width,
           hidden,
           sorter,
           showSorterTooltip: false,
