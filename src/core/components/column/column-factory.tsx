@@ -94,7 +94,7 @@ export class ColumnFactory {
             />
           ),
           render: (date: string) =>
-            date ? format(new Date(date), "yyyy/MM/dd") : "N/A",
+            date ? format(new Date(date), "yyyy-MM-dd") : "N/A",
         };
       case TableColumnType.Enum:
         const colors = [
