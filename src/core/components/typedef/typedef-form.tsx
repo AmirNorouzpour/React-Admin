@@ -143,6 +143,11 @@ const TypedefForm: React.FC = () => {
       label: "Authorization",
       children: "Content of Tab Pane 5",
     },
+    {
+      key: "6",
+      label: "Views",
+      children: "List of Views",
+    },
   ];
 
   const handleButtonClick = (label: string, id: number) => {
@@ -191,10 +196,10 @@ const TypedefForm: React.FC = () => {
                 <Select
                   showSearch
                   placeholder="Search and select a system"
-                  filterOption={false} // Disable local filtering
-                  onSearch={onSearch} // Trigger server search
+                  filterOption={false}
+                  onSearch={onSearch}
                   options={systemOptions}
-                  loading={searchLoading} // Show loading spinner while fetching
+                  loading={searchLoading}
                   allowClear
                 />
               </Form.Item>

@@ -1,163 +1,150 @@
-import React, { useEffect, useState } from "react";
-import {
-  Card,
-  Form,
-  message,
-  Input,
-  Checkbox,
-  Row,
-  Col,
-  Transfer,
-  TransferProps,
-} from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
-import Toolbar from "../toolbar/toolbar.tsx";
-import { postRequest, getRequest } from "../../services/apiService.ts";
-
-const buttonData = [
-  { id: 1, label: "Save", type: "primary" },
-  { id: 2, label: "Cancel", type: "default" },
-];
-
-interface UserFormData {
-  fullname: string;
-  username: string;
-  password?: string;
-  rePassword?: string;
-  canLogin?: boolean;
-  systems: [];
-}
+import React, { useState } from "react";
+import { Card, Form, Input, Checkbox, Row, Col, Divider, Select } from "antd";
+import TextSettings from "./fields/text-settings.tsx";
+import NumberSettings from "./fields/number-settings.tsx";
+import DatetimeSettings from "./fields/datetime-settings.tsx";
+import BooleanSettings from "./fields/boolean-settings.tsx";
+import EnumSettings from "./fields/enum-settings.tsx";
 
 const FieldDefForm: React.FC = () => {
   const [form] = Form.useForm();
-  const navigate = useNavigate();
-  const [messageApi, contextHolder] = message.useMessage();
-  const location = useLocation();
-  const { selectedKey } = location.state || {};
-  const [systems, setSystems] = useState<System[]>([]);
-  const [targetKeys, setTargetKeys] = useState<string[]>([]);
+  const [fieldType, setFieldType] = useState<string>("1");
+  const { TextArea } = Input;
 
-  useEffect(() => {
-    if (selectedKey) {
-      const fetchUserData = async () => {
-        try {
-          const userData = await getRequest<UserFormData>(
-            `/api/users/${selectedKey}`
-          );
-
-          // تنظیم مقادیر فرم
-          form.setFieldsValue(userData.data);
-
-          // ایجاد آرایه با ویژگی key
-          const formattedSystems = userData.data.systems.map((item: any) => ({
-            key: item.key, // فرض بر این که `id` شناسه منحصربه‌فرد است
-            name: item.name,
-            chosen: item.chosen,
-          }));
-
-          setSystems(formattedSystems);
-
-          // تنظیم targetKeys برای موارد انتخاب‌شده
-          setTargetKeys(
-            formattedSystems
-              .filter((item: any) => item.chosen)
-              .map((item: any) => item.key)
-          );
-        } catch (error: any) {
-          messageApi.error("Failed to fetch user data");
-        }
-      };
-
-      fetchUserData();
-    }
-  }, [selectedKey, form, messageApi]);
-
-  const onFinish = async (values: UserFormData) => {
-    try {
-      if (selectedKey) {
-        var data = { id: selectedKey, ...values, systems: targetKeys };
-        await postRequest(`/api/users`, data);
-        messageApi.success("User updated successfully!");
-      } else {
-        await postRequest<UserFormData>("/api/users", values);
-        messageApi.success("User created successfully!");
-      }
-      navigate("/user");
-    } catch (error: any) {
-      messageApi.error(error.message || "An error occurred");
+  const renderDynamicContent = () => {
+    switch (fieldType) {
+      case "1": // Text
+        return <TextSettings />;
+      case "2": // Number
+        return <NumberSettings />;
+      case "3": // RichText
+        return <TextArea rows={4} placeholder="maxLength is 6" />;
+      case "4": // Date
+        return <DatetimeSettings />;
+      case "5": // Boolean
+        return <BooleanSettings />;
+      case "6": // File
+        return <Input type="file" />;
+      case "7": // R1N
+        return <div>Relation One to Many (R1N)</div>;
+      case "8": // RNN
+        return <div>Relation Many to Many (RNN)</div>;
+      case "9":
+        return <EnumSettings />;
+      default:
+        return <div>Please select a field type</div>;
     }
   };
-
-  const handleButtonClick = (label: string, id: number) => {
-    if (id === 2) {
-      navigate("/user");
-    } else {
-      form.submit();
-    }
-  };
-
-  const handleChange: TransferProps["onChange"] = (newTargetKeys) => {
-    setTargetKeys(newTargetKeys);
-  };
-
-  interface System {
-    key: string;
-    name: string;
-    chosen: boolean;
-  }
 
   return (
     <div>
-      {contextHolder}
-
-      <Card
-        title={selectedKey ? "Edit User Info" : "New User Info"}
-        type="inner"
-        extra={
-          <Toolbar buttonData={buttonData} onButtonClick={handleButtonClick} />
-        }
-      >
-        <Form
-          layout="vertical"
-          form={form}
-          style={{ maxWidth: 1400 }}
-          onFinish={onFinish}
-        >
-          <Row gutter={16}>
-            <Col xs={24} md={5}>
-              <Form.Item
-                label="Full Name"
-                name="fullname"
-                rules={[
-                  { required: true, message: "Please input the full name" },
+      <Form layout="horizontal" initialValues={{ fieldType: fieldType }}>
+        <Row gutter={[8, 8]}>
+          <Col span={8}>
+            <Form.Item
+              name="name"
+              label="Name"
+              rules={[{ required: true, message: "Please enter name" }]}
+            >
+              <Input placeholder="Please enter name" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              name="title"
+              label="Title"
+              rules={[{ required: true, message: "Please enter title" }]}
+            >
+              <Input placeholder="Please enter title" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              name="fieldType"
+              label="Type"
+              rules={[{ required: true, message: "Please choose the type" }]}
+            >
+              <Select
+                placeholder="Please choose the type"
+                onChange={(value) => setFieldType(value)}
+                options={[
+                  {
+                    label: <span>Primitives</span>,
+                    title: "Primitives",
+                    options: [
+                      { label: <span>Text</span>, value: "1" },
+                      { label: <span>Number</span>, value: "2" },
+                      { label: <span>DateTime</span>, value: "4" },
+                      { label: <span>Boolean</span>, value: "5" },
+                      { label: <span>Enum</span>, value: "9" },
+                    ],
+                  },
+                  {
+                    label: <span>Relations</span>,
+                    title: "Relations",
+                    options: [
+                      { label: <span>R1N</span>, value: "7" },
+                      { label: <span>RNN</span>, value: "8" },
+                    ],
+                  },
+                  {
+                    label: <span>Advanced</span>,
+                    title: "advanced",
+                    options: [
+                      { label: <span>RichText</span>, value: "3" },
+                      { label: <span>File</span>, value: "6" },
+                    ],
+                  },
                 ]}
-              >
-                <Input placeholder="Full Name" />
-              </Form.Item>
-            </Col>
-            <Col xs={24} md={5}>
-              <Form.Item
-                label="User Name"
-                name="username"
-                rules={[
-                  { required: true, message: "Please input the user name" },
-                ]}
-              >
-                <Input placeholder="User Name" />
-              </Form.Item>
-            </Col>
-            <Col xs={24} md={4}>
-              <Form.Item
-                name="canLogin"
-                label="Can login"
-                valuePropName="checked"
-              >
-                <Checkbox />
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </Card>
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={8}>
+            <Form.Item name="isUnique">
+              <Checkbox>Is Unique</Checkbox>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item name="nonEditable">
+              <Checkbox>Non-Editable</Checkbox>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item name="readOnlyFromDb">
+              <Checkbox>Read Only From DB</Checkbox>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={8}>
+            <Form.Item name="notNull">
+              <Checkbox>Not null or empty</Checkbox>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item name="encrypted">
+              <Checkbox>Encrypted</Checkbox>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item name="rtl">
+              <Checkbox>Is RTL</Checkbox>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+      <Divider orientation="left" style={{ borderColor: "#128bed" }}>
+        {`${fieldType} Field Settings`}
+      </Divider>
+      <Row>
+        <Col span={24}>
+          {/* <Card size="small" type="inner"> */}
+          {renderDynamicContent()}
+          {/* </Card> */}
+        </Col>
+      </Row>
     </div>
   );
 };
