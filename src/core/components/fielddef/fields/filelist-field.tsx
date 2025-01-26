@@ -52,11 +52,7 @@ const FilesListSettings: React.FC = () => {
             label="Allowed Extensions Seprate with Commas (,)"
             name="exts"
           >
-            <Input
-              placeholder="PDF,PNG,JPEG,JPG,GIF,ICO,DOCX ..."
-              style={{ width: "100%" }}
-              min={0}
-            />
+            <Input placeholder="PDF,PNG,JPEG,JPG,GIF,ICO,DOCX ..." />
           </Form.Item>
         </Col>
         <Col xs={24} md={6}>

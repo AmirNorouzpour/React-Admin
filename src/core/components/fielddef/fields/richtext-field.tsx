@@ -3,7 +3,7 @@ import { Form, Checkbox, Row, Col, InputNumber, Select, Input } from "antd";
 
 const RichTextSettings: React.FC = () => {
   return (
-    <Form layout="v">
+    <Form layout="vertical">
       <Row gutter={16}>
         <Col xs={24} md={12}>
           <Form.Item name="hasMedia">

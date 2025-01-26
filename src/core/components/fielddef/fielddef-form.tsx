@@ -9,6 +9,7 @@ import { FieldType } from "../../models/field-type.ts";
 import RichTextSettings from "./fields/richtext-field.tsx";
 import FilesListSettings from "./fields/filelist-field.tsx";
 import PictureSettings from "./fields/picture-field.tsx";
+import JsonSettings from "./fields/json-field.tsx";
 
 const FieldDefForm: React.FC = () => {
   const [form] = Form.useForm();
@@ -38,7 +39,7 @@ const FieldDefForm: React.FC = () => {
       case FieldType.Picture:
         return <PictureSettings />;
       case FieldType.Json:
-        return <div>JSON Settings</div>;
+        return <JsonSettings />;
       case FieldType.Object:
         return <div>Object Settings</div>;
       case FieldType.Report:
