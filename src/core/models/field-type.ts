@@ -1,0 +1,15 @@
+export enum FieldType {
+  Object = 0,
+  Text,
+  Number,
+  RichText,
+  DateTime,
+  Boolean,
+  R1N,
+  RNN,
+  Enum,
+  FileList,
+  Picture,
+  Report,
+  Json, 
+}

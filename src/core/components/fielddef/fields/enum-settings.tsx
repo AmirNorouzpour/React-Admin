@@ -4,9 +4,9 @@ import "./fields.css";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 const EnumSettings: React.FC = () => {
   const [items, setItems] = useState([
-    { id: 1, name: "Red", color: "#f33232" },
-    { id: 2, name: "Green", color: "#777777" },
-    { id: 3, name: "Blue", color: "#ffff" },
+    // { id: 1, name: "Red", color: "#f33232" },
+    // { id: 2, name: "Green", color: "#777777" },
+    // { id: 3, name: "Blue", color: "#ffff" },
   ]);
 
   const handleNameChange = (id, newName) => {
@@ -30,7 +30,8 @@ const EnumSettings: React.FC = () => {
     const newItem = {
       id: Date.now(),
       name: "",
-      color: "#fafafa",
+      color:
+        "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0"),
     };
     setItems((prevItems) => [...prevItems, newItem]);
   };
@@ -39,7 +40,7 @@ const EnumSettings: React.FC = () => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
   return (
-    <Form layout="horizontal">
+    <Form layout="vertical">
       <Row gutter={16}>
         <Col xs={24} md={20}>
           <Form.Item label="Type" name="type">

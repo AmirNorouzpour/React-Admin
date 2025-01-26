@@ -5,32 +5,43 @@ import NumberSettings from "./fields/number-settings.tsx";
 import DatetimeSettings from "./fields/datetime-settings.tsx";
 import BooleanSettings from "./fields/boolean-settings.tsx";
 import EnumSettings from "./fields/enum-settings.tsx";
+import { FieldType } from "../../models/field-type.ts";
+import RichTextSettings from "./fields/richtext-field.tsx";
+import FilesListSettings from "./fields/filelist-field.tsx";
 
 const FieldDefForm: React.FC = () => {
   const [form] = Form.useForm();
-  const [fieldType, setFieldType] = useState<string>("1");
+  const [fieldType, setFieldType] = useState<FieldType>(FieldType.Text);
   const { TextArea } = Input;
 
   const renderDynamicContent = () => {
     switch (fieldType) {
-      case "1": // Text
+      case FieldType.Text:
         return <TextSettings />;
-      case "2": // Number
+      case FieldType.Number:
         return <NumberSettings />;
-      case "3": // RichText
-        return <TextArea rows={4} placeholder="maxLength is 6" />;
-      case "4": // Date
+      case FieldType.RichText:
+        return <RichTextSettings />;
+      case FieldType.DateTime:
         return <DatetimeSettings />;
-      case "5": // Boolean
+      case FieldType.Boolean:
         return <BooleanSettings />;
-      case "6": // File
-        return <Input type="file" />;
-      case "7": // R1N
+      case FieldType.R1N:
         return <div>Relation One to Many (R1N)</div>;
-      case "8": // RNN
+      case FieldType.RNN:
         return <div>Relation Many to Many (RNN)</div>;
-      case "9":
+      case FieldType.Enum:
         return <EnumSettings />;
+      case FieldType.FileList:
+        return <FilesListSettings />;
+      case FieldType.Picture:
+        return <div>Picture Settings</div>;
+      case FieldType.Json:
+        return <div>JSON Settings</div>;
+      case FieldType.Object:
+        return <div>Object Settings</div>;
+      case FieldType.Report:
+        return <div>Report Settings</div>;
       default:
         return <div>Please select a field type</div>;
     }
@@ -72,27 +83,39 @@ const FieldDefForm: React.FC = () => {
                     label: <span>Primitives</span>,
                     title: "Primitives",
                     options: [
-                      { label: <span>Text</span>, value: "1" },
-                      { label: <span>Number</span>, value: "2" },
-                      { label: <span>DateTime</span>, value: "4" },
-                      { label: <span>Boolean</span>, value: "5" },
-                      { label: <span>Enum</span>, value: "9" },
+                      { label: <span>Text</span>, value: FieldType.Text },
+                      { label: <span>Number</span>, value: FieldType.Number },
+                      {
+                        label: <span>DateTime</span>,
+                        value: FieldType.DateTime,
+                      },
+                      { label: <span>Boolean</span>, value: FieldType.Boolean },
+                      { label: <span>Enum</span>, value: FieldType.Enum },
                     ],
                   },
                   {
                     label: <span>Relations</span>,
                     title: "Relations",
                     options: [
-                      { label: <span>R1N</span>, value: "7" },
-                      { label: <span>RNN</span>, value: "8" },
+                      { label: <span>R1N</span>, value: FieldType.R1N },
+                      { label: <span>RNN</span>, value: FieldType.RNN },
                     ],
                   },
                   {
                     label: <span>Advanced</span>,
                     title: "advanced",
                     options: [
-                      { label: <span>RichText</span>, value: "3" },
-                      { label: <span>File</span>, value: "6" },
+                      {
+                        label: <span>RichText</span>,
+                        value: FieldType.RichText,
+                      },
+                      {
+                        label: <span>FileList</span>,
+                        value: FieldType.FileList,
+                      },
+                      { label: <span>Picture</span>, value: FieldType.Picture },
+                      { label: <span>Report</span>, value: FieldType.Report },
+                      { label: <span>Json</span>, value: FieldType.Json },
                     ],
                   },
                 ]}
@@ -136,7 +159,7 @@ const FieldDefForm: React.FC = () => {
         </Row>
       </Form>
       <Divider orientation="left" style={{ borderColor: "#128bed" }}>
-        {`${fieldType} Field Settings`}
+        {`${FieldType[fieldType]} Field Settings`}
       </Divider>
       <Row>
         <Col span={24}>
