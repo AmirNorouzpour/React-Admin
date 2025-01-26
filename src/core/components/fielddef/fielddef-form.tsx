@@ -8,6 +8,7 @@ import EnumSettings from "./fields/enum-settings.tsx";
 import { FieldType } from "../../models/field-type.ts";
 import RichTextSettings from "./fields/richtext-field.tsx";
 import FilesListSettings from "./fields/filelist-field.tsx";
+import PictureSettings from "./fields/picture-field.tsx";
 
 const FieldDefForm: React.FC = () => {
   const [form] = Form.useForm();
@@ -35,7 +36,7 @@ const FieldDefForm: React.FC = () => {
       case FieldType.FileList:
         return <FilesListSettings />;
       case FieldType.Picture:
-        return <div>Picture Settings</div>;
+        return <PictureSettings />;
       case FieldType.Json:
         return <div>JSON Settings</div>;
       case FieldType.Object:
