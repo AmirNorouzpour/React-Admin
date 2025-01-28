@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { Card, Form, Input, Checkbox, Row, Col, Divider, Select } from "antd";
+import {
+  Card,
+  Form,
+  Input,
+  Checkbox,
+  Row,
+  Col,
+  Divider,
+  Select,
+  Button,
+} from "antd";
 import TextSettings from "./fields/text-settings.tsx";
 import NumberSettings from "./fields/number-settings.tsx";
 import DatetimeSettings from "./fields/datetime-settings.tsx";
@@ -10,6 +20,8 @@ import RichTextSettings from "./fields/richtext-field.tsx";
 import FilesListSettings from "./fields/filelist-field.tsx";
 import PictureSettings from "./fields/picture-field.tsx";
 import JsonSettings from "./fields/json-field.tsx";
+import R1NSettings from "./fields/R1N/r1n-field.tsx";
+import RNNSettings from "./fields/RNN/rnn-field.tsx";
 
 const FieldDefForm: React.FC = () => {
   const [form] = Form.useForm();
@@ -29,9 +41,9 @@ const FieldDefForm: React.FC = () => {
       case FieldType.Boolean:
         return <BooleanSettings />;
       case FieldType.R1N:
-        return <div>Relation One to Many (R1N)</div>;
+        return <R1NSettings />;
       case FieldType.RNN:
-        return <div>Relation Many to Many (RNN)</div>;
+        return <RNNSettings />;
       case FieldType.Enum:
         return <EnumSettings />;
       case FieldType.FileList:
@@ -49,10 +61,20 @@ const FieldDefForm: React.FC = () => {
     }
   };
 
+  const onFinish = (fieldDef: any) => {
+    debugger;
+    console.log("Form submitted with values:", fieldDef);
+  };
+
   return (
     <div>
-      <Form layout="horizontal" initialValues={{ fieldType: fieldType }}>
-        <Row gutter={[8, 8]}>
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={onFinish}
+        initialValues={{ fieldType: fieldType }}
+      >
+        <Row gutter={8}>
           <Col span={8}>
             <Form.Item
               name="name"
@@ -125,7 +147,7 @@ const FieldDefForm: React.FC = () => {
             </Form.Item>
           </Col>
         </Row>
-        <Row>
+        <Row gutter={8}>
           <Col span={8}>
             <Form.Item name="isUnique">
               <Checkbox>Is Unique</Checkbox>
@@ -142,7 +164,7 @@ const FieldDefForm: React.FC = () => {
             </Form.Item>
           </Col>
         </Row>
-        <Row>
+        <Row gutter={8}>
           <Col span={8}>
             <Form.Item name="notNull">
               <Checkbox>Not null or empty</Checkbox>
@@ -159,17 +181,21 @@ const FieldDefForm: React.FC = () => {
             </Form.Item>
           </Col>
         </Row>
+
+        <Divider orientation="left" style={{ borderColor: "#128bed" }}>
+          {`${FieldType[fieldType]} Field Settings`}
+        </Divider>
+        {renderDynamicContent()}
+
+        {/* Submit Button */}
+        <Row>
+          <Col>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Col>
+        </Row>
       </Form>
-      <Divider orientation="left" style={{ borderColor: "#128bed" }}>
-        {`${FieldType[fieldType]} Field Settings`}
-      </Divider>
-      <Row>
-        <Col span={24}>
-          {/* <Card size="small" type="inner"> */}
-          {renderDynamicContent()}
-          {/* </Card> */}
-        </Col>
-      </Row>
     </div>
   );
 };

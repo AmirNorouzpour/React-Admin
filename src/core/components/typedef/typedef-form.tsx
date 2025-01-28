@@ -59,6 +59,7 @@ const TypedefForm: React.FC = () => {
       };
 
       fetchUserData();
+      fetchSystems("");
     }
   }, [selectedKey, form, messageApi]);
 
