@@ -11,5 +11,14 @@ export enum FieldType {
   FileList,
   Picture,
   Report,
-  Json, 
+  Json,
 }
+
+export const fieldTypeToOptions = (): { label: string; value: string }[] => {
+  return Object.keys(FieldType)
+    .filter((key) => isNaN(Number(key)))
+    .map((key) => ({
+      label: key,
+      value: String(FieldType[key]),
+    }));
+};

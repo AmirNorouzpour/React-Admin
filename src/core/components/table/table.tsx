@@ -42,12 +42,10 @@ const CustomTable: React.FC<CustomTableProps> = ({
     };
 
     columns?.forEach((col: any) => {
-      debugger;
       let key = col.key;
       if (col.filterKeyName) key = col.filterKeyName;
       const filterValues = filters[col.key];
       if (filterValues) {
-        debugger;
         if (col.type === TableColumnType.DateTime) {
           const [startDate, endDate] = filterValues[0]?.split(",") || [];
           const rules = [];

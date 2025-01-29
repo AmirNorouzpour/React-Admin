@@ -70,7 +70,6 @@ const TypedefForm: React.FC = () => {
   const fetchSystems = async (searchText: string) => {
     try {
       setSearchLoading(true);
-      debugger;
       let params = { filters: "" };
       let cnds = { rules: [], condition: "and" };
       params.reportId = "0a031c92-a079-4964-954b-deefe3ba04a2";

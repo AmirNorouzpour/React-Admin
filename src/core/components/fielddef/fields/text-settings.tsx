@@ -33,12 +33,12 @@ const TextSettings: React.FC = () => {
           </Form.Item>
         </Col>
         <Col xs={24} md={8}>
-          <Form.Item name="hasSuggtions">
+          <Form.Item valuePropName="hasSuggtions">
             <Checkbox>Use Data for Suggtions</Checkbox>
           </Form.Item>
         </Col>
         <Col xs={24} md={8}>
-          <Form.Item name="multiLine">
+          <Form.Item valuePropName="multiLine">
             <Checkbox>Multi Line</Checkbox>
           </Form.Item>
         </Col>

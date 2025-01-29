@@ -8,6 +8,7 @@ import { getRequest } from "../../services/apiService.ts";
 import Toolbar from "../toolbar/toolbar.tsx";
 import ButtonData from "../../models/ButtonData.ts";
 import FieldDefForm from "../fielddef/fielddef-form.tsx";
+import { fieldTypeToOptions } from "../../models/field-type.ts";
 
 const buttonData: ButtonData[] = [
   { id: 1, label: "New", type: "primary" },
@@ -17,8 +18,9 @@ const buttonData: ButtonData[] = [
 
 const TypedefFields: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [selectedRowKey, setSelectedRowKey] = useState<React.Key>();
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>();
   const [open, setOpen] = useState(false);
+  const [fields, setData] = useState<any[]>([]);
 
   const columns = [
     ColumnFactory.createColumn({
@@ -45,17 +47,7 @@ const TypedefFields: React.FC = () => {
       type: TableColumnType.Enum,
       sorter: true,
       entity: "FieldDefs",
-      options: [
-        { label: "Text", value: "1" },
-        { label: "Number", value: "2" },
-        { label: "RichText", value: "3" },
-        { label: "Date", value: "4" },
-        { label: "Boolean", value: "5" },
-        { label: "File", value: "6" },
-        { label: "R1N", value: "7" },
-        { label: "RNN", value: "8" },
-        { label: "Icon", value: "9" },
-      ],
+      options: fieldTypeToOptions(),
     }),
     ColumnFactory.createColumn({
       title: "Is Fx",
@@ -77,9 +69,20 @@ const TypedefFields: React.FC = () => {
     if (id === 1) {
       showDrawer();
     }
+    if (id === 2) {
+      showDrawer();
+    }
+    if (id === 3) {
+      debugger;
+      const items = fields.filter(
+        (item) => !selectedRowKeys?.includes(item.Id)
+      );
+      setData(items);
+    }
   };
 
   const fetchData = async (params: any = {}) => {
+    return;
     setLoading(true);
     try {
       params.reportId = "5bfd40b1-63fe-46a4-ab58-104a1cf9680a";
@@ -104,6 +107,21 @@ const TypedefFields: React.FC = () => {
   const onClose = () => {
     setOpen(false);
   };
+  const handleSaveFieldDef = (fieldDef: any) => {
+    setData((prevData) => [
+      ...prevData,
+      {
+        Id: fieldDef.Id ? fieldDef.Id : crypto.randomUUID(),
+        Title: fieldDef.title,
+        Type: fieldDef.fieldType,
+        IsFx: false,
+      },
+    ]);
+    setOpen(false);
+  };
+  const handleCancel = () => {
+    setOpen(false);
+  };
 
   return (
     <div>
@@ -117,12 +135,15 @@ const TypedefFields: React.FC = () => {
       >
         <CustomTable
           columns={columns}
-          dataSource={[]}
+          dataSource={fields}
           loading={loading}
           onFetchData={fetchData}
           rowSelection={{
-            selectedRowKey,
-            onChange: (keys: React.Key[]) => setSelectedRowKey(keys[0]),
+            selectedRowKeys,
+            onChange: (keys: React.Key[]) => {
+              debugger;
+              setSelectedRowKeys(keys);
+            },
           }}
           onRow={(record) => ({
             // onDoubleClick: () => {
@@ -132,25 +153,20 @@ const TypedefFields: React.FC = () => {
         />
       </Card>
       <Drawer
-        title="Typdedef field"
         width={720}
         onClose={onClose}
         open={open}
+        closeIcon={false}
         styles={{
           body: {
-            paddingBottom: 80,
+            paddingBottom: 10,
           },
         }}
-        extra={
-          <Space>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button onClick={onClose} type="primary">
-              Save
-            </Button>
-          </Space>
-        }
       >
-        <FieldDefForm />
+        <FieldDefForm
+          onFieldDefSave={handleSaveFieldDef}
+          onFieldDefCancel={handleCancel}
+        />
       </Drawer>
     </div>
   );

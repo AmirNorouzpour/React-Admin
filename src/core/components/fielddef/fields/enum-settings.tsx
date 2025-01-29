@@ -18,7 +18,6 @@ const EnumSettings: React.FC = () => {
   };
 
   const handleColorChange = (id, newColor) => {
-    debugger;
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.id === id ? { ...item, color: newColor.toHexString() } : item

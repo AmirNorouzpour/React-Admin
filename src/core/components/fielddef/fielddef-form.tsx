@@ -22,8 +22,22 @@ import PictureSettings from "./fields/picture-field.tsx";
 import JsonSettings from "./fields/json-field.tsx";
 import R1NSettings from "./fields/R1N/r1n-field.tsx";
 import RNNSettings from "./fields/RNN/rnn-field.tsx";
+import Toolbar from "../toolbar/toolbar.tsx";
+import ButtonData from "../../models/ButtonData.ts";
 
-const FieldDefForm: React.FC = () => {
+const buttonData: ButtonData[] = [
+  { id: 1, label: "Save", type: "primary" },
+  { id: 2, label: "Cancel", type: "danger" },
+];
+
+interface FieldDefFormProps {
+  onFieldDefSave: (newFieldDef: any) => void;
+  onFieldDefCancel: () => void;
+}
+const FieldDefForm: React.FC<FieldDefFormProps> = ({
+  onFieldDefSave,
+  onFieldDefCancel,
+}) => {
   const [form] = Form.useForm();
   const [fieldType, setFieldType] = useState<FieldType>(FieldType.Text);
   const { TextArea } = Input;
@@ -62,140 +76,154 @@ const FieldDefForm: React.FC = () => {
   };
 
   const onFinish = (fieldDef: any) => {
-    debugger;
-    console.log("Form submitted with values:", fieldDef);
+    onFieldDefSave(fieldDef);
+    form.resetFields();
+  };
+
+  const handleToolbarClick = (label: string, id: number) => {
+    if (id === 1) {
+      form.submit();
+    }
+    if (id === 2) {
+      onFieldDefCancel();
+    }
   };
 
   return (
     <div>
-      <Form
-        layout="vertical"
-        form={form}
-        onFinish={onFinish}
-        initialValues={{ fieldType: fieldType }}
+      <Card
+        title="Field Def"
+        type="inner"
+        extra={
+          <Toolbar buttonData={buttonData} onButtonClick={handleToolbarClick} />
+        }
       >
-        <Row gutter={8}>
-          <Col span={8}>
-            <Form.Item
-              name="name"
-              label="Name"
-              rules={[{ required: true, message: "Please enter name" }]}
-            >
-              <Input placeholder="Please enter name" />
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item
-              name="title"
-              label="Title"
-              rules={[{ required: true, message: "Please enter title" }]}
-            >
-              <Input placeholder="Please enter title" />
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item
-              name="fieldType"
-              label="Type"
-              rules={[{ required: true, message: "Please choose the type" }]}
-            >
-              <Select
-                placeholder="Please choose the type"
-                onChange={(value) => setFieldType(value)}
-                options={[
-                  {
-                    label: <span>Primitives</span>,
-                    title: "Primitives",
-                    options: [
-                      { label: <span>Text</span>, value: FieldType.Text },
-                      { label: <span>Number</span>, value: FieldType.Number },
-                      {
-                        label: <span>DateTime</span>,
-                        value: FieldType.DateTime,
-                      },
-                      { label: <span>Boolean</span>, value: FieldType.Boolean },
-                      { label: <span>Enum</span>, value: FieldType.Enum },
-                    ],
-                  },
-                  {
-                    label: <span>Relations</span>,
-                    title: "Relations",
-                    options: [
-                      { label: <span>R1N</span>, value: FieldType.R1N },
-                      { label: <span>RNN</span>, value: FieldType.RNN },
-                    ],
-                  },
-                  {
-                    label: <span>Advanced</span>,
-                    title: "advanced",
-                    options: [
-                      {
-                        label: <span>RichText</span>,
-                        value: FieldType.RichText,
-                      },
-                      {
-                        label: <span>FileList</span>,
-                        value: FieldType.FileList,
-                      },
-                      { label: <span>Picture</span>, value: FieldType.Picture },
-                      { label: <span>Report</span>, value: FieldType.Report },
-                      { label: <span>Json</span>, value: FieldType.Json },
-                    ],
-                  },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={8}>
-          <Col span={8}>
-            <Form.Item name="isUnique">
-              <Checkbox>Is Unique</Checkbox>
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item name="nonEditable">
-              <Checkbox>Non-Editable</Checkbox>
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item name="readOnlyFromDb">
-              <Checkbox>Read Only From DB</Checkbox>
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={8}>
-          <Col span={8}>
-            <Form.Item name="notNull">
-              <Checkbox>Not null or empty</Checkbox>
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item name="encrypted">
-              <Checkbox>Encrypted</Checkbox>
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item name="rtl">
-              <Checkbox>Is RTL</Checkbox>
-            </Form.Item>
-          </Col>
-        </Row>
+        <Form
+          layout="vertical"
+          form={form}
+          onFinish={onFinish}
+          initialValues={{ fieldType: fieldType }}
+        >
+          <Row gutter={8}>
+            <Col span={8}>
+              <Form.Item
+                name="name"
+                label="Name"
+                rules={[{ required: true, message: "Please enter name" }]}
+              >
+                <Input placeholder="Please enter name" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                name="title"
+                label="Title"
+                rules={[{ required: true, message: "Please enter title" }]}
+              >
+                <Input placeholder="Please enter title" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                name="fieldType"
+                label="Type"
+                rules={[{ required: true, message: "Please choose the type" }]}
+              >
+                <Select
+                  placeholder="Please choose the type"
+                  onChange={(value) => setFieldType(value)}
+                  options={[
+                    {
+                      label: <span>Primitives</span>,
+                      title: "Primitives",
+                      options: [
+                        { label: <span>Text</span>, value: FieldType.Text },
+                        { label: <span>Number</span>, value: FieldType.Number },
+                        {
+                          label: <span>DateTime</span>,
+                          value: FieldType.DateTime,
+                        },
+                        {
+                          label: <span>Boolean</span>,
+                          value: FieldType.Boolean,
+                        },
+                        { label: <span>Enum</span>, value: FieldType.Enum },
+                      ],
+                    },
+                    {
+                      label: <span>Relations</span>,
+                      title: "Relations",
+                      options: [
+                        { label: <span>R1N</span>, value: FieldType.R1N },
+                        { label: <span>RNN</span>, value: FieldType.RNN },
+                      ],
+                    },
+                    {
+                      label: <span>Advanced</span>,
+                      title: "advanced",
+                      options: [
+                        {
+                          label: <span>RichText</span>,
+                          value: FieldType.RichText,
+                        },
+                        {
+                          label: <span>FileList</span>,
+                          value: FieldType.FileList,
+                        },
+                        {
+                          label: <span>Picture</span>,
+                          value: FieldType.Picture,
+                        },
+                        { label: <span>Report</span>, value: FieldType.Report },
+                        { label: <span>Json</span>, value: FieldType.Json },
+                      ],
+                    },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={8}>
+            <Col span={8}>
+              <Form.Item name="isUnique" valuePropName="isunique">
+                <Checkbox>Is Unique</Checkbox>
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item name="nonEditable" valuePropName="noneditable">
+                <Checkbox>Non-Editable</Checkbox>
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item valuePropName="readonlyfromdb">
+                <Checkbox>Read Only From DB</Checkbox>
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={8}>
+            <Col span={8}>
+              <Form.Item valuePropName="notnull">
+                <Checkbox>Not null or empty</Checkbox>
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item valuePropName="encrypted">
+                <Checkbox>Encrypted</Checkbox>
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item valuePropName="rtl">
+                <Checkbox>Is RTL</Checkbox>
+              </Form.Item>
+            </Col>
+          </Row>
 
-        <Divider orientation="left" style={{ borderColor: "#128bed" }}>
-          {`${FieldType[fieldType]} Field Settings`}
-        </Divider>
-        {renderDynamicContent()}
-
-        {/* Submit Button */}
-        <Row>
-          <Col>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Col>
-        </Row>
-      </Form>
+          <Divider orientation="left" style={{ borderColor: "#128bed" }}>
+            {`${FieldType[fieldType]} Field Settings`}
+          </Divider>
+          {renderDynamicContent()}
+        </Form>
+      </Card>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { Form, Checkbox, Row, Col, InputNumber, Select } from "antd";
 const NumberSettings: React.FC = () => {
   const [dataType, setDataType] = useState<string>("1");
   return (
-    <Form layout="vertical" initialValues={{ dataType: dataType }}>
+    <div>
       <Row gutter={16}>
         <Col xs={24} md={8}>
           <Form.Item label="Min Length" name="minLength">
@@ -46,7 +46,7 @@ const NumberSettings: React.FC = () => {
           </Form.Item>
         </Col>
       </Row>
-    </Form>
+    </div>
   );
 };
 

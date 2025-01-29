@@ -11,7 +11,6 @@ const SystemMenu: React.FC = () => {
   const fetchSystems = async () => {
     try {
       setLoading(true);
-      debugger;
       const data = await getRequest<System[]>("/api/systems");
       setSystems(data.data);
     } catch (err: any) {

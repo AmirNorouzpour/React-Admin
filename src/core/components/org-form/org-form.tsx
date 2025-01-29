@@ -80,7 +80,6 @@ const OrgForm: React.FC = () => {
   const fetchData = async (params: any = {}) => {
     setLoading(true);
     try {
-      debugger;
 
       params.reportId = "c0cb0d3a-4eab-47cd-93f8-43e0c7716262";
       var cnds = JSON.parse(params.filters);
