@@ -24,17 +24,25 @@ const TextSettings: React.FC = () => {
       <Row gutter={16}>
         <Col xs={24} md={4}>
           <Form.Item label="Min Length" name="minLength">
-            <InputNumber min={1} placeholder="Min > 0" />
+            <InputNumber
+              min={1}
+              placeholder="Min > 0"
+              style={{ width: "100%" }}
+            />
           </Form.Item>
         </Col>
         <Col xs={24} md={4}>
           <Form.Item label="Max Length" name="maxLength">
-            <InputNumber min={1} placeholder="Max > 0" />
+            <InputNumber
+              min={1}
+              placeholder="Max > 0"
+              style={{ width: "100%" }}
+            />
           </Form.Item>
         </Col>
         <Col xs={24} md={8}>
-          <Form.Item valuePropName="hasSuggtions">
-            <Checkbox>Use Data for Suggtions</Checkbox>
+          <Form.Item valuePropName="hasSuggestions">
+            <Checkbox>Use Data for Suggestions</Checkbox>
           </Form.Item>
         </Col>
         <Col xs={24} md={8}>

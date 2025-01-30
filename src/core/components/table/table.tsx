@@ -7,6 +7,8 @@ interface CustomTableProps {
   columns: TableProps<any>["columns"];
   dataSource: any[];
   loading: boolean;
+  scroll?: number;
+  rowKey?: string;
   onFetchData: (params: {
     page: number;
     pageSize: number;
@@ -20,10 +22,12 @@ interface CustomTableProps {
 
 const CustomTable: React.FC<CustomTableProps> = ({
   columns,
+  scroll = 5,
   dataSource,
   loading,
   onFetchData,
   rowSelection,
+  rowKey= "Id",
   onRow, // Accept onRow as a prop
 }) => {
   const [pagination, setPagination] = useState({
@@ -186,7 +190,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
         size="small"
         columns={columns}
         dataSource={dataSource}
-        scroll={{ y: 400 }}
+        scroll={{ y: scroll * 80 }}
         bordered
         rowSelection={rowSelection}
         pagination={{
@@ -198,7 +202,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
           showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
         }}
         onChange={handleTableChange}
-        rowKey="Id"
+        rowKey={rowKey}
         onRow={onRow} // Pass the onRow prop to Ant Design's Table
       />
     </Spin>

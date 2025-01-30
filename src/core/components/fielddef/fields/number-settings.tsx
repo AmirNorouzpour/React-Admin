@@ -7,13 +7,13 @@ const NumberSettings: React.FC = () => {
     <div>
       <Row gutter={16}>
         <Col xs={24} md={8}>
-          <Form.Item label="Min Length" name="minLength">
-            <InputNumber placeholder="Min Length" style={{ width: "100%" }} />
+          <Form.Item label="Min" name="min">
+            <InputNumber placeholder="Min" style={{ width: "100%" }} />
           </Form.Item>
         </Col>
         <Col xs={24} md={8}>
-          <Form.Item label="Max Length" name="maxLength">
-            <InputNumber placeholder="Max Length" style={{ width: "100%" }} />
+          <Form.Item label="Max" name="max">
+            <InputNumber placeholder="Max" style={{ width: "100%" }} />
           </Form.Item>
         </Col>
         <Col xs={24} md={8}>
@@ -24,7 +24,11 @@ const NumberSettings: React.FC = () => {
       </Row>
       <Row gutter={16}>
         <Col xs={24} md={8}>
-          <Form.Item label="Data Type" name="dataType">
+          <Form.Item
+            label="Data Type"
+            name="dataType"
+            rules={[{ required: true, message: "Please choose the data type" }]}
+          >
             <Select
               placeholder="Please choose the data type"
               onChange={(value) => setDataType(value)}

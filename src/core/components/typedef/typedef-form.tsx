@@ -41,30 +41,33 @@ const TypedefForm: React.FC = () => {
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
   const location = useLocation();
-  const { selectedKey } = location.state || {};
+  const { selectedKey: selectedTypeDefId } = location.state || {};
   const [systemOptions, setSystemOptions] = useState<SystemOption[]>([]);
   const [searchLoading, setSearchLoading] = useState(false);
+  //=======================================
+  const [fields, setFields] = useState([]);
 
   useEffect(() => {
-    if (selectedKey) {
-      const fetchUserData = async () => {
-        try {
-          const userData = await getRequest<UserFormData>(
-            `/api/typedef/${selectedKey}`
-          );
-          form.setFieldsValue(userData.data);
-        } catch (error: any) {
-          messageApi.error("Failed to fetch user data");
-        }
-      };
-
-      fetchUserData();
+    if (selectedTypeDefId) {
+      fetchData();
       fetchSystems("");
     }
-  }, [selectedKey, form, messageApi]);
+  }, [selectedTypeDefId, form, messageApi]);
 
   const onChange = (key: string) => {
     console.log(key);
+  };
+
+  const fetchData = async () => {
+    try {
+      const data = await getRequest<UserFormData>(
+        `/api/base/typedef/${selectedTypeDefId}`
+      );
+      form.setFieldsValue(data.data);
+      setFields(data.data.fields);
+    } catch (error: any) {
+      messageApi.error("Failed to fetch typedef data");
+    }
   };
 
   const fetchSystems = async (searchText: string) => {
@@ -101,17 +104,14 @@ const TypedefForm: React.FC = () => {
     fetchSystems(value);
   };
 
-  const onFinish = async (values: UserFormData) => {
+  const onFinish = async (values: any) => {
     try {
-      if (selectedKey) {
-        const data = { id: selectedKey, ...values };
-        await postRequest(`/api/users`, data);
-        messageApi.success("User updated successfully!");
-      } else {
-        await postRequest<UserFormData>("/api/users", values);
-        messageApi.success("User created successfully!");
-      }
-      navigate("/user");
+      let data;
+      if (selectedTypeDefId)
+        data = { id: selectedTypeDefId, ...values, fields: fields };
+      else data = { ...values, fields: fields };
+      await postRequest(`/api/base/typedef`, data);
+      messageApi.success("User updated successfully!");
     } catch (error: any) {
       messageApi.error(error.message || "An error occurred");
     }
@@ -121,7 +121,13 @@ const TypedefForm: React.FC = () => {
     {
       key: "1",
       label: "Fields",
-      children: <TypedefFields />,
+      children: (
+        <TypedefFields
+          typedefId={selectedTypeDefId}
+          fields={fields}
+          setFields={setFields}
+        />
+      ),
     },
     {
       key: "2",
@@ -163,7 +169,7 @@ const TypedefForm: React.FC = () => {
       {contextHolder}
 
       <Card
-        title={selectedKey ? "Edit Typedef" : "New Typedef"}
+        title={selectedTypeDefId ? "Edit Typedef" : "New Typedef"}
         type="inner"
         extra={
           <Toolbar buttonData={buttonData} onButtonClick={handleButtonClick} />
@@ -188,7 +194,7 @@ const TypedefForm: React.FC = () => {
             <Col xs={24} md={5}>
               <Form.Item
                 label="System"
-                name="system"
+                name="systemId"
                 rules={[
                   { required: true, message: "Please select the System" },
                 ]}

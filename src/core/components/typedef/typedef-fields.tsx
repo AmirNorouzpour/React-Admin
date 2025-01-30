@@ -8,12 +8,19 @@ import { getRequest } from "../../services/apiService.ts";
 import Toolbar from "../toolbar/toolbar.tsx";
 import FieldDefForm from "../fielddef/fielddef-form.tsx";
 import { fieldTypeToOptions } from "../../models/field-type.ts";
+import { ApiResult } from "../../models/api-result.ts";
 
 interface FieldDef {
-  Id: string;
-  Title: string;
-  Type: string;
-  IsFx: boolean;
+  id: string;
+  title: string;
+  type: string;
+  name: string;
+}
+
+interface TypedefFieldsProps {
+  typedefId: string;
+  fields;
+  setFields;
 }
 
 const toolbarButtons: [] = [
@@ -22,17 +29,20 @@ const toolbarButtons: [] = [
   { id: 3, label: "Delete", type: "danger", hasConfirm: true },
 ];
 
-const TypedefFields: React.FC = () => {
+const TypedefFields: React.FC<TypedefFieldsProps> = ({
+  typedefId,
+  fields,
+  setFields,
+}) => {
   const [loading, setLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [selectedFieldId, setSelectedFieldId] = useState<string>("");
-  const [fields, setFields] = useState<FieldDef[]>([]);
+  const [selectedField, setSelectedField] = useState<{}>({});
 
   const columns = [
     ColumnFactory.createColumn({
       title: "Id",
-      dataIndex: "Id",
+      dataIndex: "id",
       key: "id",
       type: TableColumnType.Text,
       sorter: true,
@@ -40,8 +50,16 @@ const TypedefFields: React.FC = () => {
       hidden: true,
     }),
     ColumnFactory.createColumn({
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      type: TableColumnType.Text,
+      sorter: true,
+      entity: "FieldDefs",
+    }),
+    ColumnFactory.createColumn({
       title: "Title",
-      dataIndex: "Title",
+      dataIndex: "title",
       key: "title",
       type: TableColumnType.Text,
       sorter: true,
@@ -49,37 +67,41 @@ const TypedefFields: React.FC = () => {
     }),
     ColumnFactory.createColumn({
       title: "Type",
-      dataIndex: "Type",
+      dataIndex: "type",
       key: "type",
       type: TableColumnType.Enum,
       sorter: true,
       entity: "FieldDefs",
       options: fieldTypeToOptions(),
     }),
-    ColumnFactory.createColumn({
-      title: "Is Fx",
-      dataIndex: "IsFx",
-      key: "isFx",
-      type: TableColumnType.Boolean,
-      sorter: true,
-      entity: "FieldDefs",
-      options: [
-        { label: "No", value: "false" },
-        { label: "Yes", value: "true" },
-      ],
-      width: 100,
-      responsive: ["md"],
-    }),
+    // ColumnFactory.createColumn({
+    //   title: "Is Fx",
+    //   dataIndex: "isFx",
+    //   key: "isFx",
+    //   type: TableColumnType.Boolean,
+    //   sorter: true,
+    //   entity: "FieldDefs",
+    //   options: [
+    //     { label: "No", value: "false" },
+    //     { label: "Yes", value: "true" },
+    //   ],
+    //   width: 100,
+    //   responsive: ["md"],
+    // }),
   ];
 
   const handleToolbarClick = (label: string, id: number) => {
     switch (id) {
       case 1:
+        setSelectedField({});
         setIsDrawerOpen(true);
         break;
       case 2:
         if (selectedRowKeys.length > 0) {
-          setSelectedFieldId(selectedRowKeys[0].toString());
+          var field = fields.filter(
+            (x) => x.id == selectedRowKeys[0].toString()
+          );
+          setSelectedField(field[0]);
           setIsDrawerOpen(true);
         } else {
           message.warning("Please select a field for edit");
@@ -97,32 +119,47 @@ const TypedefFields: React.FC = () => {
   };
 
   const fetchData = async (params: any = {}) => {
-    setLoading(true);
-    try {
-      params.reportId = "5bfd40b1-63fe-46a4-ab58-104a1cf9680b";
-      const queryString = new URLSearchParams(params).toString();
-      const response = await getRequest<{ data: FieldDef[]; total: number }>(
-        `/api/generic?${queryString}`
-      );
-      setFields(response.data);
-    } catch (error) {
-      console.error("Failed to fetch fields:", error);
-      message.error("Failed to fetch fields");
-    } finally {
-      setLoading(false);
-    }
+    return;
   };
 
-  const handleSaveFieldDef = (fieldDef: any) => {
-    const newField: FieldDef = {
-      Id: fieldDef.Id || crypto.randomUUID(),
-      Title: fieldDef.title,
-      Type: fieldDef.fieldType,
-      IsFx: false,
+  function transformData(input) {
+    let output = {
+      id: input.id,
+      name: input.name,
+      title: input.title,
+      type: input.type,
+      settings: {},
     };
-    setFields((prevData) => [...prevData, newField]);
 
-    setIsDrawerOpen(false);
+    for (let key in input) {
+      if (!["name", "title", "type"].includes(key)) {
+        output.settings[key] = input[key] === undefined ? null : input[key];
+      }
+    }
+    output.settings = JSON.stringify(output.settings);
+    return output;
+  }
+
+  const handleSaveFieldDef = (fieldDef: any, close: boolean) => {
+    fieldDef = transformData(fieldDef);
+
+    setFields((prevData) => {
+      if (!Array.isArray(prevData)) return [fieldDef];
+
+      const existingIndex = prevData.findIndex(
+        (item) => item.name === fieldDef.name
+      );
+
+      if (existingIndex !== -1) {
+        const updatedFields = [...prevData];
+        updatedFields[existingIndex] = fieldDef;
+        return updatedFields;
+      } else {
+        return [...prevData, fieldDef];
+      }
+    });
+
+    if (close) setIsDrawerOpen(false);
   };
 
   const handleCancel = () => {
@@ -144,6 +181,8 @@ const TypedefFields: React.FC = () => {
       >
         <CustomTable
           columns={columns}
+          scroll={2}
+          rowKey="id"
           dataSource={fields}
           loading={loading}
           onFetchData={fetchData}
@@ -161,7 +200,7 @@ const TypedefFields: React.FC = () => {
         styles={{ body: { paddingBottom: 10 } }}
       >
         <FieldDefForm
-          fdId={selectedFieldId}
+          field={selectedField}
           onFieldDefSave={handleSaveFieldDef}
           onFieldDefCancel={handleCancel}
         />

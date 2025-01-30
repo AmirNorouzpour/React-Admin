@@ -14,52 +14,52 @@ import R1NSettings from "./fields/R1N/r1n-field.tsx";
 import RNNSettings from "./fields/RNN/rnn-field.tsx";
 import Toolbar from "../toolbar/toolbar.tsx";
 import buttonData from "../../models/button-data.ts";
-import { ApiResult } from "../../models/api-result.ts";
-import { getRequest } from "../../services/apiService.ts";
 
 const buttons: buttonData[] = [
   { id: 1, label: "Save", type: "primary" },
-  { id: 2, label: "Cancel", type: "danger" },
+  { id: 2, label: "Save And New", type: "primary" },
+  { id: 3, label: "Cancel", type: "danger" },
 ];
 
 interface FieldDefFormProps {
-  onFieldDefSave: (newFieldDef: any) => void;
+  onFieldDefSave: (newFieldDef: any, close: boolean) => void;
   onFieldDefCancel: () => void;
-  fdId: string;
+  field: {};
 }
 const FieldDefForm: React.FC<FieldDefFormProps> = ({
   onFieldDefSave,
   onFieldDefCancel,
-  fdId,
+  field,
 }) => {
   const [form] = Form.useForm();
-  const [fieldType, setFieldType] = useState<FieldType>(FieldType.Text);
-  const [loading, setLoading] = useState(false);
+  const [type, setFieldType] = useState<FieldType>(FieldType.Text);
+  const [close, setClose] = useState(false);
 
   useEffect(() => {
-    if (fdId) {
-      fetchData();
-    }
-  }, [fdId]);
+    var data = reverseTransformData(field);
+    setFieldType(data.type);
+    renderDynamicContent();
+    form.setFieldsValue({ ...data });
+  }, [field]);
 
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const response = await getRequest<ApiResult<any>>(
-        `/api/base/field/${fdId}`
-      );
-      debugger;
-      setFieldType(response.data.type);
-      // setData(response.data);
-    } catch (error) {
-      // message.error("Failed to fetch fields");
-    } finally {
-      setLoading(false);
+  function reverseTransformData(input) {
+    let output = {
+      name: input.name,
+      title: input.title,
+      type: input.type,
+    };
+
+    let settings = JSON.parse(input.settings || "{}");
+
+    for (let key in settings) {
+      output[key] = settings[key];
     }
-  };
+
+    return output;
+  }
 
   const renderDynamicContent = () => {
-    switch (fieldType) {
+    switch (type) {
       case FieldType.Text:
         return <TextSettings />;
       case FieldType.Number:
@@ -92,15 +92,21 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
   };
 
   const onFinish = (fieldDef: any) => {
-    onFieldDefSave(fieldDef);
+    fieldDef.id = field.id;
+    onFieldDefSave(fieldDef, close);
     form.resetFields();
   };
 
   const handleToolbarClick = (label: string, id: number) => {
     if (id === 1) {
+      setClose(true);
       form.submit();
     }
     if (id === 2) {
+      setClose(false);
+      form.submit();
+    }
+    if (id === 3) {
       onFieldDefCancel();
     }
   };
@@ -117,8 +123,8 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
         <Form
           layout="vertical"
           form={form}
+          autoComplete="off"
           onFinish={onFinish}
-          initialValues={{ fieldType: fieldType }}
         >
           <Row gutter={8}>
             <Col span={8}>
@@ -127,7 +133,10 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
                 label="Name"
                 rules={[{ required: true, message: "Please enter name" }]}
               >
-                <Input placeholder="Please enter name" />
+                <Input
+                  placeholder="Please enter name"
+                  disabled={field?.id != null}
+                />
               </Form.Item>
             </Col>
             <Col span={8}>
@@ -141,13 +150,14 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
             </Col>
             <Col span={8}>
               <Form.Item
-                name="fieldType"
+                name="type"
                 label="Type"
                 rules={[{ required: true, message: "Please choose the type" }]}
               >
                 <Select
                   placeholder="Please choose the type"
                   onChange={(value) => setFieldType(value)}
+                  disabled={field?.id != null}
                   options={[
                     {
                       label: <span>Primitives</span>,
@@ -201,41 +211,53 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
           </Row>
           <Row gutter={8}>
             <Col span={8}>
-              <Form.Item name="isUnique" valuePropName="isunique">
+              <Form.Item name="isUnique" valuePropName="checked">
                 <Checkbox>Is Unique</Checkbox>
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item name="nonEditable" valuePropName="noneditable">
+              <Form.Item name="nonEditable" valuePropName="checked">
                 <Checkbox>Non-Editable</Checkbox>
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item valuePropName="readonlyfromdb">
+              <Form.Item valuePropName="checked" name="readonlyfromdb">
                 <Checkbox>Read Only From DB</Checkbox>
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={8}>
             <Col span={8}>
-              <Form.Item valuePropName="notnull">
+              <Form.Item valuePropName="checked" name="notnull">
                 <Checkbox>Not null or empty</Checkbox>
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item valuePropName="encrypted">
+              <Form.Item valuePropName="checked" name="encrypted">
                 <Checkbox>Encrypted</Checkbox>
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item valuePropName="rtl">
+              <Form.Item name="rtl" valuePropName="checked">
                 <Checkbox>Is RTL</Checkbox>
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={4}>
+              <Form.Item name="isFx" valuePropName="checked">
+                <Checkbox>Is Fx</Checkbox>
+              </Form.Item>
+            </Col>
+            <Col span={20}>
+              <Form.Item name="fx">
+                {/* <Input placeholder="code" disabled /> */}
               </Form.Item>
             </Col>
           </Row>
 
           <Divider orientation="left" style={{ borderColor: "#128bed" }}>
-            {`${FieldType[fieldType]} Field Settings`}
+            {`${FieldType[type]} Field Settings`}
           </Divider>
           {renderDynamicContent()}
         </Form>
