@@ -108,8 +108,9 @@ const TypedefFields: React.FC<TypedefFieldsProps> = ({
         }
         break;
       case 3:
+        debugger;
         const updatedFields = fields.filter(
-          (field) => !selectedRowKeys.includes(field.Id)
+          (field) => !selectedRowKeys.includes(field.id)
         );
         setFields(updatedFields);
         break;
@@ -117,6 +118,12 @@ const TypedefFields: React.FC<TypedefFieldsProps> = ({
         break;
     }
   };
+
+  function ondblclick(id) {
+    var field = fields.filter((x) => x.id == id.toString());
+    setSelectedField(field[0]);
+    setIsDrawerOpen(true);
+  }
 
   const fetchData = async (params: any = {}) => {
     return;
@@ -190,6 +197,11 @@ const TypedefFields: React.FC<TypedefFieldsProps> = ({
             selectedRowKeys,
             onChange: (keys: React.Key[]) => setSelectedRowKeys(keys),
           }}
+          onRow={(record) => ({
+            onDoubleClick: () => {
+              ondblclick(record.id);
+            },
+          })}
         />
       </Card>
       <Drawer

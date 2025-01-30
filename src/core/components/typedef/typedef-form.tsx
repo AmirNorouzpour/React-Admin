@@ -49,6 +49,7 @@ const TypedefForm: React.FC = () => {
 
   useEffect(() => {
     if (selectedTypeDefId) {
+      debugger;
       fetchData();
       fetchSystems("");
     }
@@ -110,8 +111,10 @@ const TypedefForm: React.FC = () => {
       if (selectedTypeDefId)
         data = { id: selectedTypeDefId, ...values, fields: fields };
       else data = { ...values, fields: fields };
-      await postRequest(`/api/base/typedef`, data);
-      messageApi.success("User updated successfully!");
+      var res = await postRequest(`/api/base/typedef`, data);
+      messageApi.success("data updated successfully!");
+      debugger;
+      navigate("/typedef/form", { state: { selectedKey: res.data.id } });
     } catch (error: any) {
       messageApi.error(error.message || "An error occurred");
     }
@@ -157,10 +160,10 @@ const TypedefForm: React.FC = () => {
   ];
 
   const handleButtonClick = (label: string, id: number) => {
-    if (id === 2) {
-      navigate("/user");
-    } else {
+    if (id === 1) {
       form.submit();
+    } else {
+      navigate("/typedef");
     }
   };
 
@@ -188,7 +191,7 @@ const TypedefForm: React.FC = () => {
                 name="name"
                 rules={[{ required: true, message: "Please input the name" }]}
               >
-                <Input placeholder="Full Name" />
+                <Input placeholder="Full Name" disabled={selectedTypeDefId} />
               </Form.Item>
             </Col>
             <Col xs={24} md={5}>
