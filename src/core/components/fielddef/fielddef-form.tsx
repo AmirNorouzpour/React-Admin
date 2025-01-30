@@ -1,15 +1,5 @@
-import React, { useState } from "react";
-import {
-  Card,
-  Form,
-  Input,
-  Checkbox,
-  Row,
-  Col,
-  Divider,
-  Select,
-  Button,
-} from "antd";
+import React, { useEffect, useState } from "react";
+import { Card, Form, Input, Checkbox, Row, Col, Divider, Select } from "antd";
 import TextSettings from "./fields/text-settings.tsx";
 import NumberSettings from "./fields/number-settings.tsx";
 import DatetimeSettings from "./fields/datetime-settings.tsx";
@@ -23,9 +13,11 @@ import JsonSettings from "./fields/json-field.tsx";
 import R1NSettings from "./fields/R1N/r1n-field.tsx";
 import RNNSettings from "./fields/RNN/rnn-field.tsx";
 import Toolbar from "../toolbar/toolbar.tsx";
-import ButtonData from "../../models/ButtonData.ts";
+import buttonData from "../../models/button-data.ts";
+import { ApiResult } from "../../models/api-result.ts";
+import { getRequest } from "../../services/apiService.ts";
 
-const buttonData: ButtonData[] = [
+const buttons: buttonData[] = [
   { id: 1, label: "Save", type: "primary" },
   { id: 2, label: "Cancel", type: "danger" },
 ];
@@ -33,14 +25,38 @@ const buttonData: ButtonData[] = [
 interface FieldDefFormProps {
   onFieldDefSave: (newFieldDef: any) => void;
   onFieldDefCancel: () => void;
+  fdId: string;
 }
 const FieldDefForm: React.FC<FieldDefFormProps> = ({
   onFieldDefSave,
   onFieldDefCancel,
+  fdId,
 }) => {
   const [form] = Form.useForm();
   const [fieldType, setFieldType] = useState<FieldType>(FieldType.Text);
-  const { TextArea } = Input;
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (fdId) {
+      fetchData();
+    }
+  }, [fdId]);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await getRequest<ApiResult<any>>(
+        `/api/base/field/${fdId}`
+      );
+      debugger;
+      setFieldType(response.data.type);
+      // setData(response.data);
+    } catch (error) {
+      // message.error("Failed to fetch fields");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const renderDynamicContent = () => {
     switch (fieldType) {
@@ -95,7 +111,7 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
         title="Field Def"
         type="inner"
         extra={
-          <Toolbar buttonData={buttonData} onButtonClick={handleToolbarClick} />
+          <Toolbar buttonData={buttons} onButtonClick={handleToolbarClick} />
         }
       >
         <Form

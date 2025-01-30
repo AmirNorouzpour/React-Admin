@@ -6,10 +6,10 @@ import Toolbar from "../toolbar/toolbar.tsx";
 import CustomTable from "../table/table.tsx";
 import { ColumnFactory } from "../column/column-factory.tsx";
 import User from "../../models/User.ts";
-import ButtonData from "../../models/ButtonData.ts";
+import buttonData from "../../models/button-data.ts";
 import { TableColumnType } from "../../models/column-types.ts";
 
-const buttonData: ButtonData[] = [
+const buttons: buttonData[] = [
   { id: 1, label: "New", type: "primary" },
   { id: 2, label: "Edit", type: "primary" },
   { id: 3, label: "Delete", type: "danger", hasConfirm: true },
@@ -126,7 +126,7 @@ const UserList: React.FC = () => {
       title="Users List"
       type="inner"
       extra={
-        <Toolbar buttonData={buttonData} onButtonClick={handleToolbarClick} />
+        <Toolbar buttonData={buttons} onButtonClick={handleToolbarClick} />
       }
     >
       {contextHolder}

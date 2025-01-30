@@ -1,4 +1,4 @@
-import { Button, Card, Drawer, Space } from "antd";
+import { Button, Card, Drawer, Space, message } from "antd";
 import React, { useState } from "react";
 import CustomTable from "../table/table.tsx";
 import { ColumnFactory } from "../column/column-factory.tsx";
@@ -6,11 +6,17 @@ import { TableColumnType } from "../../models/column-types.ts";
 import "./typedef.css";
 import { getRequest } from "../../services/apiService.ts";
 import Toolbar from "../toolbar/toolbar.tsx";
-import ButtonData from "../../models/ButtonData.ts";
 import FieldDefForm from "../fielddef/fielddef-form.tsx";
 import { fieldTypeToOptions } from "../../models/field-type.ts";
 
-const buttonData: ButtonData[] = [
+interface FieldDef {
+  Id: string;
+  Title: string;
+  Type: string;
+  IsFx: boolean;
+}
+
+const toolbarButtons: [] = [
   { id: 1, label: "New", type: "primary" },
   { id: 2, label: "Edit", type: "primary" },
   { id: 3, label: "Delete", type: "danger", hasConfirm: true },
@@ -18,9 +24,10 @@ const buttonData: ButtonData[] = [
 
 const TypedefFields: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>();
-  const [open, setOpen] = useState(false);
-  const [fields, setData] = useState<any[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [selectedFieldId, setSelectedFieldId] = useState<string>("");
+  const [fields, setFields] = useState<FieldDef[]>([]);
 
   const columns = [
     ColumnFactory.createColumn({
@@ -66,71 +73,73 @@ const TypedefFields: React.FC = () => {
   ];
 
   const handleToolbarClick = (label: string, id: number) => {
-    if (id === 1) {
-      showDrawer();
-    }
-    if (id === 2) {
-      showDrawer();
-    }
-    if (id === 3) {
-      debugger;
-      const items = fields.filter(
-        (item) => !selectedRowKeys?.includes(item.Id)
-      );
-      setData(items);
+    switch (id) {
+      case 1:
+        setIsDrawerOpen(true);
+        break;
+      case 2:
+        if (selectedRowKeys.length > 0) {
+          setSelectedFieldId(selectedRowKeys[0].toString());
+          setIsDrawerOpen(true);
+        } else {
+          message.warning("Please select a field for edit");
+        }
+        break;
+      case 3:
+        const updatedFields = fields.filter(
+          (field) => !selectedRowKeys.includes(field.Id)
+        );
+        setFields(updatedFields);
+        break;
+      default:
+        break;
     }
   };
 
   const fetchData = async (params: any = {}) => {
-    return;
     setLoading(true);
     try {
-      params.reportId = "5bfd40b1-63fe-46a4-ab58-104a1cf9680a";
+      params.reportId = "5bfd40b1-63fe-46a4-ab58-104a1cf9680b";
       const queryString = new URLSearchParams(params).toString();
-      const response = await getRequest<{
-        data: [];
-        total: number;
-      }>(`/api/generic?${queryString}`);
-      setData(response.data);
-      return response;
+      const response = await getRequest<{ data: FieldDef[]; total: number }>(
+        `/api/generic?${queryString}`
+      );
+      setFields(response.data);
     } catch (error) {
-      console.error("Failed to fetch users:", error);
+      console.error("Failed to fetch fields:", error);
+      message.error("Failed to fetch fields");
     } finally {
       setLoading(false);
     }
   };
 
-  const showDrawer = () => {
-    setOpen(true);
+  const handleSaveFieldDef = (fieldDef: any) => {
+    const newField: FieldDef = {
+      Id: fieldDef.Id || crypto.randomUUID(),
+      Title: fieldDef.title,
+      Type: fieldDef.fieldType,
+      IsFx: false,
+    };
+    setFields((prevData) => [...prevData, newField]);
+
+    setIsDrawerOpen(false);
   };
 
-  const onClose = () => {
-    setOpen(false);
-  };
-  const handleSaveFieldDef = (fieldDef: any) => {
-    setData((prevData) => [
-      ...prevData,
-      {
-        Id: fieldDef.Id ? fieldDef.Id : crypto.randomUUID(),
-        Title: fieldDef.title,
-        Type: fieldDef.fieldType,
-        IsFx: false,
-      },
-    ]);
-    setOpen(false);
-  };
   const handleCancel = () => {
-    setOpen(false);
+    setIsDrawerOpen(false);
   };
 
   return (
     <div>
       <Card
-        title={"Data Fields"}
+        title="Data Fields"
         type="inner"
         size="small"
         extra={
-          <Toolbar buttonData={buttonData} onButtonClick={handleToolbarClick} />
+          <Toolbar
+            buttonData={toolbarButtons}
+            onButtonClick={handleToolbarClick}
+          />
         }
       >
         <CustomTable
@@ -140,30 +149,19 @@ const TypedefFields: React.FC = () => {
           onFetchData={fetchData}
           rowSelection={{
             selectedRowKeys,
-            onChange: (keys: React.Key[]) => {
-              debugger;
-              setSelectedRowKeys(keys);
-            },
+            onChange: (keys: React.Key[]) => setSelectedRowKeys(keys),
           }}
-          onRow={(record) => ({
-            // onDoubleClick: () => {
-            //   navigate("/typedef/form", { state: { selectedKey: record.Id } });
-            // },
-          })}
         />
       </Card>
       <Drawer
         width={720}
-        onClose={onClose}
-        open={open}
+        onClose={handleCancel}
+        open={isDrawerOpen}
         closeIcon={false}
-        styles={{
-          body: {
-            paddingBottom: 10,
-          },
-        }}
+        styles={{ body: { paddingBottom: 10 } }}
       >
         <FieldDefForm
+          fdId={selectedFieldId}
           onFieldDefSave={handleSaveFieldDef}
           onFieldDefCancel={handleCancel}
         />
