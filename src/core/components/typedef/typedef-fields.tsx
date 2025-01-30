@@ -130,8 +130,9 @@ const TypedefFields: React.FC<TypedefFieldsProps> = ({
   };
 
   function transformData(input) {
+    debugger;
     let output = {
-      id: input.id,
+      id: input.id ?? crypto.randomUUID(),
       name: input.name,
       title: input.title,
       type: input.type,

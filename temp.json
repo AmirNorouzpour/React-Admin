@@ -66,7 +66,7 @@
       "Relation": {
         "JoinTable": "Typedefs",
         "SourceField": "TypedefId",
-        "TargetField": "Id",
+        "TargetField": "Id",{"isUnique":null,"nonEditable":null,"readonlyfromdb":null,"notnull":null,"encrypted":null,"rtl":null,"isFx":null,"fx":null,"id":null}
         "Children": {
           "JoinTable": "Systems",
           "SourceField": "SystemId",

@@ -27,7 +27,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
   loading,
   onFetchData,
   rowSelection,
-  rowKey= "Id",
+  rowKey = "Id",
   onRow, // Accept onRow as a prop
 }) => {
   const [pagination, setPagination] = useState({
@@ -203,7 +203,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
         }}
         onChange={handleTableChange}
         rowKey={rowKey}
-        onRow={onRow} // Pass the onRow prop to Ant Design's Table
+        onRow={onRow}
       />
     </Spin>
   );

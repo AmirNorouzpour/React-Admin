@@ -56,10 +56,22 @@ const TyepDefList: React.FC = () => {
         messageApi.warning("Please select users to delete.");
         return;
       }
-      //   deleteUsers(selectedRowKeys);
+      deleteTypeDef(selectedRowKeys);
     }
   };
 
+  const deleteTypeDef = async (id: React.Key[]) => {
+    try {
+      const id = selectedRowKeys[0];
+      await deleteRequest(`/api/base/typedef`, id);
+      messageApi.success("Users deleted successfully!");
+      fetchData();
+      setSelectedRowKeys([]);
+    } catch (error) {
+      console.error("Error deleting users:", error);
+      messageApi.error("Failed to delete users. Please try again.");
+    }
+  };
   const columns = [
     ColumnFactory.createColumn({
       title: "Id",

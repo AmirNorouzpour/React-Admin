@@ -137,10 +137,10 @@ const R1NSettings: React.FC = () => {
   };
 
   return (
-    <Form layout="vertical">
+    <div>
       <Row gutter={16}>
         <Col xs={24} md={8}>
-          <Form.Item label="Relation Type">
+          <Form.Item label="Relation Type" name="relationType">
             <TreeSelect
               showSearch
               style={{ width: "100%" }}
@@ -159,12 +159,16 @@ const R1NSettings: React.FC = () => {
           </Form.Item>
         </Col>
         <Col xs={24} md={4}>
-          <Form.Item label="Use Report">
+          <Form.Item
+            label="Use Report"
+            name="hasReport"
+            valuePropName="checked"
+          >
             <Checkbox onChange={(e) => setIsReportEnabled(e.target.checked)} />
           </Form.Item>
         </Col>
         <Col xs={24} md={12}>
-          <Form.Item label="Report">
+          <Form.Item label="Report" name="reportId">
             <TreeSelect
               showSearch
               style={{ width: "100%" }}
@@ -186,27 +190,35 @@ const R1NSettings: React.FC = () => {
       </Row>
       <Row gutter={16}>
         <Col xs={24} md={6}>
-          <Form.Item label="Include Relationship">
+          <Form.Item
+            label="Include Relationship"
+            name="include"
+            valuePropName="checked"
+          >
             <Checkbox />
           </Form.Item>
         </Col>
         <Col xs={24} md={6}>
-          <Form.Item label="One to One">
+          <Form.Item label="One to One" name="onetoone" valuePropName="checked">
             <Checkbox />
           </Form.Item>
         </Col>
         <Col xs={24} md={6}>
-          <Form.Item label="Allow New">
+          <Form.Item label="Allow New" name="allowNew" valuePropName="checked">
             <Checkbox />
           </Form.Item>
         </Col>
         <Col xs={24} md={6}>
-          <Form.Item label="Allow Edit">
+          <Form.Item
+            label="Allow Edit"
+            name="allowEdit"
+            valuePropName="checked"
+          >
             <Checkbox />
           </Form.Item>
         </Col>
       </Row>
-    </Form>
+    </div>
   );
 };
 
