@@ -43,7 +43,7 @@ const OrgForm: React.FC = () => {
       const dataToSend = { ...values, parent: parent };
       await postRequest<OrgFormData>("/org", dataToSend);
       messageApi.success("Data saved successfully!");
-      navigate("/org-chart");
+      navigate("/system-management/org-chart");
     } catch (error: any) {
       messageApi.error(error.message || "An error occurred");
     }
@@ -51,7 +51,7 @@ const OrgForm: React.FC = () => {
 
   const handleButtonClick = (label: string, id: number) => {
     if (id === 2) {
-      navigate("/org-chart");
+      navigate("/system-management/org-chart");
     } else {
       form.submit();
     }
@@ -80,7 +80,6 @@ const OrgForm: React.FC = () => {
   const fetchData = async (params: any = {}) => {
     setLoading(true);
     try {
-
       params.reportId = "c0cb0d3a-4eab-47cd-93f8-43e0c7716262";
       var cnds = JSON.parse(params.filters);
       cnds.rules.push({

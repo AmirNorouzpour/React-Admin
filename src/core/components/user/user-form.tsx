@@ -82,7 +82,7 @@ const UserForm: React.FC = () => {
         await postRequest<UserFormData>("/api/users", values);
         messageApi.success("User created successfully!");
       }
-      navigate("/user");
+      navigate("/system-management/user");
     } catch (error: any) {
       messageApi.error(error.message || "An error occurred");
     }
@@ -90,7 +90,7 @@ const UserForm: React.FC = () => {
 
   const handleButtonClick = (label: string, id: number) => {
     if (id === 2) {
-      navigate("/user");
+      navigate("/system-management/user");
     } else {
       form.submit();
     }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   BarChartOutlined,
@@ -9,75 +9,135 @@ import {
   AppstoreOutlined,
   DatabaseOutlined,
   FileDoneOutlined,
+  EditOutlined,
+  FormOutlined,
+  DeleteOutlined,
+  ReloadOutlined,
 } from "@ant-design/icons";
-import { Menu } from "antd";
+import { Dropdown, Menu, MenuProps } from "antd";
+import { useSystemContext } from "../../../context/SystemContext.tsx";
+import { getRequest } from "../../services/apiService.ts";
 
 interface SideMenuProps {
-  activeMenu?: string;
-  onMenuChange?: (key: string) => void;
   collapsed: boolean;
 }
 
 const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { selectedSystem } = useSystemContext();
   const currentPath = location.pathname;
+  const [dynamicMenu, setDynamicMenu] = useState<MenuProps["items"]>([]);
 
-  const handleMenuClick = (e: any) => {
+  const handleMenuClick: MenuProps["onClick"] = (e) => {
     navigate(e.key);
   };
 
-  const menuItems = [
+  const systemManagementMenu: MenuProps["items"] = [
     {
-      key: "/",
-      icon: <BarChartOutlined style={{ color: "#6c6c6c" }} />,
+      key: `/system-management/dashboard`,
+      icon: <BarChartOutlined />,
       label: "Dashboard",
     },
     {
-      key: "/org-info",
-      icon: <InfoCircleOutlined style={{ color: "#6c6c6c" }} />,
+      key: `/system-management/org-info`,
+      icon: <InfoCircleOutlined />,
       label: "Organization Information",
     },
     {
-      key: "/org-chart",
-      icon: <ApartmentOutlined style={{ color: "#6c6c6c" }} />,
+      key: `/system-management/org-chart`,
+      icon: <ApartmentOutlined />,
       label: "Organization Chart",
     },
     {
-      key: "/user",
-      icon: <UserOutlined style={{ color: "#6c6c6c" }} />,
-      label: "User Management",
+      key: `/system-management/user`,
+      icon: <UserOutlined />,
+      label: "Users Management",
     },
     {
-      key: "/user-group",
-      icon: <TeamOutlined style={{ color: "#6c6c6c" }} />,
+      key: `/system-management/user-group`,
+      icon: <TeamOutlined />,
       label: "User Groups",
     },
     {
-      key: "/system",
-      icon: <AppstoreOutlined style={{ color: "#6c6c6c" }} />,
+      key: `/system-management/system`,
+      icon: <AppstoreOutlined />,
       label: "Systems",
     },
     {
-      key: "/typedef",
-      icon: <DatabaseOutlined style={{ color: "#6c6c6c" }} />,
+      key: `/system-management/typedef`,
+      icon: <DatabaseOutlined />,
       label: "Typedefs",
     },
     {
-      key: "/report",
-      icon: <FileDoneOutlined style={{ color: "#6c6c6c" }} />,
+      key: `/system-management/report`,
+      icon: <FileDoneOutlined />,
       label: "Reports",
     },
   ];
 
+  const fetchSystemMenu = async () => {
+    if (!selectedSystem || selectedSystem.name === "System Management") {
+      setDynamicMenu([]);
+      return;
+    }
+    try {
+      const response = await getRequest<any[]>(
+        `/api/systems/menu/${selectedSystem.key}`
+      );
+      const menus: MenuProps["items"] = response.data.map((item) => ({
+        key: `/system/${selectedSystem.key}/${item.Path}`,
+        icon: <AppstoreOutlined />,
+        label: item.Title,
+      }));
+      setDynamicMenu(menus);
+    } catch (error) {
+      console.error("Error fetching system menu:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSystemMenu();
+  }, [selectedSystem]);
+
+  const generalContextMenu: MenuProps["items"] = [
+    { label: "New Report", key: "newReport", icon: <BarChartOutlined /> },
+    { label: "New Form", key: "newForm", icon: <FormOutlined /> },
+  ];
+
+  const itemContextMenu: MenuProps["items"] = [
+    { label: "Edit", key: "edit", icon: <EditOutlined /> },
+    { label: "Remove", key: "delete", icon: <DeleteOutlined /> },
+    { label: "Refresh", key: "refresh", icon: <ReloadOutlined /> },
+  ];
+
+  const handleContextMenuClick: MenuProps["onClick"] = ({ key }) => {
+    if (key === "newReport") {
+      navigate("/report-builder");
+    } else if (key === "newForm") {
+      console.log("Creating New Form...");
+    }
+  };
+
   return (
-    <Menu
-      mode="inline"
-      selectedKeys={[currentPath]} // تنظیم کلید فعال براساس مسیر فعلی
-      onClick={handleMenuClick}
-      style={{ fontSize: "11px" }}
-      items={menuItems}
-    />
+    <Dropdown
+      menu={{ items: generalContextMenu, onClick: handleContextMenuClick }}
+      trigger={["contextMenu"]}
+    >
+      <div style={{ height: "100%", minHeight: "100vh" }}>
+        <Menu
+          mode="inline"
+          selectedKeys={[currentPath]}
+          onClick={handleMenuClick}
+          style={{ fontSize: "11px" }}
+          items={
+            selectedSystem?.name === "System Management"
+              ? systemManagementMenu
+              : dynamicMenu
+          }
+        />
+      </div>
+    </Dropdown>
   );
 };
 

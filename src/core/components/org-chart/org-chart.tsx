@@ -21,13 +21,13 @@ const OrgChart: React.FC = () => {
   const handleButtonClick = (label: string, id: number) => {
     console.log(`Button Clicked: ${label}, ID: ${id}`);
     if (id === 1) {
-      navigate("/org-chart/form", { state: { selectedKey } });
+      navigate("form", { state: { selectedKey } });
     }
   };
 
   const handleDoubleClick = (node: TreeDataNode) => {
     const { key, parent, type, title } = node;
-    navigate("/org-chart/form", { state: { key, parent, type, title } });
+    navigate("form", { state: { key, parent, type, title } });
   };
 
   const buildTreeRecursive = (

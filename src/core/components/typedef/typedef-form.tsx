@@ -22,15 +22,6 @@ const buttonData = [
   { id: 2, label: "Cancel", type: "default" },
 ];
 
-interface UserFormData {
-  fullname: string;
-  username: string;
-  password?: string;
-  rePassword?: string;
-  canLogin?: boolean;
-  systems: [];
-}
-
 interface SystemOption {
   label: string;
   value: string;
@@ -49,10 +40,9 @@ const TypedefForm: React.FC = () => {
 
   useEffect(() => {
     if (selectedTypeDefId) {
-      debugger;
       fetchData();
-      fetchSystems("");
     }
+    fetchSystems("");
   }, [selectedTypeDefId, form, messageApi]);
 
   const onChange = (key: string) => {
@@ -61,7 +51,7 @@ const TypedefForm: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const data = await getRequest<UserFormData>(
+      const data = await getRequest<any>(
         `/api/base/typedef/${selectedTypeDefId}`
       );
       form.setFieldsValue(data.data);
@@ -114,7 +104,7 @@ const TypedefForm: React.FC = () => {
       var res = await postRequest(`/api/base/typedef`, data);
       messageApi.success("data updated successfully!");
       debugger;
-      navigate("/typedef/form", { state: { selectedKey: res.data.id } });
+      navigate("", { state: { selectedKey: res.data.id } });
     } catch (error: any) {
       messageApi.error(error.message || "An error occurred");
     }
@@ -163,7 +153,7 @@ const TypedefForm: React.FC = () => {
     if (id === 1) {
       form.submit();
     } else {
-      navigate("/typedef");
+      navigate("/system-management/typedef");
     }
   };
 

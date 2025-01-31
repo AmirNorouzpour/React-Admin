@@ -1,7 +1,7 @@
 .header {
-  width: 100vw;
+  /* width: 100vw; */
   height: 45px;
-  background-color: #128bed;
+  background-color: #2d3e50;
   padding: 10px;
   -moz-box-shadow: 0 5px 5px #333;
   -webkit-box-shadow: 0 5px 5px #333;

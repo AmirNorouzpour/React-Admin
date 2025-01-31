@@ -41,7 +41,7 @@ const TyepDefList: React.FC = () => {
 
   const handleToolbarClick = (label: string, id: number) => {
     if (id === 1) {
-      navigate("/typedef/form");
+      navigate("form");
     }
     if (id === 2) {
       if (selectedRowKeys.length === 0) {
@@ -49,7 +49,7 @@ const TyepDefList: React.FC = () => {
         return;
       }
       const selectedKey = selectedRowKeys[0];
-      navigate("/typedef/form", { state: { selectedKey } });
+      navigate("form", { state: { selectedKey } });
     }
     if (id === 3) {
       if (selectedRowKeys.length === 0) {
@@ -139,7 +139,7 @@ const TyepDefList: React.FC = () => {
         }}
         onRow={(record) => ({
           onDoubleClick: () => {
-            navigate("/typedef/form", { state: { selectedKey: record.Id } });
+            navigate("form", { state: { selectedKey: record.Id } });
           },
         })}
       />

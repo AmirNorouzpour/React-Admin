@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import "./sys-menu.css";
 import { AppstoreOutlined } from "@ant-design/icons";
 import { getRequest } from "../../services/apiService.ts";
+import { useSystemContext } from "../../../context/SystemContext.tsx";
+import "./sys-menu.css";
 
 const SystemMenu: React.FC = () => {
   const [systems, setSystems] = useState<System[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { setSelectedSystem } = useSystemContext();
 
   const fetchSystems = async () => {
     try {
@@ -30,7 +32,12 @@ const SystemMenu: React.FC = () => {
   return (
     <div className="system-grid">
       {systems.map((system) => (
-        <div title={system.name} key={system.key} className="system-item">
+        <div
+          title={system.name}
+          key={system.key}
+          className="system-item"
+          onClick={() => setSelectedSystem(system)} // ذخیره سیستم در Context
+        >
           <AppstoreOutlined />
           <span style={{ fontSize: "9px" }}>{system.name}</span>
         </div>

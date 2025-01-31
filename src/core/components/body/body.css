@@ -22,8 +22,8 @@
   justify-content: center;
 }
 
-.logo {
-  font-size: 15px;
+.system-name {
+  font-size: 12px;
   font-weight: bold;
   color: #696969;
   flex: 1;

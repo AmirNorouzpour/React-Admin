@@ -41,7 +41,7 @@ const UserGroupList: React.FC = () => {
 
   const handleToolbarClick = (label: string, id: number) => {
     if (id === 1) {
-      navigate("/user-group/form");
+      navigate("form");
     }
     if (id === 2) {
       if (selectedRowKeys.length === 0) {
@@ -49,7 +49,7 @@ const UserGroupList: React.FC = () => {
         return;
       }
       const selectedKey = selectedRowKeys[0];
-      navigate("/user-group/form", { state: { selectedKey } });
+      navigate("form", { state: { selectedKey } });
     }
     if (id === 3) {
       if (selectedRowKeys.length === 0) {
@@ -120,7 +120,7 @@ const UserGroupList: React.FC = () => {
         }}
         onRow={(record) => ({
           onDoubleClick: () => {
-            navigate("/user-group/form", { state: { selectedKey: record.Id } });
+            navigate("form", { state: { selectedKey: record.Id } });
           },
         })}
       />
