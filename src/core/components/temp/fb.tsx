@@ -1,0 +1,1 @@
+npm install --save @designable/formily-antd

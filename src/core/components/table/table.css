@@ -1,0 +1,17 @@
+/* سفارشی‌سازی اسکرول‌بار */
+::-webkit-scrollbar {
+  width: 10px !important; /* عرض اسکرول‌بار */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* رنگ پس‌زمینه */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* رنگ دستگیره اسکرول */
+  border-radius: 5px; /* گوشه‌های گرد */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* رنگ دستگیره هنگام هاور */
+}

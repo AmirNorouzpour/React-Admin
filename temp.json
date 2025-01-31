@@ -1,0 +1,79 @@
+{
+  "Columns": [
+    {
+      "Name": "Reports.Id",
+      "Title": "Id",
+      "Active": true,
+      "Visible": false
+    },
+    {
+      "Name": "Reports.Name",
+      "Title": "Name",
+      "Active": true,
+      "Visible": true
+    },
+    {
+      "Name": "Reports.InsertDateTime",
+      "Title": "InsertDateTime",
+      "Active": true,
+      "Visible": true
+    },
+    {
+      "Name": "Reports.Icon",
+      "Title": "Icon",
+      "Active": true,
+      "Visible": true
+    },
+    {
+      "Name": "Reports.Type",
+      "Title": "Type",
+      "Active": true,
+      "Visible": true
+    },
+    {
+      "Name": "Reports.TypedefId",
+      "Title": "TypedefId",
+      "Active": true,
+      "Visible": true
+    },
+    {
+      "Name": "Typedefs.Name",
+      "Title": "TypedefName",
+      "Active": true,
+      "Visible": true,
+      "Relation": {
+        "JoinTable": "Typedefs",
+        "SourceField": "TypedefId",
+        "TargetField": "Id"
+      }
+    },
+    {
+      "Name": "Typedefs.SystemId",
+      "Title": "SystemId",
+      "Active": true,
+      "Visible": true,
+      "Relation": {
+        "JoinTable": "Typedefs",
+        "SourceField": "TypedefId",
+        "TargetField": "Id"
+      }
+    },
+    {
+      "Name": "Systems.Name",
+      "Title": "SystemName",
+      "Active": true,
+      "Visible": true,
+      "Relation": {
+        "JoinTable": "Typedefs",
+        "SourceField": "TypedefId",
+        "TargetField": "Id",{"isUnique":null,"nonEditable":null,"readonlyfromdb":null,"notnull":null,"encrypted":null,"rtl":null,"isFx":null,"fx":null,"id":null}
+        "Children": {
+          "JoinTable": "Systems",
+          "SourceField": "SystemId",
+          "TargetField": "Id"
+        }
+      }
+    }
+  ],
+  "Conditions": []
+}

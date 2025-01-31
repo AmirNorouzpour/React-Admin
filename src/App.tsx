@@ -1,17 +1,22 @@
 import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
-import Header from "./components/header/header.tsx";
-import Footer from "./components/footer/footer.tsx";
-import Body from "./components/body/body.tsx";
-import "./assets/fontawesome.ts";
+import Header from "./core/components/header/header.tsx";
+import Footer from "./core/components/footer/footer.tsx";
+import Body from "./core/components/body/body.tsx";
+import { SystemProvider } from "./context/SystemContext.tsx";
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Body />
-      <Footer />
-    </div>
+    <Router>
+      <SystemProvider>
+        <div className="App">
+          <Header />
+          <Body />
+          <Footer />
+        </div>
+      </SystemProvider>
+    </Router>
   );
 }
 
