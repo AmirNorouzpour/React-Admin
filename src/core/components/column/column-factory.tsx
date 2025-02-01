@@ -21,7 +21,7 @@ export class ColumnFactory {
     filterKeyName,
     responsive,
     sorter = false,
-    typeDefId = null,
+    typeDefId,
     width,
     options = [],
   }: {

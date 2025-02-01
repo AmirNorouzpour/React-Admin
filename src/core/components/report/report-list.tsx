@@ -24,7 +24,7 @@ const ReportsList: React.FC = () => {
   const fetchData = async (params: any = {}) => {
     setLoading(true);
     try {
-      params.reportId = "1e45d3d0-1639-4140-8e53-3d6fe6855b24";
+      params.reportId = "dede0745-37ca-43b0-9a15-7489f78bb7b2";
       const queryString = new URLSearchParams(params).toString();
       const response = await getRequest<{
         data: [];
@@ -80,12 +80,13 @@ const ReportsList: React.FC = () => {
     }),
     ColumnFactory.createColumn({
       title: "Typedef Name",
-      dataIndex: "TypedefName",
-      key: "typedefName",
-      filterKeyName: "Name",
-      type: FieldType.Text,
+      dataIndex: "TypeDef",
+      key: "typeDef",
+      filterKeyName: "Id",
+      type: FieldType.R1N,
       sorter: true,
       entity: "Typedefs",
+      typeDefId: "828BA208-DAFA-43D8-8E81-DAC956264FBC",
     }),
     ColumnFactory.createColumn({
       title: "Type",

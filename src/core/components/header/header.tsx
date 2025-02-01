@@ -35,7 +35,7 @@ const Header: React.FC = () => {
           <Popover
             content={
               <div>
-                <SystemMenu />
+                <SystemMenu setSystemMenu={setOpen} />
               </div>
             }
             title="Systems"
