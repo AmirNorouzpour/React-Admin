@@ -1,79 +1,47 @@
 {
   "Columns": [
     {
-      "Name": "Reports.Id",
-      "Title": "Id",
+      "Name": "dyn_Category.Title",
+      "Title": "Categroy",
       "Active": true,
-      "Visible": false
+      "Visible": true,
+      "Type": 6,
+      "Hidden": false,
+      "Relation": {
+        "JoinTable": "dyn_Category",
+        "SourceField": "Categroy",
+        "TargetField": "Id",
+        "Children": null,
+        "TypedefId": "828BA208-DAFA-43D8-8E81-DAC956264FBB"
+      }
     },
     {
-      "Name": "Reports.Name",
-      "Title": "Name",
-      "Active": true,
-      "Visible": true
-    },
-    {
-      "Name": "Reports.InsertDateTime",
+      "Name": "dyn_Product.InsertDateTime",
       "Title": "InsertDateTime",
       "Active": true,
-      "Visible": true
+      "Visible": true,
+      "Type": 4,
+      "Hidden": false,
+      "Relation": null
     },
     {
-      "Name": "Reports.Icon",
-      "Title": "Icon",
-      "Active": true,
-      "Visible": true
-    },
-    {
-      "Name": "Reports.Type",
-      "Title": "Type",
-      "Active": true,
-      "Visible": true
-    },
-    {
-      "Name": "Reports.TypedefId",
-      "Title": "TypedefId",
-      "Active": true,
-      "Visible": true
-    },
-    {
-      "Name": "Typedefs.Name",
-      "Title": "TypedefName",
+      "Name": "dyn_Product.Caption",
+      "Title": "Caption",
       "Active": true,
       "Visible": true,
-      "Relation": {
-        "JoinTable": "Typedefs",
-        "SourceField": "TypedefId",
-        "TargetField": "Id"
-      }
+      "Type": 1,
+      "Hidden": false,
+      "Relation": null
     },
     {
-      "Name": "Typedefs.SystemId",
-      "Title": "SystemId",
+      "Name": "dyn_Product.Balance",
+      "Title": "Balance",
       "Active": true,
       "Visible": true,
-      "Relation": {
-        "JoinTable": "Typedefs",
-        "SourceField": "TypedefId",
-        "TargetField": "Id"
-      }
-    },
-    {
-      "Name": "Systems.Name",
-      "Title": "SystemName",
-      "Active": true,
-      "Visible": true,
-      "Relation": {
-        "JoinTable": "Typedefs",
-        "SourceField": "TypedefId",
-        "TargetField": "Id",{"isUnique":null,"nonEditable":null,"readonlyfromdb":null,"notnull":null,"encrypted":null,"rtl":null,"isFx":null,"fx":null,"id":null}
-        "Children": {
-          "JoinTable": "Systems",
-          "SourceField": "SystemId",
-          "TargetField": "Id"
-        }
-      }
+      "Type": 2,
+      "Hidden": false,
+      "Relation": null
     }
   ],
-  "Conditions": []
+  "Conditions": null
 }

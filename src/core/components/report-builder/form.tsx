@@ -162,9 +162,8 @@ const ReportBuilder: React.FC = () => {
   const onFinish = async (values: any) => {
     try {
       let data;
-      if (selectedReportId)
-        data = { id: selectedReportId, ...values, fields: fields };
-      else data = { ...values, fields: fields };
+      if (selectedReportId) data = { id: selectedReportId, ...values };
+      else data = { ...values };
       var res = await postRequest(`/api/base/report`, data);
       messageApi.success("data updated successfully!");
       navigate("", { state: { selectedKey: res.data.id } });

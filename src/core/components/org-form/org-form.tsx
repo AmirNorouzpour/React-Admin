@@ -6,8 +6,8 @@ import { getRequest, postRequest } from "../../services/apiService.ts";
 import "./org-form.css";
 import CustomTable from "../table/table.tsx";
 import { ColumnFactory } from "../column/column-factory.tsx";
-import { TableColumnType } from "../../models/column-types.ts";
 import User from "../../models/User.ts";
+import { FieldType } from "../../models/field-type.ts";
 
 const buttonData = [
   { id: 1, label: "Save", type: "primary" },
@@ -63,7 +63,7 @@ const OrgForm: React.FC = () => {
       dataIndex: "Username",
       key: "username",
       entity: "Users",
-      type: TableColumnType.Text,
+      type: FieldType.Text,
       sorter: true,
     }),
 
@@ -72,7 +72,7 @@ const OrgForm: React.FC = () => {
       dataIndex: "InsertDateTime",
       key: "insertDateTime",
       entity: "OrganizationUsers",
-      type: TableColumnType.DateTime,
+      type: FieldType.DateTime,
       sorter: true,
     }),
   ];

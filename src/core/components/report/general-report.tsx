@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { deleteRequest, getRequest } from "../../services/apiService.ts";
 import Toolbar from "../toolbar/toolbar.tsx";
 import CustomTable from "../table/table.tsx";
 import { ColumnFactory } from "../column/column-factory.tsx";
-import User from "../../models/User.ts";
 import buttonData from "../../models/button-data.ts";
-import { FieldType } from "../../models/field-type.ts";
+import { TableColumnType } from "../../models/column-types.ts";
+import { useParams } from "react-router-dom";
 
 const buttons: buttonData[] = [
   { id: 1, label: "New", type: "primary" },
@@ -15,26 +15,65 @@ const buttons: buttonData[] = [
   { id: 3, label: "Delete", type: "danger", hasConfirm: true },
 ];
 
-const UserList: React.FC = () => {
+const GeneralReport: React.FC = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<User[]>([]);
+  const [data, setData] = useState<[]>([]);
+  const [columns, setColumns] = useState<[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [messageApi, contextHolder] = message.useMessage();
+  const { reportId } = useParams();
+
+  useEffect(() => {
+    fetchMetaData();
+    fetchData();
+  }, [reportId]);
 
   const fetchData = async (params: any = {}) => {
     setLoading(true);
     try {
-      params.reportId = "d9ffdbc3-0253-4c0c-a35a-1892889aba16";
+      params.reportId = reportId;
       const queryString = new URLSearchParams(params).toString();
       const response = await getRequest<{
-        data: User[];
+        data: any[];
         total: number;
       }>(`/api/generic?${queryString}`);
       setData(response.data);
       return response;
     } catch (error) {
-      console.error("Failed to fetch users:", error);
+      console.error("Failed to fetch data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchMetaData = async (params: any = {}) => {
+    setLoading(true);
+    try {
+      const response = await getRequest<{
+        data: any[];
+        total: number;
+      }>(`/api/base/GetReportMetaData/${reportId}`);
+
+      let cols: [] = [];
+      response.data.forEach((col, index) => {
+        let column = ColumnFactory.createColumn({
+          title: col.title,
+          dataIndex: col.title,
+          key: col.title,
+          type: col.type,
+          sorter: col.sorter,
+          entity: col.entity,
+          hidden: col.hidden,
+          typeDefId: col.relation?.typedefId,
+        });
+        debugger;
+        cols.push(column);
+      });
+      setColumns(cols);
+      return response;
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
     } finally {
       setLoading(false);
     }
@@ -73,57 +112,37 @@ const UserList: React.FC = () => {
     }
   };
 
-  const columns = [
-    ColumnFactory.createColumn({
-      title: "Id",
-      dataIndex: "Id",
-      key: "id",
-      type: FieldType.Text,
-      sorter: true,
-      entity: "Users",
-      hidden: true,
-    }),
-    ColumnFactory.createColumn({
-      title: "Full Name",
-      dataIndex: "FullName",
-      key: "FullName",
-      type: FieldType.Text,
-      sorter: true,
-      entity: "Users",
-    }),
-    ColumnFactory.createColumn({
-      title: "User Name",
-      dataIndex: "Username",
-      key: "Username",
-      type: FieldType.Text,
-      sorter: true,
-      entity: "Users",
-    }),
-    ColumnFactory.createColumn({
-      title: "Insert Date",
-      dataIndex: "InsertDateTime",
-      key: "InsertDateTime",
-      type: FieldType.DateTime,
-      sorter: true,
-      entity: "Users",
-    }),
-    ColumnFactory.createColumn({
-      title: "Can Login",
-      dataIndex: "CanLogin",
-      key: "CanLogin",
-      type: FieldType.Boolean,
-      sorter: true,
-      entity: "Users",
-      options: [
-        { label: "Yes", value: "true" },
-        { label: "No", value: "false" },
-      ],
-    }),
-  ];
+  //   const columns = [
+  //     ColumnFactory.createColumn({
+  //       title: "Id",
+  //       dataIndex: "Id",
+  //       key: "id",
+  //       type: TableColumnType.Text,
+  //       sorter: true,
+  //       entity: "dyn_Product",
+  //       hidden: true,
+  //     }),
+  //     ColumnFactory.createColumn({
+  //       title: "Caption",
+  //       dataIndex: "Caption",
+  //       key: "caption",
+  //       type: TableColumnType.Text,
+  //       sorter: true,
+  //       entity: "dyn_Product",
+  //     }),
+  //     ColumnFactory.createColumn({
+  //       title: "Insert Date",
+  //       dataIndex: "InsertDateTime",
+  //       key: "InsertDateTime",
+  //       type: TableColumnType.DateTime,
+  //       sorter: true,
+  //       entity: "dyn_Product",
+  //     }),
+  //   ];
 
   return (
     <Card
-      title="Users List"
+      title="List"
       type="inner"
       extra={
         <Toolbar buttonData={buttons} onButtonClick={handleToolbarClick} />
@@ -149,4 +168,4 @@ const UserList: React.FC = () => {
   );
 };
 
-export default UserList;
+export default GeneralReport;

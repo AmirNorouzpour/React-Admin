@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Table, Spin } from "antd";
 import type { TableProps } from "antd/es/table";
-import { TableColumnType } from "../../models/column-types.ts";
+import { FieldType } from "../../models/field-type.ts";
+import { createStyles } from "antd-style";
 
 interface CustomTableProps {
   columns: TableProps<any>["columns"];
@@ -20,6 +21,30 @@ interface CustomTableProps {
   onRow?: TableProps<any>["onRow"]; // Add onRow prop
 }
 
+const useStyle = createStyles(({ css }) => ({
+  customTable: css`
+    .ant-table-body {
+      scrollbar-width: thin;
+      scrollbar-color: #eaeaea transparent;
+      scrollbar-gutter: stable;
+    }
+
+    .ant-table-body::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    .ant-table-body::-webkit-scrollbar-thumb {
+      background-color: #eaeaea;
+      border-radius: 3px;
+    }
+
+    .ant-table-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  `,
+}));
+
 const CustomTable: React.FC<CustomTableProps> = ({
   columns,
   scroll = 5,
@@ -30,6 +55,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
   rowKey = "Id",
   onRow, // Accept onRow as a prop
 }) => {
+  const { styles } = useStyle();
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -50,7 +76,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
       if (col.filterKeyName) key = col.filterKeyName;
       const filterValues = filters[col.key];
       if (filterValues) {
-        if (col.type === TableColumnType.DateTime) {
+        if (col.type === FieldType.DateTime) {
           const [startDate, endDate] = filterValues[0]?.split(",") || [];
           const rules = [];
           if (startDate) {
@@ -75,7 +101,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
               rules,
             });
           }
-        } else if (col.type === TableColumnType.Enum) {
+        } else if (col.type === FieldType.Enum) {
           filterTree.rules.push({
             condition: "or",
             rules: filterValues.map((value: string) => ({
@@ -85,14 +111,25 @@ const CustomTable: React.FC<CustomTableProps> = ({
               entity: col.entity,
             })),
           });
-        } else if (col.type === TableColumnType.Text) {
+        } else if (col.type === FieldType.R1N) {
+          debugger;
+          filterTree.rules.push({
+            condition: "or",
+            rules: filterValues.map((value: string) => ({
+              field: key,
+              operator: "=",
+              value: value,
+              entity: col.entity,
+            })),
+          });
+        } else if (col.type === FieldType.Text) {
           filterTree.rules.push({
             field: key,
             operator: "like",
             value: filterValues[0],
             entity: col.entity,
           });
-        } else if (col.type === TableColumnType.Integer) {
+        } else if (col.type === FieldType.Number) {
           const [minValue, maxValue] = filterValues || [];
           const rules = [];
           if (minValue) {
@@ -117,7 +154,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
               rules,
             });
           }
-        } else if (col.type === TableColumnType.Boolean) {
+        } else if (col.type === FieldType.Boolean) {
           const value = filterValues[0];
           if (value) {
             filterTree.rules.push({
@@ -187,6 +224,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
   return (
     <Spin spinning={loading}>
       <Table
+        className={styles.customTable}
         size="small"
         columns={columns}
         dataSource={dataSource}

@@ -16,6 +16,7 @@ import Dashboard from "../dashboard/dashboard.tsx";
 import TypedefForm from "../typedef/typedef-form.tsx";
 import { useSystemContext } from "../../../context/SystemContext.tsx";
 import ReportBuilder from "../report-builder/form.tsx";
+import GeneralReport from "../report/general-report.tsx";
 
 const { Sider, Content } = Layout;
 
@@ -23,9 +24,8 @@ const Body: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const { selectedSystem, setSelectedSystem, systems } = useSystemContext();
-  const { systemKey } = useParams(); // ✅ دریافت `systemKey` از `URL`
+  const { systemKey } = useParams();
 
-  // ✅ تنظیم `selectedSystem` از `URL` هنگام تغییر مسیر
   useEffect(() => {
     if (systemKey) {
       const systemFromList = systems.find((sys) => sys.key === systemKey);
@@ -66,7 +66,7 @@ const Body: React.FC = () => {
       >
         <div className={`sider-header ${collapsed ? "collapsed" : ""}`}>
           {!collapsed && (
-            <div className="system-name">
+            <div className="system-name" >
               {selectedSystem ? selectedSystem.name : "Loading..."}
             </div>
           )}
@@ -74,7 +74,13 @@ const Body: React.FC = () => {
             className={`collapse-button ${collapsed ? "collapsed" : ""}`}
             onClick={toggleCollapsed}
           >
-            {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            <div style={{ cursor: "pointer" }}>
+              {collapsed ? (
+                <MenuUnfoldOutlined style={{ color: "#696969" }} />
+              ) : (
+                <MenuFoldOutlined style={{ color: "#696969" }} />
+              )}
+            </div>
           </div>
         </div>
         <SideMenu
@@ -86,7 +92,6 @@ const Body: React.FC = () => {
       <Layout>
         <Content className="content">
           <Routes>
-            {/* ✅ مسیرهای `system-management` */}
             <Route path="system-management/" element={<Dashboard />} />
             <Route path="system-management/org-chart" element={<OrgChart />} />
             <Route
@@ -107,10 +112,9 @@ const Body: React.FC = () => {
               element={<TypedefForm />}
             />
 
-            {/* ✅ مسیر `/system/:systemKey/list` برای نمایش `SystemList` */}
             <Route
               path="system/:systemKey/list/:reportId"
-              element={<SystemList />}
+              element={<GeneralReport />}
             />
             <Route path="system/:systemKey" element={<Dashboard />} />
             <Route path="/report-builder" element={<ReportBuilder />} />

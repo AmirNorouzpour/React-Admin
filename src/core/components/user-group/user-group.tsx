@@ -6,7 +6,7 @@ import Toolbar from "../toolbar/toolbar.tsx";
 import CustomTable from "../table/table.tsx";
 import { ColumnFactory } from "../column/column-factory.tsx";
 import buttonData from "../../models/button-data.ts";
-import { TableColumnType } from "../../models/column-types.ts";
+import { FieldType } from "../../models/field-type.ts";
 
 const buttons: buttonData[] = [
   { id: 1, label: "New", type: "primary" },
@@ -65,7 +65,7 @@ const UserGroupList: React.FC = () => {
       title: "Id",
       dataIndex: "Id",
       key: "id",
-      type: TableColumnType.Text,
+      type: FieldType.Text,
       sorter: true,
       hidden: true,
       entity: "Groups",
@@ -74,7 +74,7 @@ const UserGroupList: React.FC = () => {
       title: "Name",
       dataIndex: "Name",
       key: "name",
-      type: TableColumnType.Text,
+      type: FieldType.Text,
       sorter: true,
       entity: "Groups",
     }),
@@ -82,7 +82,7 @@ const UserGroupList: React.FC = () => {
       title: "Insert Date",
       dataIndex: "InsertDateTime",
       key: "insertDateTime",
-      type: TableColumnType.DateTime,
+      type: FieldType.DateTime,
       sorter: true,
       entity: "Groups",
     }),
@@ -90,7 +90,7 @@ const UserGroupList: React.FC = () => {
       title: "Is Active",
       dataIndex: "IsActive",
       key: "isActive",
-      type: TableColumnType.Boolean,
+      type: FieldType.Boolean,
       sorter: true,
       entity: "Groups",
       options: [

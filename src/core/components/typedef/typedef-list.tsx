@@ -5,8 +5,8 @@ import { deleteRequest, getRequest } from "../../services/apiService.ts";
 import Toolbar from "../toolbar/toolbar.tsx";
 import CustomTable from "../table/table.tsx";
 import { ColumnFactory } from "../column/column-factory.tsx";
-import ButtonData from "../../models/ButtonData.ts";
-import { TableColumnType } from "../../models/column-types.ts";
+import ButtonData from "../../models/button-data.ts";
+import { FieldType } from "../../models/field-type.ts";
 
 const buttonData: ButtonData[] = [
   { id: 1, label: "New", type: "primary" },
@@ -77,7 +77,7 @@ const TyepDefList: React.FC = () => {
       title: "Id",
       dataIndex: "Id",
       key: "id",
-      type: TableColumnType.Text,
+      type: FieldType.Text,
       sorter: true,
       entity: "Typedefs",
       hidden: true,
@@ -86,7 +86,7 @@ const TyepDefList: React.FC = () => {
       title: "Name",
       dataIndex: "Name",
       key: "name",
-      type: TableColumnType.Text,
+      type: FieldType.Text,
       sorter: true,
       entity: "Typedefs",
     }),
@@ -95,7 +95,7 @@ const TyepDefList: React.FC = () => {
       dataIndex: "SystemName",
       key: "systemName",
       filterKeyName: "Name",
-      type: TableColumnType.Text,
+      type: FieldType.Text,
       sorter: true,
       entity: "Systems",
       responsive: ["md"],
@@ -104,7 +104,7 @@ const TyepDefList: React.FC = () => {
       title: "Table Name",
       dataIndex: "TableName",
       key: "tableName",
-      type: TableColumnType.Text,
+      type: FieldType.Text,
       sorter: true,
       entity: "Typedefs",
     }),
@@ -112,7 +112,7 @@ const TyepDefList: React.FC = () => {
       title: "Insert Date",
       dataIndex: "InsertDateTime",
       key: "insertDateTime",
-      type: TableColumnType.DateTime,
+      type: FieldType.DateTime,
       sorter: true,
       entity: "Typedefs",
       responsive: ["md"],

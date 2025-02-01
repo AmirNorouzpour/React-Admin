@@ -2,7 +2,7 @@ import { Card } from "antd";
 import React, { useState } from "react";
 import CustomTable from "../table/table.tsx";
 import { ColumnFactory } from "../column/column-factory.tsx";
-import { TableColumnType } from "../../models/column-types.ts";
+import { FieldType } from "../../models/field-type.ts";
 
 const TypedefActions: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -12,7 +12,7 @@ const TypedefActions: React.FC = () => {
       title: "Id",
       dataIndex: "Id",
       key: "id",
-      type: TableColumnType.Text,
+      type: FieldType.Text,
       sorter: true,
       entity: "FieldDefs",
       hidden: true,
@@ -21,7 +21,7 @@ const TypedefActions: React.FC = () => {
       title: "Title",
       dataIndex: "Title",
       key: "title",
-      type: TableColumnType.Text,
+      type: FieldType.Text,
       sorter: true,
       entity: "FieldDefs",
     }),
@@ -29,7 +29,7 @@ const TypedefActions: React.FC = () => {
       title: "Location",
       dataIndex: "Location",
       key: "location",
-      type: TableColumnType.Enum,
+      type: FieldType.Enum,
       sorter: true,
       entity: "FieldDefs",
       options: [

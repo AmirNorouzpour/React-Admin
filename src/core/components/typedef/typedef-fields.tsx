@@ -2,12 +2,11 @@ import { Button, Card, Drawer, Space, message } from "antd";
 import React, { useState } from "react";
 import CustomTable from "../table/table.tsx";
 import { ColumnFactory } from "../column/column-factory.tsx";
-import { TableColumnType } from "../../models/column-types.ts";
 import "./typedef.css";
 import { getRequest } from "../../services/apiService.ts";
 import Toolbar from "../toolbar/toolbar.tsx";
 import FieldDefForm from "../fielddef/fielddef-form.tsx";
-import { fieldTypeToOptions } from "../../models/field-type.ts";
+import { FieldType, fieldTypeToOptions } from "../../models/field-type.ts";
 import { ApiResult } from "../../models/api-result.ts";
 
 interface FieldDef {
@@ -44,7 +43,7 @@ const TypedefFields: React.FC<TypedefFieldsProps> = ({
       title: "Id",
       dataIndex: "id",
       key: "id",
-      type: TableColumnType.Text,
+      type: FieldType.Text,
       sorter: true,
       entity: "FieldDefs",
       hidden: true,
@@ -53,7 +52,7 @@ const TypedefFields: React.FC<TypedefFieldsProps> = ({
       title: "Name",
       dataIndex: "name",
       key: "name",
-      type: TableColumnType.Text,
+      type: FieldType.Text,
       sorter: true,
       entity: "FieldDefs",
     }),
@@ -61,7 +60,7 @@ const TypedefFields: React.FC<TypedefFieldsProps> = ({
       title: "Title",
       dataIndex: "title",
       key: "title",
-      type: TableColumnType.Text,
+      type: FieldType.Text,
       sorter: true,
       entity: "FieldDefs",
     }),
@@ -69,7 +68,7 @@ const TypedefFields: React.FC<TypedefFieldsProps> = ({
       title: "Type",
       dataIndex: "type",
       key: "type",
-      type: TableColumnType.Enum,
+      type: FieldType.Enum,
       sorter: true,
       entity: "FieldDefs",
       options: fieldTypeToOptions(),
