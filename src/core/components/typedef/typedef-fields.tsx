@@ -6,7 +6,10 @@ import "./typedef.css";
 import { getRequest } from "../../services/apiService.ts";
 import Toolbar from "../toolbar/toolbar.tsx";
 import FieldDefForm from "../fielddef/fielddef-form.tsx";
-import { FieldType, fieldTypeToOptions } from "../../models/field-type.ts";
+import {
+  FieldType,
+  fieldTypeToOptionsWithColors,
+} from "../../models/field-type.ts";
 import { ApiResult } from "../../models/api-result.ts";
 
 interface FieldDef {
@@ -71,7 +74,7 @@ const TypedefFields: React.FC<TypedefFieldsProps> = ({
       type: FieldType.Enum,
       sorter: true,
       entity: "FieldDefs",
-      options: fieldTypeToOptions(),
+      options: fieldTypeToOptionsWithColors(),
     }),
     // ColumnFactory.createColumn({
     //   title: "Is Fx",

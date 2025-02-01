@@ -94,7 +94,6 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
 
   const onFinish = (fieldDef: any) => {
     fieldDef.id = field.id;
-    debugger;
     if (type === FieldType.Enum) {
     }
     onFieldDefSave(fieldDef, close);

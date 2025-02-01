@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Checkbox, Space, Button } from "antd";
+import { Row, Col, Checkbox, Space, Button, Tag } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 
 interface EnumFilterProps {
@@ -31,7 +31,7 @@ const EnumFilter: React.FC<EnumFilterProps> = ({
                 setSelectedKeys(newValue);
               }}
             >
-              {option.label}
+              <Tag color={option?.color}> {option.label}</Tag>
             </Checkbox>
           </Col>
         ))}

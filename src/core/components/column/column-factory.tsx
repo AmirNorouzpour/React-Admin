@@ -36,7 +36,7 @@ export class ColumnFactory {
     responsive?: [];
     width?: number;
     filterKeyName?: string;
-    options?: Array<{ label: string; value: string }>;
+    options?: Array<{ label: string; value: any; color: string }>;
   }) {
     switch (type) {
       case FieldType.Text:
@@ -100,23 +100,6 @@ export class ColumnFactory {
             date ? format(new Date(date), "yyyy-MM-dd") : "N/A",
         };
       case FieldType.Enum:
-        const colors = [
-          "indigo",
-          "blue",
-          "green",
-          "red",
-          "orange",
-          "yellow",
-          "purple",
-          "lime",
-          "gold",
-          "geekblue",
-          "violet",
-          "#f50",
-          "cyan",
-          "magenta",
-          "brown",
-        ];
         return {
           title,
           dataIndex,
@@ -144,9 +127,17 @@ export class ColumnFactory {
             />
           ),
           render: (value: number) => {
-            let color = colors[value % 10];
-            const option = options.find((opt) => opt.value === String(value));
-            return <Tag color={color}>{option?.label}</Tag>;
+            let color =
+              "#" +
+              ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0");
+            const option = options.find(
+              (opt) => String(opt.value) === String(value)
+            );
+            return (
+              <Tag color={option?.color ? option?.color : color}>
+                {option?.label}
+              </Tag>
+            );
           },
         };
       case FieldType.Number:
