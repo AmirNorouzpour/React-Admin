@@ -107,7 +107,6 @@ const TypedefFields: React.FC<TypedefFieldsProps> = ({
         }
         break;
       case 3:
-        debugger;
         const updatedFields = fields.filter(
           (field) => !selectedRowKeys.includes(field.id)
         );
@@ -129,7 +128,6 @@ const TypedefFields: React.FC<TypedefFieldsProps> = ({
   };
 
   function transformData(input) {
-    debugger;
     let output = {
       id: input.id ?? crypto.randomUUID(),
       name: input.name,

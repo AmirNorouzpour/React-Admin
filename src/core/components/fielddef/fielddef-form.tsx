@@ -47,6 +47,7 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
       name: input.name,
       title: input.title,
       type: input.type,
+      items: input.items || [],
     };
 
     let settings = JSON.parse(input.settings || "{}");
@@ -93,6 +94,9 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
 
   const onFinish = (fieldDef: any) => {
     fieldDef.id = field.id;
+    debugger;
+    if (type === FieldType.Enum) {
+    }
     onFieldDefSave(fieldDef, close);
     form.resetFields();
   };

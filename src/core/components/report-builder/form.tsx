@@ -57,7 +57,6 @@ const ReportBuilder: React.FC = () => {
       );
       const response = await getRequest<[]>(`/api/generic?${params}`);
       const tree = transformTypedefData(response.data);
-      debugger;
       setTypedefTreeData(tree);
     } catch (error) {
       console.error("Error loading typedef data", error);

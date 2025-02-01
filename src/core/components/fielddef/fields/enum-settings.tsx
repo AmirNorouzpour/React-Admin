@@ -1,103 +1,113 @@
 import React, { useState } from "react";
-import { Form, Row, Col, Input, Button, ColorPicker, Select } from "antd";
+import {
+  Form,
+  Row,
+  Col,
+  Input,
+  Button,
+  ColorPicker,
+  Select,
+  InputNumber,
+} from "antd";
 import "./fields.css";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 const EnumSettings: React.FC = () => {
-  const [items, setItems] = useState([
-    // { id: 1, name: "Red", color: "#f33232" },
-    // { id: 2, name: "Green", color: "#777777" },
-    // { id: 3, name: "Blue", color: "#ffff" },
-  ]);
-
-  const handleNameChange = (id, newName) => {
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, name: newName } : item
-      )
-    );
-  };
-
-  const handleColorChange = (id, newColor) => {
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, color: newColor.toHexString() } : item
-      )
-    );
-  };
-
-  const handleAddItem = () => {
-    const newItem = {
-      id: Date.now(),
-      name: "",
-      color:
-        "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0"),
-    };
-    setItems((prevItems) => [...prevItems, newItem]);
-  };
-
-  const handleRemoveItem = (id) => {
-    setItems((prevItems) => prevItems.filter((item) => item.id !== id));
-  };
+  const [count, setCount] = useState(1);
   return (
-    <Form layout="vertical">
+    <div>
       <Row gutter={16}>
-        <Col xs={24} md={20}>
-          <Form.Item label="Type" name="type">
+        <Col xs={24} md={24}>
+          <Form.Item label="EnumType" name="enumType">
             <Select
               placeholder="Please choose the type"
               // onChange={(value) => setDataType(value)}
               options={[
-                { label: <span>One Select</span>, value: "1" },
+                { label: <span>Single Select</span>, value: "1" },
                 { label: <span>Multiple Select</span>, value: "2" },
               ]}
-            />
-          </Form.Item>
-        </Col>
-        <Col xs={24} md={4}>
-          <Form.Item label="Add Item" name="type">
-            <Button
-              type="primary"
-              variant="filled"
-              onClick={() => handleAddItem()}
-              icon={<PlusOutlined />}
             />
           </Form.Item>
         </Col>
       </Row>
       <Row gutter={16}>
         <Col xs={24}>
-          <div className="container">
-            {items.map((item) => (
-              <div key={item.id} className="list-item">
-                <Input
-                  type="text"
-                  value={item.name}
-                  onChange={(e) => handleNameChange(item.id, e.target.value)}
-                  className="name-input"
-                />
-                <ColorPicker
-                  defaultValue="#1677ff"
-                  size="small"
-                  showText
-                  format="hex"
-                  onChangeComplete={(e) => handleColorChange(item.id, e)}
-                  value={item.color}
-                />
-
+          <Form.List name="items">
+            {(fields, { add, remove }) => (
+              <>
+                {fields.map(({ key, name, ...restField }) => (
+                  <Row key={key} gutter={10} align="middle">
+                    <Col span={4}>
+                      <Form.Item
+                        {...restField}
+                        name={[name, "value"]}
+                        rules={[
+                          { required: true, message: "Please enter value" },
+                        ]}
+                      >
+                        <InputNumber placeholder="Value" />
+                      </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                      <Form.Item
+                        {...restField}
+                        name={[name, "name"]}
+                        rules={[
+                          { required: true, message: "Please enter name" },
+                        ]}
+                      >
+                        <Input placeholder="Title" />
+                      </Form.Item>
+                    </Col>
+                    <Col span={4}>
+                      <Form.Item
+                        {...restField}
+                        name={[name, "color"]}
+                        getValueFromEvent={(color) => color.toHexString()}
+                      >
+                        <ColorPicker
+                          showText
+                          format="hex"
+                          defaultValue="#1677ff"
+                          size="small"
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col span={4}>
+                      <Button
+                        style={{ marginBottom: 25 }}
+                        type="primary"
+                        danger
+                        icon={<DeleteOutlined />}
+                        onClick={() => remove(name)}
+                      />
+                    </Col>
+                  </Row>
+                ))}
                 <Button
-                  type="primary"
-                  shape="circle"
-                  color="danger"
-                  variant="filled"
-                  onClick={() => handleRemoveItem(item.id)}
-                  icon={<DeleteOutlined />}
-                />
-              </div>
-            ))}
-          </div>
+                  type="dashed"
+                  onClick={() => {
+                    setCount(count + 1);
+                    add({
+                      value: count,
+                      name: "",
+                      color:
+                        "#" +
+                        ((Math.random() * 0xffffff) << 0)
+                          .toString(16)
+                          .padStart(6, "0"),
+                    });
+                  }}
+                  block
+                  icon={<PlusOutlined />}
+                >
+                  Add Item
+                </Button>
+              </>
+            )}
+          </Form.List>
         </Col>
       </Row>
-    </Form>
+    </div>
   );
 };
 

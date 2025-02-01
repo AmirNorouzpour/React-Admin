@@ -59,15 +59,15 @@ const GeneralReport: React.FC = () => {
       response.data.forEach((col, index) => {
         let column = ColumnFactory.createColumn({
           title: col.title,
-          dataIndex: col.title,
-          key: col.title,
+          dataIndex: col.dataIndex,
+          key: col.key,
           type: col.type,
           sorter: col.sorter,
           entity: col.entity,
           hidden: col.hidden,
           typeDefId: col.relation?.typedefId,
+          options: col.options,
         });
-        debugger;
         cols.push(column);
       });
       setColumns(cols);

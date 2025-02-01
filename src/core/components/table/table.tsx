@@ -73,6 +73,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
 
     columns?.forEach((col: any) => {
       let key = col.key;
+      debugger;
       if (col.filterKeyName) key = col.filterKeyName;
       const filterValues = filters[col.key];
       if (filterValues) {
@@ -112,7 +113,6 @@ const CustomTable: React.FC<CustomTableProps> = ({
             })),
           });
         } else if (col.type === FieldType.R1N) {
-          debugger;
           filterTree.rules.push({
             condition: "or",
             rules: filterValues.map((value: string) => ({

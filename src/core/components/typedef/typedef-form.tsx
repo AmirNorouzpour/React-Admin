@@ -103,7 +103,6 @@ const TypedefForm: React.FC = () => {
       else data = { ...values, fields: fields };
       var res = await postRequest(`/api/base/typedef`, data);
       messageApi.success("data updated successfully!");
-      debugger;
       navigate("", { state: { selectedKey: res.data.id } });
     } catch (error: any) {
       messageApi.error(error.message || "An error occurred");

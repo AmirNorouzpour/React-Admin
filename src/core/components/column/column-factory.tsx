@@ -196,10 +196,7 @@ export class ColumnFactory {
           filterDropdown: (props: any) => (
             <BooleanFilter
               value="true"
-              options={[
-                { label: "Yes", value: "true" },
-                { label: "No", value: "false" },
-              ]}
+              options={options}
               onChange={(value) => props.setSelectedKeys([value])}
               onConfirm={props.confirm}
               onReset={props.clearFilters}
@@ -245,7 +242,6 @@ export class ColumnFactory {
           ),
         };
       default: {
-        debugger;
         return {};
       }
     }
