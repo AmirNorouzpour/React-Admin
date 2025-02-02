@@ -9,24 +9,25 @@ import buttonData from "../../models/button-data.ts";
 import { useParams } from "react-router-dom";
 
 const buttons: buttonData[] = [
-  { id: 1, label: "New", type: "primary" },
-  { id: 2, label: "Edit", type: "primary" },
-  { id: 3, label: "Delete", type: "danger", hasConfirm: true },
+  { id: 1, label: "Save", type: "primary" },
+  { id: 2, label: "Delete", type: "danger", hasConfirm: true },
+  { id: 3, label: "Cancel", type: "primary" },
 ];
 
-const GeneralReport: React.FC = () => {
+const GeneralForm: React.FC = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<[]>([]);
-  const [columns, setColumns] = useState<[]>([]);
+  const [fields, setFields] = useState<[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [messageApi, contextHolder] = message.useMessage();
-  const { reportId } = useParams();
+  const { reportId, objectId } = useParams();
 
   useEffect(() => {
+    alert(objectId);
     fetchMetaData();
     fetchData();
-  }, [reportId]);
+  }, [reportId, objectId]);
 
   const fetchData = async (params: any = {}) => {
     setLoading(true);
@@ -69,7 +70,7 @@ const GeneralReport: React.FC = () => {
         });
         cols.push(column);
       });
-      setColumns(cols);
+      setFields(cols);
       return response;
     } catch (error) {
       console.error("Failed to fetch data:", error);
@@ -80,17 +81,12 @@ const GeneralReport: React.FC = () => {
 
   const handleToolbarClick = (label: string, id: number) => {
     if (id === 1) {
-      navigate("form");
-    }
-    if (id === 2) {
-      if (selectedRowKeys.length === 0) {
-        messageApi.warning("Please select a user to edit.");
-        return;
-      }
-      const selectedKey = selectedRowKeys[0];
-      navigate("form/" + selectedKey, { state: { selectedKey } });
+      //   form.submit();
     }
     if (id === 3) {
+      navigate("/");
+    }
+    if (id === 2) {
       if (selectedRowKeys.length === 0) {
         messageApi.warning("Please select users to delete.");
         return;
@@ -101,72 +97,27 @@ const GeneralReport: React.FC = () => {
 
   const deleteUsers = async (ids: React.Key[]) => {
     try {
-      await deleteRequest(`/api/users`, ids); // ارسال شناسه‌ها به سرور
+      await deleteRequest(`/api/users`, ids);
       messageApi.success("Users deleted successfully!");
-      fetchData(); // به‌روزرسانی لیست پس از حذف
-      setSelectedRowKeys([]); // پاک کردن انتخاب‌ها
+      fetchData();
+      setSelectedRowKeys([]);
     } catch (error) {
       console.error("Error deleting users:", error);
       messageApi.error("Failed to delete users. Please try again.");
     }
   };
 
-  //   const columns = [
-  //     ColumnFactory.createColumn({
-  //       title: "Id",
-  //       dataIndex: "Id",
-  //       key: "id",
-  //       type: TableColumnType.Text,
-  //       sorter: true,
-  //       entity: "dyn_Product",
-  //       hidden: true,
-  //     }),
-  //     ColumnFactory.createColumn({
-  //       title: "Caption",
-  //       dataIndex: "Caption",
-  //       key: "caption",
-  //       type: TableColumnType.Text,
-  //       sorter: true,
-  //       entity: "dyn_Product",
-  //     }),
-  //     ColumnFactory.createColumn({
-  //       title: "Insert Date",
-  //       dataIndex: "InsertDateTime",
-  //       key: "InsertDateTime",
-  //       type: TableColumnType.DateTime,
-  //       sorter: true,
-  //       entity: "dyn_Product",
-  //     }),
-  //   ];
-
   return (
     <Card
-      title="List"
+      title="Form"
       type="inner"
       extra={
         <Toolbar buttonData={buttons} onButtonClick={handleToolbarClick} />
       }
     >
       {contextHolder}
-      <CustomTable
-        columns={columns}
-        dataSource={data}
-        loading={loading}
-        onFetchData={fetchData}
-        rowSelection={{
-          selectedRowKeys,
-          onChange: (keys: React.Key[]) => setSelectedRowKeys(keys),
-        }}
-        onRow={(record) => ({
-          onDoubleClick: () => {
-            navigate("form/" + record.Id, {
-              state: { selectedKey: record.Id },
-            });
-          },
-        })}
-      />
     </Card>
   );
 };
 
-export default GeneralReport;
+export default GeneralForm;

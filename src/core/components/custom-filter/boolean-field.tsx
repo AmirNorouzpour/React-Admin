@@ -41,7 +41,7 @@ const BooleanFilter: React.FC<BooleanFilterProps> = ({
           {options.map((option) => (
             <Tag
               key={option.value}
-              color={selectedValue === option.value ? "blue" : "default"}
+              color={selectedValue === option.value ? "purple" : "default"}
               onClick={() => handleSelect(option.value)}
               style={{ cursor: "pointer" }}
             >

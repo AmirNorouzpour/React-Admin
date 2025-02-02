@@ -9,12 +9,16 @@ const TypeDefTreeSelect: React.FC<{ value; onChange }> = ({
 }) => {
   const [typedefTreeData, setTypedefTreeData] = useState<[]>([]);
 
+  useEffect(() => {
+    loadTypedefData("");
+  }, [value]);
+
   const onChange_inner = async (v) => {
     value = v;
     onChange(value);
   };
   const loadTypedefData = async (searchText: string) => {
-    if (searchText.length < 3) return;
+    // if (searchText.length < 3) return;
     try {
       const params = createQueryParams(
         "5BFD40B1-63FE-46A4-AB58-104A1CF9680A",

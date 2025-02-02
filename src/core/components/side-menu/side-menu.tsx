@@ -119,7 +119,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
 
   const handleContextMenuClick: MenuProps["onClick"] = ({ key }) => {
     if (key === "newReport") {
-      navigate("/report-builder");
+      navigate(`${selectedSystem?.key}/report-builder`);
     } else if (key === "newForm") {
       console.log("Creating New Form...");
     }

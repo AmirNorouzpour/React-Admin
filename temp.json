@@ -2,7 +2,7 @@
   "Columns": [
     {
       "Name": "Typedefs.Name",
-      "Title": "TypedefName",
+      "Title": "TypeDef",
       "Active": true,
       "Visible": true,
       "Type": 6,
@@ -39,6 +39,15 @@
     {
       "Name": "Reports.InsertDateTime",
       "Title": "InsertDateTime",
+      "Active": true,
+      "Visible": true,
+      "Type": 4,
+      "Hidden": false,
+      "Relation": null
+    },
+    {
+      "Name": "Reports.Icon",
+      "Title": "Icon",
       "Active": true,
       "Visible": true,
       "Type": 4,

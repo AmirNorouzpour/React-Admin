@@ -14,13 +14,17 @@ const ReportTreeSelect: React.FC<{ value; onChange; isDisabled }> = ({
 }) => {
   const [reportTreeData, setReportTreeData] = useState<[]>([]);
 
+  useEffect(() => {
+    loadReportData("");
+  }, [value]);
+
   const onChange_inner = async (v) => {
     value = v;
     onChange(value);
   };
 
   const loadReportData = async (searchText: string) => {
-    if (searchText.length < 3) return;
+    // if (searchText.length < 3) return;
     try {
       const params = createQueryParams(
         "dede0745-37ca-43b0-9a15-7489f78bb7b2",

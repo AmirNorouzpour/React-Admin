@@ -17,6 +17,7 @@ import TypedefForm from "../typedef/typedef-form.tsx";
 import { useSystemContext } from "../../../context/SystemContext.tsx";
 import ReportBuilder from "../report-builder/form.tsx";
 import GeneralReport from "../report/general-report.tsx";
+import GeneralForm from "../form/general-form.tsx";
 
 const { Sider, Content } = Layout;
 
@@ -107,9 +108,13 @@ const Body: React.FC = () => {
               path=":systemKey/list/:reportId"
               element={<GeneralReport />}
             />
+            <Route
+              path=":systemKey/list/:reportId/form/:objectId?"
+              element={<GeneralForm />}
+            />
             <Route path=":systemKey" element={<Dashboard />} />
             <Route
-              path=":systemKey//report-builder"
+              path=":systemKey/report-builder"
               element={<ReportBuilder />}
             />
           </Routes>
