@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Form, Checkbox, Row, Col, InputNumber, Select } from "antd";
 
 const NumberSettings: React.FC = () => {
-  const [dataType, setDataType] = useState<string>("1");
   return (
     <div>
       <Row gutter={16}>
@@ -17,21 +16,25 @@ const NumberSettings: React.FC = () => {
           </Form.Item>
         </Col>
         <Col xs={24} md={8}>
-          <Form.Item name="thousandsSeparator">
-            <Checkbox>Thousands Separator</Checkbox>
+          <Form.Item
+            label="Thousands Separator"
+            name="thousandsSeparator"
+            valuePropName="checked"
+          >
+            <Checkbox></Checkbox>
           </Form.Item>
         </Col>
       </Row>
       <Row gutter={16}>
         <Col xs={24} md={8}>
           <Form.Item
+            initialValue={"1"}
             label="Data Type"
             name="dataType"
             rules={[{ required: true, message: "Please choose the data type" }]}
           >
             <Select
               placeholder="Please choose the data type"
-              onChange={(value) => setDataType(value)}
               options={[
                 { label: <span>Integer</span>, value: "1" },
                 { label: <span>Double</span>, value: "2" },

@@ -66,7 +66,7 @@ const Body: React.FC = () => {
       >
         <div className={`sider-header ${collapsed ? "collapsed" : ""}`}>
           {!collapsed && (
-            <div className="system-name" >
+            <div className="system-name">
               {selectedSystem ? selectedSystem.name : "Loading..."}
             </div>
           )}
@@ -92,32 +92,26 @@ const Body: React.FC = () => {
       <Layout>
         <Content className="content">
           <Routes>
-            <Route path="system-management/" element={<Dashboard />} />
-            <Route path="system-management/org-chart" element={<OrgChart />} />
-            <Route
-              path="system-management/org-chart/form"
-              element={<OrgForm />}
-            />
-            <Route path="system-management/user" element={<UserList />} />
-            <Route path="system-management/user/form" element={<UserForm />} />
-            <Route path="system-management/system" element={<SystemList />} />
-            <Route
-              path="system-management/user-group"
-              element={<UserGroupList />}
-            />
-            <Route path="system-management/report" element={<ReportsList />} />
-            <Route path="system-management/typedef" element={<TyepDefList />} />
-            <Route
-              path="system-management/typedef/form"
-              element={<TypedefForm />}
-            />
+            {/* <Route path="" element={<Dashboard />} /> */}
+            <Route path=":systemKey/org-chart" element={<OrgChart />} />
+            <Route path=":systemKey/org-chart/form" element={<OrgForm />} />
+            <Route path=":systemKey/user" element={<UserList />} />
+            <Route path=":systemKey/user/form" element={<UserForm />} />
+            <Route path=":systemKey/system" element={<SystemList />} />
+            <Route path=":systemKey/user-group" element={<UserGroupList />} />
+            <Route path=":systemKey/report" element={<ReportsList />} />
+            <Route path=":systemKey/typedef" element={<TyepDefList />} />
+            <Route path=":systemKey/typedef/form" element={<TypedefForm />} />
 
             <Route
-              path="system/:systemKey/list/:reportId"
+              path=":systemKey/list/:reportId"
               element={<GeneralReport />}
             />
-            <Route path="system/:systemKey" element={<Dashboard />} />
-            <Route path="/report-builder" element={<ReportBuilder />} />
+            <Route path=":systemKey" element={<Dashboard />} />
+            <Route
+              path=":systemKey//report-builder"
+              element={<ReportBuilder />}
+            />
           </Routes>
         </Content>
       </Layout>

@@ -31,7 +31,7 @@ export const SystemProvider: React.FC<{ children: React.ReactNode }> = ({
 
         // ✅ خواندن `systemKey` از `URL`
         const pathParts = location.pathname.split("/");
-        const systemKeyFromURL = pathParts.length > 2 ? pathParts[2] : null;
+        const systemKeyFromURL = pathParts.length > 1 ? pathParts[1] : null;
 
         // ✅ بررسی کنیم که این `systemKey` در لیست سیستم‌ها وجود دارد یا نه؟
         const systemFromURL = response.data.find(
@@ -43,7 +43,7 @@ export const SystemProvider: React.FC<{ children: React.ReactNode }> = ({
         } else if (response.data.length > 0 && !selectedSystem) {
           // ✅ اگر `URL` سیستمی نداشت، اولین سیستم را انتخاب کنیم و `URL` را تغییر دهیم
           setSelectedSystem(response.data[0]);
-          navigate(`/system/${response.data[0].key}`);
+          navigate(`/${response.data[0].key}`);
         }
       } catch (error) {
         console.error("Error fetching systems:", error);
@@ -53,10 +53,11 @@ export const SystemProvider: React.FC<{ children: React.ReactNode }> = ({
     fetchSystems();
   }, []);
 
-  // ✅ وقتی `selectedSystem` تغییر کرد، `URL` را تغییر دهیم
   useEffect(() => {
-    if (selectedSystem) {
-      navigate(`/system/${selectedSystem.key}`);
+    const pathParts = location.pathname.split("/");
+    const systemKeyFromURL = pathParts.length > 1 ? pathParts[1] : null;
+    if (selectedSystem && systemKeyFromURL != selectedSystem.key) {
+      navigate(`/${selectedSystem.key}`);
     }
   }, [selectedSystem]);
 

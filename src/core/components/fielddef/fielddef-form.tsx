@@ -14,6 +14,8 @@ import R1NSettings from "./fields/R1N/r1n-field.tsx";
 import RNNSettings from "./fields/RNN/rnn-field.tsx";
 import Toolbar from "../toolbar/toolbar.tsx";
 import buttonData from "../../models/button-data.ts";
+import SoftDeleteSettings from "./fields/soft-delete-field.tsx";
+import CodeSettings from "./fields/code-field.tsx";
 
 const buttons: buttonData[] = [
   { id: 1, label: "Save", type: "primary" },
@@ -83,6 +85,10 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
         return <PictureSettings />;
       case FieldType.Json:
         return <JsonSettings />;
+      case FieldType.SoftDelete:
+        return <SoftDeleteSettings />;
+      case FieldType.Code:
+        return <CodeSettings />;
       case FieldType.Object:
         return <div>Object Settings</div>;
       case FieldType.Report:
@@ -196,6 +202,10 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
                           value: FieldType.RichText,
                         },
                         {
+                          label: <span>SoftDelete</span>,
+                          value: FieldType.SoftDelete,
+                        },
+                        {
                           label: <span>FileList</span>,
                           value: FieldType.FileList,
                         },
@@ -204,6 +214,10 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
                           value: FieldType.Picture,
                         },
                         { label: <span>Report</span>, value: FieldType.Report },
+                        {
+                          label: <span>Code</span>,
+                          value: FieldType.Code,
+                        },
                         { label: <span>Json</span>, value: FieldType.Json },
                       ],
                     },
@@ -254,7 +268,7 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
             </Col>
             <Col span={20}>
               <Form.Item name="fx">
-                {/* <Input placeholder="code" disabled /> */}
+                <Input placeholder="code" disabled />
               </Form.Item>
             </Col>
           </Row>

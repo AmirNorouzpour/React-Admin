@@ -25,52 +25,58 @@ interface SideMenuProps {
 const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { selectedSystem } = useSystemContext();
   const currentPath = location.pathname;
+  const { selectedSystem, systems } = useSystemContext();
   const [dynamicMenu, setDynamicMenu] = useState<MenuProps["items"]>([]);
 
   const handleMenuClick: MenuProps["onClick"] = (e) => {
     navigate(e.key);
   };
 
+  useEffect(() => {
+    if (!selectedSystem && systems.length > 0) {
+      navigate(`/${systems[0].key}`);
+    }
+  }, [selectedSystem, systems]);
+
   const systemManagementMenu: MenuProps["items"] = [
     {
-      key: `/system-management/dashboard`,
+      key: `/${selectedSystem?.key}/dashboard`,
       icon: <BarChartOutlined />,
       label: "Dashboard",
     },
     {
-      key: `/system-management/org-info`,
+      key: `/${selectedSystem?.key}/org-info`,
       icon: <InfoCircleOutlined />,
       label: "Organization Information",
     },
     {
-      key: `/system-management/org-chart`,
+      key: `/${selectedSystem?.key}/org-chart`,
       icon: <ApartmentOutlined />,
       label: "Organization Chart",
     },
     {
-      key: `/system-management/user`,
+      key: `/${selectedSystem?.key}/user`,
       icon: <UserOutlined />,
       label: "Users Management",
     },
     {
-      key: `/system-management/user-group`,
+      key: `/${selectedSystem?.key}/user-group`,
       icon: <TeamOutlined />,
       label: "User Groups",
     },
     {
-      key: `/system-management/system`,
+      key: `/${selectedSystem?.key}/system`,
       icon: <AppstoreOutlined />,
       label: "Systems",
     },
     {
-      key: `/system-management/typedef`,
+      key: `/${selectedSystem?.key}/typedef`,
       icon: <DatabaseOutlined />,
       label: "Typedefs",
     },
     {
-      key: `/system-management/report`,
+      key: `/${selectedSystem?.key}/report`,
       icon: <FileDoneOutlined />,
       label: "Reports",
     },
@@ -86,7 +92,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
         `/api/systems/menu/${selectedSystem.key}`
       );
       const menus: MenuProps["items"] = response.data.map((item) => ({
-        key: `/system/${selectedSystem.key}/${item.Path}`,
+        key: `/${selectedSystem.key}/${item.Path}`,
         icon: <AppstoreOutlined />,
         label: item.Title,
       }));

@@ -1,160 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Form, Row, Col, TreeSelect, Checkbox } from "antd";
-import { getRequest } from "../../../../services/apiService.ts";
-import {
-  AppstoreOutlined,
-  DatabaseOutlined,
-  FileDoneOutlined,
-} from "@ant-design/icons";
+import TypeDefTreeSelect from "../../../typedef/lookup/typedef-tree-select.tsx";
+import ReportTreeSelect from "../../../report/lookup/report-tree-select.tsx";
 
 const R1NSettings: React.FC = () => {
-  const [typedefTreeData, setTypedefTreeData] = useState<[]>([]);
-  const [reportTreeData, setReportTreeData] = useState<[]>([]);
-  const [typedefValue, setTypedefValue] = useState<string | undefined>(
-    undefined
-  );
+  const [typedefValue, setTypedefValue] = useState<string | undefined>();
   const [reportValue, setReportValue] = useState<string | undefined>(undefined);
-  const [searchText, setSearchText] = useState("");
-  const [reportSearchText, setReportSearchText] = useState("");
-  const [isReportEnabled, setIsReportEnabled] = useState(false);
-
-  useEffect(() => {
-    loadTypedefData("");
-    loadReportData("");
-  }, []);
-
-  const loadTypedefData = async (searchText: string) => {
-    try {
-      const params = createQueryParams(
-        "5BFD40B1-63FE-46A4-AB58-104A1CF9680A",
-        searchText
-      );
-      const response = await getRequest<[]>(`/api/generic?${params}`);
-      const tree = transformTypedefData(response.data);
-      setTypedefTreeData(tree);
-    } catch (error) {
-      console.error("Error loading typedef data", error);
-    }
-  };
-
-  const loadReportData = async (searchText: string) => {
-    try {
-      const params = createQueryParams(
-        "1e45d3d0-1639-4140-8e53-3d6fe6855b24",
-        searchText
-      );
-      const response = await getRequest<[]>(`/api/generic?${params}`);
-      const tree = transformReportData(response.data);
-      setReportTreeData(tree);
-    } catch (error) {
-      console.error("Error loading report data", error);
-    }
-  };
-
-  const createQueryParams = (reportId: string, searchText: string) => {
-    const filters = {
-      rules: [
-        {
-          field: "Name",
-          operator: "like",
-          value: searchText,
-          entity: "Typedefs",
-        },
-      ],
-      condition: "and",
-    };
-
-    return new URLSearchParams({
-      reportId,
-      filters: JSON.stringify(filters),
-    }).toString();
-  };
-
-  const transformTypedefData = (data: any[]): [] => {
-    const groupedData: Record<string, any> = {};
-
-    data.forEach((item) => {
-      const { SystemId, SystemName, Name, Id } = item;
-
-      if (!groupedData[SystemId]) {
-        groupedData[SystemId] = {
-          label: SystemName,
-          value: SystemId,
-          icon: <AppstoreOutlined />,
-          children: [],
-          selectable: false,
-        };
-      }
-
-      groupedData[SystemId].children.push({
-        label: Name,
-        value: Id,
-        icon: <DatabaseOutlined />,
-      });
-    });
-
-    return Object.values(groupedData);
-  };
-
-  const transformReportData = (data: any[]): [] => {
-    const tree: any[] = [];
-
-    const groupedData = data.reduce((acc: any, item: any) => {
-      const { SystemName, TypedefName, Name, Id } = item;
-
-      if (!acc[SystemName]) acc[SystemName] = {};
-      if (!acc[SystemName][TypedefName]) acc[SystemName][TypedefName] = [];
-
-      acc[SystemName][TypedefName].push({
-        label: Name,
-        value: Id,
-        icon: <FileDoneOutlined />,
-      });
-      return acc;
-    }, {});
-
-    Object.keys(groupedData).forEach((systemName) => {
-      const children = Object.keys(groupedData[systemName]).map(
-        (typedefName) => ({
-          label: typedefName,
-          value: typedefName,
-          icon: <DatabaseOutlined />,
-          selectable: false,
-          children: groupedData[systemName][typedefName],
-        })
-      );
-
-      tree.push({
-        label: systemName,
-        value: systemName,
-        icon: <AppstoreOutlined />,
-        selectable: false,
-        children,
-      });
-    });
-
-    return tree;
-  };
+  const [hasReport, setHasReport] = useState(Boolean);
 
   return (
     <div>
       <Row gutter={16}>
         <Col xs={24} md={8}>
           <Form.Item label="Relation Type" name="relationType">
-            <TreeSelect
-              showSearch
-              style={{ width: "100%" }}
+            <TypeDefTreeSelect
               value={typedefValue}
-              placeholder="Select a typedef"
-              treeData={typedefTreeData}
-              allowClear
-              treeLine={true}
-              onSearch={setSearchText}
               onChange={setTypedefValue}
-              treeIcon={true}
-              filterTreeNode={(input, node) =>
-                node.label.toLowerCase().includes(input.toLowerCase())
-              }
             />
           </Form.Item>
         </Col>
@@ -164,26 +25,18 @@ const R1NSettings: React.FC = () => {
             name="hasReport"
             valuePropName="checked"
           >
-            <Checkbox onChange={(e) => setIsReportEnabled(e.target.checked)} />
+            <Checkbox
+              checked={hasReport}
+              onChange={(e) => setHasReport(e.target.checked)}
+            />
           </Form.Item>
         </Col>
         <Col xs={24} md={12}>
           <Form.Item label="Report" name="reportId">
-            <TreeSelect
-              showSearch
-              style={{ width: "100%" }}
+            <ReportTreeSelect
               value={reportValue}
-              placeholder="Select a report"
-              treeData={reportTreeData}
-              allowClear
-              treeIcon={true}
-              disabled={!isReportEnabled}
-              onSearch={setReportSearchText}
-              treeLine={true}
               onChange={setReportValue}
-              filterTreeNode={(input, node) =>
-                node.label.toLowerCase().includes(input.toLowerCase())
-              }
+              isDisabled={!hasReport}
             />
           </Form.Item>
         </Col>
