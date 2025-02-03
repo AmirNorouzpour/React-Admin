@@ -1,23 +1,14 @@
-import { Button, Card, Drawer, Space, message } from "antd";
+import { Card, Drawer, message } from "antd";
 import React, { useState } from "react";
 import CustomTable from "../table/table.tsx";
 import { ColumnFactory } from "../column/column-factory.tsx";
 import "./typedef.css";
-import { getRequest } from "../../services/apiService.ts";
 import Toolbar from "../toolbar/toolbar.tsx";
 import FieldDefForm from "../fielddef/fielddef-form.tsx";
 import {
   FieldType,
   fieldTypeToOptionsWithColors,
 } from "../../models/field-type.ts";
-import { ApiResult } from "../../models/api-result.ts";
-
-interface FieldDef {
-  id: string;
-  title: string;
-  type: string;
-  name: string;
-}
 
 interface TypedefFieldsProps {
   typedefId: string;
@@ -120,11 +111,11 @@ const TypedefFields: React.FC<TypedefFieldsProps> = ({
     }
   };
 
-  function ondblclick(id) {
+  const ondblclick = (id) => {
     var field = fields.filter((x) => x.id == id.toString());
     setSelectedField(field[0]);
     setIsDrawerOpen(true);
-  }
+  };
 
   const fetchData = async (params: any = {}) => {
     return;

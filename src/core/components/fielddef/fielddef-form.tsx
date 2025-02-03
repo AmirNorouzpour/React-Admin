@@ -5,7 +5,7 @@ import NumberSettings from "./fields/number-settings.tsx";
 import DatetimeSettings from "./fields/datetime-settings.tsx";
 import BooleanSettings from "./fields/boolean-settings.tsx";
 import EnumSettings from "./fields/enum-settings.tsx";
-import { FieldType } from "../../models/field-type.ts";
+import { FieldType, fieldTypeColors } from "../../models/field-type.ts";
 import RichTextSettings from "./fields/richtext-field.tsx";
 import FilesListSettings from "./fields/filelist-field.tsx";
 import PictureSettings from "./fields/picture-field.tsx";
@@ -38,10 +38,12 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
   const [close, setClose] = useState(false);
 
   useEffect(() => {
-    var data = reverseTransformData(field);
-    setFieldType(data.type);
-    renderDynamicContent();
-    form.setFieldsValue({ ...data });
+    if (field?.id) {
+      var data = reverseTransformData(field);
+      setFieldType(data.type);
+      renderDynamicContent();
+      form.setFieldsValue({ ...data });
+    } else form.resetFields();
   }, [field]);
 
   function reverseTransformData(input) {
@@ -100,8 +102,6 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
 
   const onFinish = (fieldDef: any) => {
     fieldDef.id = field.id;
-    if (type === FieldType.Enum) {
-    }
     onFieldDefSave(fieldDef, close);
     form.resetFields();
   };
@@ -172,25 +172,96 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
                       label: <span>Primitives</span>,
                       title: "Primitives",
                       options: [
-                        { label: <span>Text</span>, value: FieldType.Text },
-                        { label: <span>Number</span>, value: FieldType.Number },
                         {
-                          label: <span>DateTime</span>,
+                          label: (
+                            <span
+                              style={{
+                                color: fieldTypeColors[FieldType.Text],
+                              }}
+                            >
+                              Text
+                            </span>
+                          ),
+                          value: FieldType.Text,
+                        },
+                        {
+                          label: (
+                            <span
+                              style={{
+                                color: fieldTypeColors[FieldType.Number],
+                              }}
+                            >
+                              Number
+                            </span>
+                          ),
+                          value: FieldType.Number,
+                        },
+                        {
+                          label: (
+                            <span
+                              style={{
+                                color: fieldTypeColors[FieldType.DateTime],
+                              }}
+                            >
+                              DateTime
+                            </span>
+                          ),
                           value: FieldType.DateTime,
                         },
                         {
-                          label: <span>Boolean</span>,
+                          label: (
+                            <span
+                              style={{
+                                color: fieldTypeColors[FieldType.Boolean],
+                              }}
+                            >
+                              Boolean
+                            </span>
+                          ),
                           value: FieldType.Boolean,
                         },
-                        { label: <span>Enum</span>, value: FieldType.Enum },
+                        {
+                          label: (
+                            <span
+                              style={{
+                                color: fieldTypeColors[FieldType.Enum],
+                              }}
+                            >
+                              Enum
+                            </span>
+                          ),
+                          value: FieldType.Enum,
+                        },
                       ],
                     },
                     {
                       label: <span>Relations</span>,
                       title: "Relations",
                       options: [
-                        { label: <span>R1N</span>, value: FieldType.R1N },
-                        { label: <span>RNN</span>, value: FieldType.RNN },
+                        {
+                          label: (
+                            <span
+                              style={{
+                                color: fieldTypeColors[FieldType.R1N],
+                              }}
+                            >
+                              R1N
+                            </span>
+                          ),
+                          value: FieldType.R1N,
+                        },
+                        {
+                          label: (
+                            <span
+                              style={{
+                                color: fieldTypeColors[FieldType.RNN],
+                              }}
+                            >
+                              RNN
+                            </span>
+                          ),
+                          value: FieldType.RNN,
+                        },
                       ],
                     },
                     {
@@ -198,27 +269,89 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
                       title: "advanced",
                       options: [
                         {
-                          label: <span>RichText</span>,
+                          label: (
+                            <span
+                              style={{
+                                color: fieldTypeColors[FieldType.RichText],
+                              }}
+                            >
+                              RichText
+                            </span>
+                          ),
                           value: FieldType.RichText,
                         },
                         {
-                          label: <span>SoftDelete</span>,
+                          label: (
+                            <span
+                              style={{
+                                color: fieldTypeColors[FieldType.SoftDelete],
+                              }}
+                            >
+                              SoftDelete
+                            </span>
+                          ),
                           value: FieldType.SoftDelete,
                         },
                         {
-                          label: <span>FileList</span>,
+                          label: (
+                            <span
+                              style={{
+                                color: fieldTypeColors[FieldType.FileList],
+                              }}
+                            >
+                              FileList
+                            </span>
+                          ),
                           value: FieldType.FileList,
                         },
                         {
-                          label: <span>Picture</span>,
+                          label: (
+                            <span
+                              style={{
+                                color: fieldTypeColors[FieldType.Picture],
+                              }}
+                            >
+                              Picture
+                            </span>
+                          ),
                           value: FieldType.Picture,
                         },
-                        { label: <span>Report</span>, value: FieldType.Report },
                         {
-                          label: <span>Code</span>,
+                          label: (
+                            <span
+                              style={{
+                                color: fieldTypeColors[FieldType.Report],
+                              }}
+                            >
+                              Report
+                            </span>
+                          ),
+                          value: FieldType.Report,
+                        },
+                        {
+                          label: (
+                            <span
+                              style={{
+                                color: fieldTypeColors[FieldType.Code],
+                              }}
+                            >
+                              Code
+                            </span>
+                          ),
                           value: FieldType.Code,
                         },
-                        { label: <span>Json</span>, value: FieldType.Json },
+                        {
+                          label: (
+                            <span
+                              style={{
+                                color: fieldTypeColors[FieldType.Json],
+                              }}
+                            >
+                              Json
+                            </span>
+                          ),
+                          value: FieldType.Json,
+                        },
                       ],
                     },
                   ]}

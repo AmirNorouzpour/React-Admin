@@ -45,11 +45,11 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
       icon: <BarChartOutlined />,
       label: "Dashboard",
     },
-    {
-      key: `/${selectedSystem?.key}/org-info`,
-      icon: <InfoCircleOutlined />,
-      label: "Organization Information",
-    },
+    // {
+    //   key: `/${selectedSystem?.key}/org-info`,
+    //   icon: <InfoCircleOutlined />,
+    //   label: "Organization Information",
+    // },
     {
       key: `/${selectedSystem?.key}/org-chart`,
       icon: <ApartmentOutlined />,

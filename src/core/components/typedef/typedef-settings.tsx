@@ -17,8 +17,19 @@ const TypedefSettings: React.FC = () => {
       >
         <Row gutter={16}>
           <Col xs={24} md={6} lg={4}>
-            <Form.Item label="TitleField" name="titleField">
-              <Input placeholder="Full Name" />
+            <Form.Item
+              label="CaptionField"
+              name="captionField"
+              initialValue={1}
+            >
+              <Select
+                placeholder="Please choose the Caption Field"
+                options={[
+                  { label: <span>X</span>, value: 1 },
+                  { label: <span>Y</span>, value: 2 },
+                  { label: <span>Z</span>, value: 3 },
+                ]}
+              />
             </Form.Item>
           </Col>
           <Col xs={24} md={6} lg={4}>

@@ -16,6 +16,7 @@ import { postRequest, getRequest } from "../../services/apiService.ts";
 import TypedefFields from "./typedef-fields.tsx";
 import TypedefActions from "./typedef-actions.tsx";
 import TypedefSettings from "./typedef-settings.tsx";
+import { ApiResult } from "../../models/api-result.ts";
 
 const buttonData = [
   { id: 1, label: "Save", type: "primary" },
@@ -37,6 +38,7 @@ const TypedefForm: React.FC = () => {
   const [searchLoading, setSearchLoading] = useState(false);
   //=======================================
   const [fields, setFields] = useState([]);
+  const [actions, setActions] = useState([]);
 
   useEffect(() => {
     if (selectedTypeDefId) {
@@ -51,11 +53,12 @@ const TypedefForm: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const data = await getRequest<any>(
+      const data = await getRequest<ApiResult<any>>(
         `/api/base/typedef/${selectedTypeDefId}`
       );
       form.setFieldsValue(data.data);
       setFields(data.data.fields);
+      setActions(data.data.actions);
     } catch (error: any) {
       messageApi.error("Failed to fetch typedef data");
     }
@@ -77,7 +80,9 @@ const TypedefForm: React.FC = () => {
       params.filters = JSON.stringify(cnds);
 
       const queryString = new URLSearchParams(params).toString();
-      const response = await getRequest<[]>(`/api/generic?${queryString}`);
+      const response = await getRequest<ApiResult<any>>(
+        `/api/generic?${queryString}`
+      );
       setSystemOptions(
         response.data.map((system) => ({
           label: system.Name,
@@ -100,7 +105,7 @@ const TypedefForm: React.FC = () => {
       let data;
       if (selectedTypeDefId)
         data = { id: selectedTypeDefId, ...values, fields: fields };
-      else data = { ...values, fields: fields };
+      else data = { ...values, fields: fields, actions: actions };
       var res = await postRequest(`/api/base/typedef`, data);
       messageApi.success("data updated successfully!");
       fetchData();
@@ -124,7 +129,13 @@ const TypedefForm: React.FC = () => {
     {
       key: "2",
       label: "Actions",
-      children: <TypedefActions />,
+      children: (
+        <TypedefActions
+          typedefId={selectedTypeDefId}
+          actions={actions}
+          setActions={setActions}
+        />
+      ),
     },
     {
       key: "3",

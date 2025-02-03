@@ -93,7 +93,7 @@ const Body: React.FC = () => {
       <Layout>
         <Content className="content">
           <Routes>
-            {/* <Route path="" element={<Dashboard />} /> */}
+            <Route path=":systemKey/Dashboard" element={<Dashboard />} />
             <Route path=":systemKey/org-chart" element={<OrgChart />} />
             <Route path=":systemKey/org-chart/form" element={<OrgForm />} />
             <Route path=":systemKey/user" element={<UserList />} />
