@@ -14,6 +14,8 @@ import { Popover } from "antd";
 import SystemMenu from "./../sys-menu/sys-menu.tsx";
 import Langs from "../langs/langs.tsx";
 import UserProfile from "../user-profile/user-profile.tsx";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import LottieMapper from "../../../assets/lottie/lottie-mapper.ts";
 
 const Header: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -49,7 +51,7 @@ const Header: React.FC = () => {
                 <AppstoreOutlined />
               </div>
               <div className="sys-title">
-                Systems{" "}
+                Systems
                 <div className="sys-expand">
                   <DownOutlined />
                 </div>
@@ -58,54 +60,57 @@ const Header: React.FC = () => {
           </Popover>
         </div>
       </Col>
-      <Col className="header-box right-content" span={12}>
-        <Popover
-          content={
+      <Col span={12}>
+        <div className="header-box right-content" style={{ display: "flex" }}>
+          <Popover
+            content={
+              <div>
+                <UserProfile />
+              </div>
+            }
+            title="Profile"
+            trigger="click"
+            placement="bottomLeft"
+          >
             <div>
-              <UserProfile />
+              <DotLottieReact
+                src={LottieMapper.GetFile("user")}
+                loop
+                autoplay
+                style={{ width: 36, height: 36 }}
+              />
             </div>
-          }
-          title="Profile"
-          trigger="click"
-          placement="bottomLeft"
-        >
-          <Badge dot>
-            <Avatar
-              className="user-profile"
-              size={28}
-              icon={<UserOutlined />}
-            />
-          </Badge>
-        </Popover>
+          </Popover>
 
-        <Avatar
-          className="user-profile header-btn"
-          size={28}
-          icon={<NotificationOutlined />}
-        />
-
-        <Avatar
-          className="user-profile header-btn"
-          size={28}
-          icon={<MessageOutlined />}
-        />
-
-        <Popover
-          content={
-            <div>
-              <Langs />
-            </div>
-          }
-          title="Languages"
-          trigger="click"
-          placement="bottomLeft"
-        >
           <Avatar
             className="user-profile header-btn"
-            size={28}
-            icon={<GlobalOutlined />}
+            size={32}
+            icon={<NotificationOutlined />}
           />
-        </Popover>
+
+          <Avatar
+            className="user-profile header-btn"
+            size={32}
+            icon={<MessageOutlined />}
+          />
+
+          <Popover
+            content={
+              <div>
+                <Langs />
+              </div>
+            }
+            title="Languages"
+            trigger="click"
+            placement="bottomLeft"
+          >
+            <Avatar
+              className="user-profile header-btn"
+              size={32}
+              icon={<GlobalOutlined />}
+            />
+          </Popover>
+        </div>
       </Col>
     </Row>
   );

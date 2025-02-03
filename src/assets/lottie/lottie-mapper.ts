@@ -8,6 +8,9 @@ import auditAnimation from "../lottie/audit.lottie";
 import errorAnimation from "../lottie/error.lottie";
 import failedAnimation from "../lottie/fingerprint.lottie";
 import enterAnimation from "../lottie/enter.lottie";
+import userAnimation from "../lottie/user.lottie";
+import loadingAnimation from "../lottie/loading.lottie";
+import langAnimation from "../lottie/lang.lottie";
 
 class LottieMapper {
   private static fileMap: Map<string, any> = new Map([
@@ -21,6 +24,9 @@ class LottieMapper {
     ["error", errorAnimation],
     ["fingerprint", failedAnimation],
     ["enter", enterAnimation],
+    ["user", userAnimation],
+    ["loading", loadingAnimation],
+    ["lang", langAnimation],
   ]);
 
   public static GetFile(key: string): any | undefined {

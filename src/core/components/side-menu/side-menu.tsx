@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   BarChartOutlined,
-  InfoCircleOutlined,
+  AuditOutlined,
   ApartmentOutlined,
   UserOutlined,
   TeamOutlined,
@@ -79,6 +79,11 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
       key: `/${selectedSystem?.key}/report`,
       icon: <FileDoneOutlined />,
       label: "Reports",
+    },
+    {
+      key: `/${selectedSystem?.key}/audit`,
+      icon: <AuditOutlined />,
+      label: "Audit",
     },
   ];
 

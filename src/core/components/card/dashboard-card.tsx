@@ -13,6 +13,7 @@ interface DashboardCardProps {
   content?: string;
   numberContent: number;
   icon;
+  iconSize?: number;
   onFetchData?: (params: {
     reportId: string;
   }) => Promise<{ data: DashboardCardModel }>;
@@ -23,6 +24,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
   content,
   numberContent,
   icon,
+  iconSize = 64,
   onFetchData = null,
 }) => {
   const [open, setOpen] = useState(false);
@@ -48,18 +50,18 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
             src={icon}
             loop
             autoplay
-            style={{ width: 64, height: 64 }}
+            style={{ width: iconSize, height: iconSize }}
           />
         }
         description={
           <div>
             <div
-              style={{ color: "#000", fontFamily: "tahoma", fontSize: "14px" }}
+              style={{ color: "#444", fontFamily: "tahoma", fontSize: "14px" }}
             >
               {title}{" "}
             </div>
             <div
-              style={{ color: "#000", fontFamily: "cursive", fontSize: "24px" }}
+              style={{ color: "#444", fontFamily: "cursive", fontSize: "24px" }}
             >
               {content ?? (
                 <CountUp

@@ -91,7 +91,7 @@ const Body: React.FC = () => {
         />
       </Sider>
       <Layout>
-        <Content className="content">
+        <Content className="content" style={{ overflowY: "scroll" }}>
           <Routes>
             <Route path=":systemKey/Dashboard" element={<Dashboard />} />
             <Route path=":systemKey/org-chart" element={<OrgChart />} />
@@ -108,6 +108,7 @@ const Body: React.FC = () => {
               path=":systemKey/list/:reportId"
               element={<GeneralReport />}
             />
+            <Route path=":systemKey/audit" element={<GeneralReport />} />
             <Route
               path=":systemKey/list/:reportId/form/:objectId?"
               element={<GeneralForm />}

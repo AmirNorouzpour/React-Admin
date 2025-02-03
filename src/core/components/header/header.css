@@ -1,6 +1,6 @@
 .header {
   /* width: 100vw; */
-  height: 45px;
+  height: 50px;
   background-color: #2d3e50;
   padding: 10px;
   -moz-box-shadow: 0 5px 5px #333;
@@ -9,7 +9,7 @@
 }
 
 .header-box {
-  line-height: 25px;
+  line-height: 30px;
 }
 
 .right-content {
