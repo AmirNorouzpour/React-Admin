@@ -7,6 +7,7 @@ import CustomTable from "../table/table.tsx";
 import { ColumnFactory } from "../column/column-factory.tsx";
 import buttonData from "../../models/button-data.ts";
 import { useParams } from "react-router-dom";
+import { ApiResult } from "../../models/api-result.ts";
 
 const buttons: buttonData[] = [
   { id: 1, label: "New", type: "primary" },
@@ -19,6 +20,7 @@ const GeneralReport: React.FC = () => {
   const [data, setData] = useState<[]>([]);
   const [columns, setColumns] = useState<[]>([]);
   const [loading, setLoading] = useState(false);
+  const [reportName, setReportName] = useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [messageApi, contextHolder] = message.useMessage();
   const { reportId } = useParams();
@@ -33,10 +35,9 @@ const GeneralReport: React.FC = () => {
     try {
       params.reportId = reportId;
       const queryString = new URLSearchParams(params).toString();
-      const response = await getRequest<{
-        data: any[];
-        total: number;
-      }>(`/api/generic?${queryString}`);
+      const response = await getRequest<ApiResult<any>>(
+        `/api/generic?${queryString}`
+      );
       setData(response.data);
       return response;
     } catch (error) {
@@ -50,12 +51,12 @@ const GeneralReport: React.FC = () => {
     setLoading(true);
     try {
       const response = await getRequest<{
-        data: any[];
+        data: any;
         total: number;
       }>(`/api/base/GetReportMetaData/${reportId}`);
 
       let cols: [] = [];
-      response.data.forEach((col, index) => {
+      response.data.columns.forEach((col, index) => {
         let column = ColumnFactory.createColumn({
           title: col.title,
           dataIndex: col.dataIndex,
@@ -70,6 +71,8 @@ const GeneralReport: React.FC = () => {
         cols.push(column);
       });
       setColumns(cols);
+      debugger;
+      setReportName(response.data.name);
       return response;
     } catch (error) {
       console.error("Failed to fetch data:", error);
@@ -141,7 +144,7 @@ const GeneralReport: React.FC = () => {
 
   return (
     <Card
-      title="List"
+      title={`${reportName}`}
       type="inner"
       extra={
         <Toolbar buttonData={buttons} onButtonClick={handleToolbarClick} />

@@ -39,6 +39,7 @@ const TypedefForm: React.FC = () => {
   //=======================================
   const [fields, setFields] = useState([]);
   const [actions, setActions] = useState([]);
+  const [captionFieldDefId, setCaptionFieldDefId] = useState<string>();
 
   useEffect(() => {
     if (selectedTypeDefId) {
@@ -59,6 +60,7 @@ const TypedefForm: React.FC = () => {
       form.setFieldsValue(data.data);
       setFields(data.data.fields);
       setActions(data.data.actions);
+      setCaptionFieldDefId(data.data.captionFieldId);
     } catch (error: any) {
       messageApi.error("Failed to fetch typedef data");
     }
@@ -140,7 +142,13 @@ const TypedefForm: React.FC = () => {
     {
       key: "3",
       label: "Settings",
-      children: <TypedefSettings />,
+      children: (
+        <TypedefSettings
+          typedefId={selectedTypeDefId}
+          captionFieldDefId={captionFieldDefId}
+          setCaptionFieldDefId={setCaptionFieldDefId}
+        />
+      ),
     },
     {
       key: "4",

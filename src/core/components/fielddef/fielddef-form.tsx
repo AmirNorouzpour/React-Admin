@@ -14,7 +14,6 @@ import R1NSettings from "./fields/R1N/r1n-field.tsx";
 import RNNSettings from "./fields/RNN/rnn-field.tsx";
 import Toolbar from "../toolbar/toolbar.tsx";
 import buttonData from "../../models/button-data.ts";
-import SoftDeleteSettings from "./fields/soft-delete-field.tsx";
 import CodeSettings from "./fields/code-field.tsx";
 
 const buttons: buttonData[] = [
@@ -87,8 +86,6 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
         return <PictureSettings />;
       case FieldType.Json:
         return <JsonSettings />;
-      case FieldType.SoftDelete:
-        return <SoftDeleteSettings />;
       case FieldType.Code:
         return <CodeSettings />;
       case FieldType.Object:
@@ -279,18 +276,6 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
                             </span>
                           ),
                           value: FieldType.RichText,
-                        },
-                        {
-                          label: (
-                            <span
-                              style={{
-                                color: fieldTypeColors[FieldType.SoftDelete],
-                              }}
-                            >
-                              SoftDelete
-                            </span>
-                          ),
-                          value: FieldType.SoftDelete,
                         },
                         {
                           label: (

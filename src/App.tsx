@@ -11,7 +11,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   setTimeout(() => {
     setIsLoading(false);
-  }, 3000);
+  }, 2000);
   return (
     <Router>
       {isLoading && <LoadingScreen />}

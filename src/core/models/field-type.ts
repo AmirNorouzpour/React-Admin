@@ -13,7 +13,6 @@ export enum FieldType {
   Report,
   Json,
   Code,
-  SoftDelete,
 }
 
 export const fieldTypeColors = [
@@ -31,7 +30,6 @@ export const fieldTypeColors = [
   "#607D8B", // Report
   "#3F51B5", // Json
   "#000dff", // Code
-  "#ff2e70", // SoftDelete
 ];
 
 export const fieldTypeToOptions = (): { label: string; value: string }[] => {

@@ -32,7 +32,7 @@ const Header: React.FC = () => {
             <div style={{ fontSize: "16px" }}>
               <HomeOutlined />
             </div>
-            <span className="org-title">Organization</span>
+            <span className="org-title">Norsou Solutions</span>
           </div>
           <Popover
             content={
