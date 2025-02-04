@@ -20,18 +20,28 @@ const GeneralReport: React.FC = () => {
   const [data, setData] = useState<[]>([]);
   const [columns, setColumns] = useState<[]>([]);
   const [loading, setLoading] = useState(false);
-  const [reportName, setReportName] = useState("");
+  const [reportData, setReportData] = useState<any>();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [messageApi, contextHolder] = message.useMessage();
   const { reportId } = useParams();
 
   useEffect(() => {
-    fetchMetaData();
-    fetchData();
+    const fetchDataAsync = async () => {
+      setLoading(true);
+      try {
+        await fetchMetaData();
+        await fetchData();
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDataAsync();
   }, [reportId]);
 
   const fetchData = async (params: any = {}) => {
-    setLoading(true);
     try {
       params.reportId = reportId;
       const queryString = new URLSearchParams(params).toString();
@@ -39,25 +49,24 @@ const GeneralReport: React.FC = () => {
         `/api/generic?${queryString}`
       );
       setData(response.data);
+      setReportData((prevData) => ({
+        ...prevData,
+        total: response.total,
+      }));
       return response;
     } catch (error) {
       console.error("Failed to fetch data:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
-  const fetchMetaData = async (params: any = {}) => {
-    setLoading(true);
+  const fetchMetaData = async () => {
     try {
-      const response = await getRequest<{
-        data: any;
-        total: number;
-      }>(`/api/base/GetReportMetaData/${reportId}`);
+      const response = await getRequest<ApiResult<any>>(
+        `/api/base/GetReportMetaData/${reportId}`
+      );
 
-      let cols: [] = [];
-      response.data.columns.forEach((col, index) => {
-        let column = ColumnFactory.createColumn({
+      const cols = response.data.columns.map((col) =>
+        ColumnFactory.createColumn({
           title: col.title,
           dataIndex: col.dataIndex,
           key: col.key,
@@ -67,17 +76,14 @@ const GeneralReport: React.FC = () => {
           hidden: col.hidden,
           typeDefId: col.relation?.typedefId,
           options: col.options,
-        });
-        cols.push(column);
-      });
+        })
+      );
+
       setColumns(cols);
-      debugger;
-      setReportName(response.data.name);
+      setReportData(response.data.reportData);
       return response;
     } catch (error) {
-      console.error("Failed to fetch data:", error);
-    } finally {
-      setLoading(false);
+      console.error("Failed to fetch metadata:", error);
     }
   };
 
@@ -104,47 +110,19 @@ const GeneralReport: React.FC = () => {
 
   const deleteUsers = async (ids: React.Key[]) => {
     try {
-      await deleteRequest(`/api/users`, ids); // ارسال شناسه‌ها به سرور
+      await deleteRequest(`/api/users`, ids);
       messageApi.success("Users deleted successfully!");
-      fetchData(); // به‌روزرسانی لیست پس از حذف
-      setSelectedRowKeys([]); // پاک کردن انتخاب‌ها
+      fetchData();
+      setSelectedRowKeys([]);
     } catch (error) {
       console.error("Error deleting users:", error);
       messageApi.error("Failed to delete users. Please try again.");
     }
   };
 
-  //   const columns = [
-  //     ColumnFactory.createColumn({
-  //       title: "Id",
-  //       dataIndex: "Id",
-  //       key: "id",
-  //       type: TableColumnType.Text,
-  //       sorter: true,
-  //       entity: "dyn_Product",
-  //       hidden: true,
-  //     }),
-  //     ColumnFactory.createColumn({
-  //       title: "Caption",
-  //       dataIndex: "Caption",
-  //       key: "caption",
-  //       type: TableColumnType.Text,
-  //       sorter: true,
-  //       entity: "dyn_Product",
-  //     }),
-  //     ColumnFactory.createColumn({
-  //       title: "Insert Date",
-  //       dataIndex: "InsertDateTime",
-  //       key: "InsertDateTime",
-  //       type: TableColumnType.DateTime,
-  //       sorter: true,
-  //       entity: "dyn_Product",
-  //     }),
-  //   ];
-
   return (
     <Card
-      title={`${reportName}`}
+      title={` ${reportData?.name} (${reportData?.total})`}
       type="inner"
       extra={
         <Toolbar buttonData={buttons} onButtonClick={handleToolbarClick} />

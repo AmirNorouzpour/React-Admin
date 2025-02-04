@@ -53,7 +53,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
   onFetchData,
   rowSelection,
   rowKey = "Id",
-  onRow, // Accept onRow as a prop
+  onRow,
 }) => {
   const { styles } = useStyle();
   const [pagination, setPagination] = useState({

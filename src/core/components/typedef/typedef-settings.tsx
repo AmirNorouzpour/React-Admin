@@ -78,7 +78,6 @@ const TypedefSettings: React.FC<TypedefSettingsProps> = ({
           <Col xs={24} md={6} lg={4}>
             <Form.Item label="Typedef Type" name="typeDefType" initialValue={1}>
               <Select
-                showSearch
                 placeholder="select a Type"
                 options={[
                   { label: "Normal", value: 1 },
