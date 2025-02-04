@@ -3,6 +3,7 @@ import { Table, Spin } from "antd";
 import type { TableProps } from "antd/es/table";
 import { FieldType } from "../../models/field-type.ts";
 import { createStyles } from "antd-style";
+import { ApiResult } from "../../models/api-result.ts";
 
 interface CustomTableProps {
   columns: TableProps<any>["columns"];
@@ -16,7 +17,7 @@ interface CustomTableProps {
     sortField?: string;
     sortOrder?: "ASC" | "DESC";
     filters?: string;
-  }) => Promise<{ data: any[]; total: number }>;
+  }) => Promise<ApiResult<any>>;
   rowSelection?: TableProps<any>["rowSelection"];
   onRow?: TableProps<any>["onRow"]; // Add onRow prop
 }
