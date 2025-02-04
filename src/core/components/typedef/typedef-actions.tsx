@@ -86,7 +86,7 @@ const TypedefActions: React.FC<TypedefActionsProps> = ({
     }),
   ];
 
-  const fetchData = async (params: any = {}) => {
+  const fetchData = async (params: any) => {
     return;
   };
 

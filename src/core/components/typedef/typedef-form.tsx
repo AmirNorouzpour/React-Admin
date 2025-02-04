@@ -17,6 +17,7 @@ import TypedefFields from "./typedef-fields.tsx";
 import TypedefActions from "./typedef-actions.tsx";
 import TypedefSettings from "./typedef-settings.tsx";
 import { ApiResult } from "../../models/api-result.ts";
+import TypedefAuthorization from "./typedef-authorization.tsx";
 
 const buttonData = [
   { id: 1, label: "Save", type: "primary" },
@@ -39,7 +40,7 @@ const TypedefForm: React.FC = () => {
   //=======================================
   const [fields, setFields] = useState([]);
   const [actions, setActions] = useState([]);
-  const [captionFieldDefId, setCaptionFieldDefId] = useState<string>();
+  const [captionFieldDefId, setCaptionFieldDefId] = useState<string>("");
 
   useEffect(() => {
     if (selectedTypeDefId) {
@@ -158,7 +159,13 @@ const TypedefForm: React.FC = () => {
     {
       key: "5",
       label: "Authorization",
-      children: "Content of Tab Pane 5",
+      children: (
+        <TypedefAuthorization
+          typedefId={selectedTypeDefId}
+          captionFieldDefId={captionFieldDefId}
+          setCaptionFieldDefId={setCaptionFieldDefId}
+        />
+      ),
     },
     {
       key: "6",

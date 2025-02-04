@@ -75,7 +75,7 @@ const EnumSettings: React.FC = () => {
                     <Col span={4}>
                       <Button
                         style={{ marginBottom: 25 }}
-                        type="primary"
+                        type="link"
                         danger
                         icon={<DeleteOutlined />}
                         onClick={() => remove(name)}

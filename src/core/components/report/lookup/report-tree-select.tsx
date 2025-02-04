@@ -62,12 +62,12 @@ const ReportTreeSelect: React.FC<{ value; onChange; isDisabled }> = ({
     const tree: any[] = [];
 
     const groupedData = data.reduce((acc: any, item: any) => {
-      const { SystemName, TypedefName, Name, Id } = item;
+      const { SystemName, TypeDef, Name, Id } = item;
 
       if (!acc[SystemName]) acc[SystemName] = {};
-      if (!acc[SystemName][TypedefName]) acc[SystemName][TypedefName] = [];
+      if (!acc[SystemName][TypeDef]) acc[SystemName][TypeDef] = [];
 
-      acc[SystemName][TypedefName].push({
+      acc[SystemName][TypeDef].push({
         label: Name,
         value: Id,
         icon: <FileDoneOutlined />,

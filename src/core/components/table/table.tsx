@@ -11,16 +11,18 @@ interface CustomTableProps {
   loading: boolean;
   scroll?: number;
   rowKey?: string;
-  onFetchData: (params: {
-    page: number;
-    pageSize: number;
-    sortField?: string;
-    sortOrder?: "ASC" | "DESC";
-    filters?: string;
-  }) => Promise<ApiResult<any>>;
+  onFetchData: (params: any) => Promise<ApiResult<any>>;
   rowSelection?: TableProps<any>["rowSelection"];
   onRow?: TableProps<any>["onRow"]; // Add onRow prop
 }
+
+// {
+//     page: number;
+//     pageSize: number;
+//     sortField?: string;
+//     sortOrder?: "ASC" | "DESC";
+//     filters?: string;
+//  }
 
 const useStyle = createStyles(({ css }) => ({
   customTable: css`

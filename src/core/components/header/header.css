@@ -45,6 +45,7 @@
 
 .org-title {
   padding-left: 10px;
+  overflow: hidden;
 }
 
 .sys-title {

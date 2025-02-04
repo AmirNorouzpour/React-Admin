@@ -2,3 +2,11 @@
   .ant-card-body {
   padding: 10px;
 }
+
+.auth-list-item:not(:last-child) {
+  cursor: pointer;
+  border-bottom: 1px solid #d9d9d9;
+}
+.auth-list-item :hover {
+  background-color: #d9d9d9;
+}
