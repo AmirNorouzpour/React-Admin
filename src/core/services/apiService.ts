@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://dato.runasp.net";
+const API_BASE_URL = "https://dato.runasp.net";
 // const API_BASE_URL = "http://localhost:5177";
 
 export const apiRequest = async <T>(
