@@ -15,6 +15,7 @@ import RNNSettings from "./fields/RNN/rnn-field.tsx";
 import Toolbar from "../toolbar/toolbar.tsx";
 import buttonData from "../../models/button-data.ts";
 import CodeSettings from "./fields/code-field.tsx";
+import Editor from "@monaco-editor/react";
 
 const buttons: buttonData[] = [
   { id: 1, label: "Save", type: "primary" },
@@ -96,7 +97,7 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
         return <div>Please select a field type</div>;
     }
   };
-
+  const code = `double myDouble = 5.25;`;
   const onFinish = (fieldDef: any) => {
     fieldDef.id = field.id;
     onFieldDefSave(fieldDef, close);
@@ -386,7 +387,16 @@ const FieldDefForm: React.FC<FieldDefFormProps> = ({
             </Col>
             <Col span={20}>
               <Form.Item name="fx">
-                <Input placeholder="code" disabled />
+                <Editor
+                  height="20px"
+                  defaultLanguage="csharp"
+                  defaultValue={code}
+                  options={{
+                    readOnly: true,
+                    minimap: { enabled: false },
+                    lineNumbers: "off",
+                  }}
+                />
               </Form.Item>
             </Col>
           </Row>

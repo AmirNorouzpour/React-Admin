@@ -41,7 +41,6 @@ const TypedefAuthorization: React.FC<TypedefAuthorizationProps> = ({
   const [ugcData, setugcData] = useState<[]>([]);
   const [selectedOrgId, setSelectedOrgId] = useState<string>("");
   const [selectedOrgData, setSelectedOrgData] = useState<any>([]);
-  const [selectedUgc, setSelectedUgc] = useState<any>([]);
   const [data, setData] = useState<[]>([]);
   const [searchLoading, setSearchLoading] = useState(false);
 
@@ -88,17 +87,25 @@ const TypedefAuthorization: React.FC<TypedefAuthorizationProps> = ({
           <div>
             <div>
               <Row gutter={10}>
-                <Col xs={24} md={18}>
+                <Col xs={24} md={24}>
                   <Select
                     style={{ width: "100%" }}
                     showSearch
                     placeholder="Please choose the type"
                     onChange={(value, option) => {
                       debugger;
-                      setSelectedUgc({
+                      let selectedUgc = {
                         id: value,
                         name: option?.label,
                         type: option?.type,
+                      };
+                      setData((prevData) => {
+                        if (!Array.isArray(prevData)) return [selectedUgc];
+                        const existingIndex = prevData.findIndex(
+                          (item) => item.id === selectedUgc.id
+                        );
+                        if (existingIndex >= 0) return [...prevData];
+                        return [...prevData, selectedUgc];
                       });
                     }}
                     options={ugcData}
@@ -138,24 +145,6 @@ const TypedefAuthorization: React.FC<TypedefAuthorizationProps> = ({
                       );
                     }}
                   />
-                </Col>
-                <Col xs={24} md={4}>
-                  <Button
-                    type="dashed"
-                    onClick={() => {
-                      setData((prevData) => {
-                        if (!Array.isArray(prevData)) return [selectedUgc];
-                        const existingIndex = prevData.findIndex(
-                          (item) => item.id === selectedUgc.id
-                        );
-                        if (existingIndex >= 0) return [...prevData];
-                        return [...prevData, selectedUgc];
-                      });
-                    }}
-                    icon={<PlusOutlined />}
-                  >
-                    Add Item
-                  </Button>
                 </Col>
               </Row>
             </div>

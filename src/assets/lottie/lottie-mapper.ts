@@ -11,6 +11,7 @@ import enterAnimation from "../lottie/enter.lottie";
 import userAnimation from "../lottie/user.lottie";
 import loadingAnimation from "../lottie/loading.lottie";
 import langAnimation from "../lottie/lang.lottie";
+import designAnimation from "../lottie/design.lottie";
 
 class LottieMapper {
   private static fileMap: Map<string, any> = new Map([
@@ -26,7 +27,7 @@ class LottieMapper {
     ["enter", enterAnimation],
     ["user", userAnimation],
     ["loading", loadingAnimation],
-    ["lang", langAnimation],
+    ["design", designAnimation],
   ]);
 
   public static GetFile(key: string): any | undefined {
