@@ -18,6 +18,10 @@
 }
 .header-btn {
   margin-right: 5px;
+  cursor: pointer;
+}
+.header-btn :hover {
+  color: #248eff;
 }
 .org {
   color: #fff;

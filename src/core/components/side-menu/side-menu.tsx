@@ -135,12 +135,20 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed }) => {
       menu={{ items: generalContextMenu, onClick: handleContextMenuClick }}
       trigger={["contextMenu"]}
     >
-      <div style={{ height: "100%", minHeight: "100vh" }}>
+      <div
+        style={{
+          height: "100%",
+          minHeight: "100vh",
+          boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.05)",
+        }}
+      >
         <Menu
           mode="inline"
           selectedKeys={[currentPath]}
           onClick={handleMenuClick}
-          style={{ fontSize: "11px" }}
+          style={{
+            fontSize: "11px",
+          }}
           items={
             selectedSystem?.name === "System Management"
               ? systemManagementMenu

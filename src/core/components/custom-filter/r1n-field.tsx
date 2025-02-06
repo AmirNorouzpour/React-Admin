@@ -55,32 +55,6 @@ const R1NFilter: React.FC<R1NFilterProps> = ({
 
   return (
     <div style={{ padding: 8 }}>
-      <Select
-        mode="multiple"
-        showSearch
-        placeholder="Search and select"
-        filterOption={false}
-        maxTagCount={3}
-        maxTagPlaceholder={(omittedValues) => (
-          <Tooltip
-            styles={{ root: { pointerEvents: "none" } }}
-            title={omittedValues.map(({ label }) => label).join(", ")}
-          >
-            <span>...</span>
-          </Tooltip>
-        )}
-        onSearch={onSearch}
-        options={options}
-        loading={searchLoading}
-        placement={"topLeft"}
-        notFoundContent={searchLoading ? <Spin size="small" /> : null}
-        onChange={(ids) => {
-          setSelectedKeys(ids);
-        }}
-        value={selectedKeys}
-        allowClear
-        style={{ marginBottom: 8, display: "block" }}
-      />
       <Space>
         <Button
           type="primary"
@@ -105,6 +79,32 @@ const R1NFilter: React.FC<R1NFilterProps> = ({
           Reset
         </Button>
       </Space>
+      <Select
+        mode="multiple"
+        showSearch
+        placeholder="Search and select"
+        filterOption={false}
+        maxTagCount={3}
+        maxTagPlaceholder={(omittedValues) => (
+          <Tooltip
+            styles={{ root: { pointerEvents: "none" } }}
+            title={omittedValues.map(({ label }) => label).join(", ")}
+          >
+            <span>...</span>
+          </Tooltip>
+        )}
+        onSearch={onSearch}
+        options={options}
+        loading={searchLoading}
+        placement={"bottomLeft"}
+        notFoundContent={searchLoading ? <Spin size="small" /> : null}
+        onChange={(ids) => {
+          setSelectedKeys(ids);
+        }}
+        value={selectedKeys}
+        allowClear
+        style={{ marginTop: 10, display: "block" }}
+      />
     </div>
   );
 };

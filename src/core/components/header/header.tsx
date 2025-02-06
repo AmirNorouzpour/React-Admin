@@ -28,7 +28,7 @@ const Header: React.FC = () => {
 
   return (
     <Row className="header">
-      <Col className="header-box" span={8}>
+      <Col className="header-box" span={8} xs={12}>
         <div className="org">
           <div className="org-box">
             <div style={{ fontSize: "16px" }}>
@@ -48,11 +48,11 @@ const Header: React.FC = () => {
             open={open}
             onOpenChange={handleOpenChange}
           >
-            <div className="sys-menu">
+            <div className="sys-menu  header-btn">
               <div style={{ fontSize: "16px" }}>
                 <AppstoreOutlined />
               </div>
-              <div className="sys-title">
+              <div className="sys-title ">
                 Systems
                 <div className="sys-expand">
                   <DownOutlined />
@@ -62,7 +62,7 @@ const Header: React.FC = () => {
           </Popover>
         </div>
       </Col>
-      <Col className="header-box" span={8}>
+      <Col className="header-box" span={8} xs={0}>
         <div
           style={{
             fontSize: "16px",
@@ -70,13 +70,12 @@ const Header: React.FC = () => {
             flexDirection: "row",
             gap: "10px",
             color: "#fff",
-            cursor: "pointer",
             paddingLeft: "10px",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <Popover
+          {/* <Popover
             content={
               <div>
                 <IconPicker
@@ -97,16 +96,16 @@ const Header: React.FC = () => {
                 <i className={`fa-solid ${icon}`} style={{ marginLeft: 5 }}></i>
               )}
             </div>
-          </Popover>
-
-          <div>Entity</div>
-          <div>Report</div>
-          <div>Code</div>
-          <div>Workflow</div>
-          <div>API</div>
+          </Popover> */}
+          <div className="header-btn">System</div>
+          <div className="header-btn">Entity</div>
+          <div className="header-btn">Report</div>
+          <div className="header-btn">Code</div>
+          <div className="header-btn">Workflow</div>
+          <div className="header-btn">API</div>
         </div>
       </Col>
-      <Col span={8}>
+      <Col span={8} xs={12}>
         <div className="header-box right-content" style={{ display: "flex" }}>
           <Popover
             content={
