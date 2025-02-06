@@ -68,3 +68,9 @@
 .user-profile {
   cursor: pointer;
 }
+
+@media (max-width: 500px) {
+  .org-box {
+    display: none !important;
+  }
+}

@@ -28,7 +28,7 @@ const Header: React.FC = () => {
 
   return (
     <Row className="header">
-      <Col className="header-box" span={8} xs={12}>
+      <Col className="header-box" span={8} xs={12} md={8}>
         <div className="org">
           <div className="org-box">
             <div style={{ fontSize: "16px" }}>
@@ -62,7 +62,7 @@ const Header: React.FC = () => {
           </Popover>
         </div>
       </Col>
-      <Col className="header-box" span={8} xs={0}>
+      <Col className="header-box" span={8} xs={0} md={8}>
         <div
           style={{
             fontSize: "16px",
@@ -105,7 +105,7 @@ const Header: React.FC = () => {
           <div className="header-btn">API</div>
         </div>
       </Col>
-      <Col span={8} xs={12}>
+      <Col span={8} xs={12} md={8}>
         <div className="header-box right-content" style={{ display: "flex" }}>
           <Popover
             content={
