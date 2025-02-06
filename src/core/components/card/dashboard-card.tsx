@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Card } from "antd";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import CountUp from "react-countup";
+import "./dashboard-card.css";
 
 interface DashboardCardModel {
   title: string;
@@ -42,7 +43,8 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
   return (
     <Card
       loading={loading}
-      style={{ minWidth: 100, margin: 10, background: "#fafafa" }}
+      className="card"
+      style={{ minWidth: 100, margin: 10, background: "#fff" }}
     >
       <Card.Meta
         avatar={

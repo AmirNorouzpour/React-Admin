@@ -119,8 +119,9 @@ const Dashboard: React.FC = () => {
             style={{
               minWidth: 100,
               margin: 10,
-              background: "#fafafa",
               maxHeight: "320px",
+              borderRadius: 0,
+              boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.05)",
             }}
           >
             <Column {...configCol} />
@@ -131,8 +132,9 @@ const Dashboard: React.FC = () => {
             style={{
               minWidth: 100,
               margin: 10,
-              background: "#fafafa",
               maxHeight: "320px",
+              borderRadius: 0,
+              boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.05)",
             }}
           >
             <Line {...config} />

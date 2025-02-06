@@ -1,0 +1,27 @@
+.main {
+  display: flex;
+  flex-direction: row;
+  width: 300px;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  max-height: 300px;
+  gap: 5px;
+  margin-top: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #eaeaea transparent;
+  scrollbar-gutter: stable;
+}
+.icon-body {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+}
+.icon {
+  cursor: pointer;
+  font-size: 24px;
+  color: #555;
+}
+.icon:hover {
+  background-color: #1677ff;
+  color: #fff;
+}

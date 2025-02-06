@@ -16,9 +16,11 @@ import Langs from "../langs/langs.tsx";
 import UserProfile from "../user-profile/user-profile.tsx";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import LottieMapper from "../../../assets/lottie/lottie-mapper.ts";
+import IconPicker from "../icon-picker/icon-picker.tsx";
 
 const Header: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const [icon, seticon] = useState("");
 
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen);
@@ -74,7 +76,29 @@ const Header: React.FC = () => {
             justifyContent: "center",
           }}
         >
-          <div>System</div>
+          <Popover
+            content={
+              <div>
+                <IconPicker
+                  OnSelect={(i) => {
+                    debugger;
+                    seticon(i);
+                  }}
+                />
+              </div>
+            }
+            title="Icons"
+            trigger="click"
+            placement="bottomLeft"
+          >
+            <div>
+              System{" "}
+              {icon && (
+                <i className={`fa-solid ${icon}`} style={{ marginLeft: 5 }}></i>
+              )}
+            </div>
+          </Popover>
+
           <div>Entity</div>
           <div>Report</div>
           <div>Code</div>
